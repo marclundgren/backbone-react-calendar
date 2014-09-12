@@ -1,0 +1,97 @@
+[
+  {
+    "author": [
+      {
+        "email": {
+          "$t": "alexdixon69@googlemail.com"
+        },
+        "name": {
+          "$t": "alexdixon69@googlemail.com"
+        }
+      }
+    ],
+    "category": [
+      {
+        "scheme": "http://schemas.google.com/g/2005#kind",
+        "term": "http://schemas.google.com/g/2005#event"
+      }
+    ],
+    "content": {
+      "$t": "",
+      "type": "text"
+    },
+    "gCal$anyoneCanAddSelf": {
+      "value": "false"
+    },
+    "gCal$guestsCanInviteOthers": {
+      "value": "true"
+    },
+    "gCal$guestsCanModify": {
+      "value": "false"
+    },
+    "gCal$guestsCanSeeGuests": {
+      "value": "true"
+    },
+    "gCal$sequence": {
+      "value": 0
+    },
+    "gCal$uid": {
+      "value": "a26aj0fm9lb8umngg1qv9tl08c@google.com"
+    },
+    "gd$comments": {
+      "gd$feedLink": {
+        "href": "http://www.google.com/calendar/feeds/vdmtdcektajkqjk51vvda4ni4k%40group.calendar.google.com/public/full/a26aj0fm9lb8umngg1qv9tl08c/comments"
+      }
+    },
+    "gd$eventStatus": {
+      "value": "http://schemas.google.com/g/2005#event.confirmed"
+    },
+    "gd$transparency": {
+      "value": "http://schemas.google.com/g/2005#event.opaque"
+    },
+    "gd$when": [
+      {
+        "endTime": "2014-06-12T23:00:00.000+01:00",
+        "startTime": "2014-06-12T21:00:00.000+01:00"
+      }
+    ],
+    "gd$where": [
+      {
+        "valueString": ""
+      }
+    ],
+    "gd$who": [
+      {
+        "email": "vdmtdcektajkqjk51vvda4ni4k@group.calendar.google.com",
+        "rel": "http://schemas.google.com/g/2005#event.organizer",
+        "valueString": "World Cup 2014"
+      }
+    ],
+    "id": {
+      "$t": "https://www.google.com/calendar/feeds/vdmtdcektajkqjk51vvda4ni4k%40group.calendar.google.com/public/full/a26aj0fm9lb8umngg1qv9tl08c"
+    },
+    "link": [
+      {
+        "href": "http://www.google.com/calendar/event?eid=YTI2YWowZm05bGI4dW1uZ2cxcXY5dGwwOGMgdmRtdGRjZWt0YWprcWprNTF2dmRhNG5pNGtAZw",
+        "rel": "alternate",
+        "title": "alternate",
+        "type": "text/html"
+      },
+      {
+        "href": "http://www.google.com/calendar/feeds/vdmtdcektajkqjk51vvda4ni4k%40group.calendar.google.com/public/full/a26aj0fm9lb8umngg1qv9tl08c",
+        "rel": "self",
+        "type": "application/atom+xml"
+      }
+    ],
+    "published": {
+      "$t": "2013-12-06T17:30:41.000Z"
+    },
+    "title": {
+      "$t": "A: Brazil vs Croatia (3-1)",
+      "type": "text"
+    },
+    "updated": {
+      "$t": "2014-06-13T13:23:23.000Z"
+    }
+  }
+]
