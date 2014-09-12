@@ -2,29 +2,11 @@
 
 [React](http://facebook.github.io/react/) calendar component inspired by [CLNDR.js](http://kylestetz.github.io/CLNDR/).
 
+## To use
 
-# See the demo
-```bash
-open example/index.html
+```
+npm install
+node server.js
 ```
 
-```js
-var React = require('react');
-var Calendar = require('react-calendar');
-
-React.renderComponent(
-  Calendar(),
-  document.getElementById('calendar')
-);
-```
-
-
-# Build it yourself
-
-```bash
-$ npm install
-$ make
-```
-
-# License
-MIT
+And visit http://localhost:3000/. Try opening multiple tabs!
