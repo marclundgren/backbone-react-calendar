@@ -127,6 +127,6 @@ var Calendar = React.createClass({
 });
 
 React.renderComponent(
-  <Calendar url="data/comments.json" />,
+  <Calendar url="events.json" />,
   document.getElementById('calendar')
 );
