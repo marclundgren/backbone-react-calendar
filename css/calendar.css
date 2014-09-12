@@ -1,5 +1,5 @@
 .clndr-controls div {
-  background: green;
+  background: #008000;
   display: inline-block;
   width: 30%;
   padding: 5px;
@@ -12,19 +12,18 @@
 .clndr {
   width: 700px;
   margin: 0 auto;
-  background: red; }
+  background: #ff0000; }
 
 .clndr-grid {
-  text-align: center;
-  background: yellow; }
-
-.clndr-grid .days div {
-  float: left;
-  width: 100px;
-  height: 50px;
-  line-height: 50px;
-  background: #eee;
-  border: 1px solid #ddd; }
+  background: #ffff00;
+  text-align: center; }
+  .clndr-grid .days div {
+    background: #eee;
+    border: 1px solid #ddd;
+    float: left;
+    height: 100px;
+    line-height: 100px;
+    width: 100px; }
 
 .prev-month, .next-month {
   color: #ccc; }
