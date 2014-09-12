@@ -6,17 +6,17 @@ console.log('k');
 
   moment.lang('nb')
 
-  var Day = React.createClass({displayName: 'Day',
+  var Day = React.createClass({
     render: function() {
       return (
-        React.DOM.div({className: this.props.day.classes}, 
-          React.DOM.span({className: "day-number"}, this.props.day.day.date())
-        )
+        <div className={this.props.day.classes}>
+          <span className='day-number'>{this.props.day.day.date()}</span>
+        </div>
       );
     }
   });
 
-  var CalendarControls = React.createClass({displayName: 'CalendarControls',
+  var CalendarControls = React.createClass({
 
     next: function() {
       this.props.onNext();
@@ -28,16 +28,16 @@ console.log('k');
 
     render: function() {
       return (
-        React.DOM.div({className: "clndr-controls"}, 
-          React.DOM.div({onClick: this.prev}, "Prev"), 
-          React.DOM.div({className: "current-month"}, this.props.date.format('MMMM YYYY')), 
-          React.DOM.div({onClick: this.next}, "Next")
-        )
+        <div className='clndr-controls'>
+          <div onClick={this.prev}>Prev</div>
+          <div className='current-month'>{this.props.date.format('MMMM YYYY')}</div>
+          <div onClick={this.next}>Next</div>
+        </div>
       );
     }
   });
 
-  var Calendar = React.createClass({displayName: 'Calendar',
+  var Calendar = React.createClass({
 
     getDefaultProps: function() {
       return {
@@ -109,19 +109,19 @@ console.log('k');
 
     render: function() {
       var renderDay = function(day) {
-        return Day({day: day});
+        return <Day day={day} />;
       };
 
       return (
-        React.DOM.div({className: "clndr"}, 
-          CalendarControls({date: this.state.date, onNext: this.next, onPrev: this.prev}), 
-          React.DOM.div({className: "clndr-grid"}, 
-            React.DOM.div({className: "days"}, 
-              this.days().map(renderDay)
-            ), 
-            React.DOM.div({className: "clearfix"})
-          )
-        )
+        <div className='clndr'>
+          <CalendarControls date={this.state.date} onNext={this.next} onPrev={this.prev} />
+          <div className='clndr-grid'>
+            <div className='days'>
+              {this.days().map(renderDay)}
+            </div>
+            <div className='clearfix'></div>
+          </div>
+        </div>
       );
     }
   });
