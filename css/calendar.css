@@ -1,36 +1,22 @@
-* {
-  box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-}
-
-#app {
-  margin-top: 50px;
-}
-
 .clndr-controls div {
   background: green;
   display: inline-block;
   width: 30%;
-  padding:5px;
+  padding: 5px;
   text-align: center;
-  cursor: pointer;
-}
-
+  cursor: pointer; }
 .clndr-controls .current-month {
   width: 40%;
-  background: pink;
-}
+  background: #ffc0cb; }
 
 .clndr {
   width: 700px;
   margin: 0 auto;
-  background: red;
-}
+  background: red; }
 
 .clndr-grid {
   text-align: center;
-  background: yellow;
-}
+  background: yellow; }
 
 .clndr-grid .days div {
   float: left;
@@ -38,13 +24,61 @@
   height: 50px;
   line-height: 50px;
   background: #eee;
-  border: 1px solid #ddd;
-}
+  border: 1px solid #ddd; }
 
 .prev-month, .next-month {
-  color: #ccc;
-}
+  color: #ccc; }
 
 .clearfix {
-  clear: both;
-}
+  clear: both; }
+
+.grid-calendar {
+  max-width: 840px;
+  min-width: 290px; }
+  .grid-calendar .row {
+    margin: 0; }
+  .grid-calendar .grid-cell {
+    display: inline-block;
+    float: left;
+    font-weight: 500;
+    min-height: 1px;
+    padding: 0;
+    width: 14.28571%; }
+    .grid-calendar .grid-cell > div {
+      position: relative;
+      padding: 50% 0; }
+      .grid-calendar .grid-cell > div > div {
+        -ms-transform: translate(-50%, -50%);
+        -webkit-transform: translate(-50%, -50%);
+        left: 50%;
+        overflow: auto;
+        position: absolute;
+        text-align: center;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        width: 50%; }
+  .grid-calendar .week-header .title {
+    text-align: center; }
+  .grid-calendar .week-header .grid-cell > div > div {
+    color: #b4b4b4;
+    padding: 10% 0;
+    height: auto; }
+  .grid-calendar .week-body {
+    background-color: #f5f5f5; }
+    .grid-calendar .week-body.active-week {
+      background-color: #dcdcdc; }
+      .grid-calendar .week-body.active-week .active-day {
+        background-color: #2789e4;
+        color: #f5f5f5; }
+    .grid-calendar .week-body .grid-cell {
+      color: #3f3f3f; }
+      .grid-calendar .week-body .grid-cell.previous-month, .grid-calendar .week-body .grid-cell.next-month {
+        color: #dcdcdc; }
+      .grid-calendar .week-body .grid-cell:hover {
+        color: #f5f5f5;
+        background-color: #27e5e4; }
+    .grid-calendar .week-body .event-indicator {
+      font-size: 2em;
+      top: 75%; }
+
+/*# sourceMappingURL=calendar.css.map */
