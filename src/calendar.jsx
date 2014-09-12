@@ -128,5 +128,5 @@ var Calendar = React.createClass({
 
 React.renderComponent(
   <Calendar url="data/comments.json" />,
-  document.getElementById('content')
+  document.getElementById('calendar')
 );
