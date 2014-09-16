@@ -1,29 +1,67 @@
-.clndr-controls div {
-  background: #008000;
-  display: inline-block;
-  width: 30%;
-  padding: 5px;
-  text-align: center;
-  cursor: pointer; }
-.clndr-controls .current-month {
-  width: 40%;
-  background: #ffc0cb; }
+.clndr-controls {
+  position: relative;
+  width: 100%; }
+  .clndr-controls div {
+    background: #008000;
+    display: inline-block;
+    width: 30%;
+    padding: 5px;
+    text-align: center;
+    cursor: pointer; }
+  .clndr-controls .current-month {
+    width: 40%;
+    background: #ffc0cb; }
+  .clndr-controls .title {
+    -webkit-font-smoothing: antialiased;
+    display: inline-block;
+    text-align: center;
+    width: 100%; }
+  .clndr-controls .arrow {
+    width: 30px;
+    height: 27px;
+    display: inline-block;
+    vertical-align: middle;
+    padding: 0;
+    position: absolute;
+    opacity: 0.4;
+    outline: none;
+    background: url(https://d3dma7a8zw52bz.cloudfront.net/assets/icons/calendar_sprite-ef547d27ebbb5ec4e7b2c7e752471164.png) no-repeat 0 0 #fff;
+    border-radius: 0;
+    -webkit-border-radius: 0;
+    -moz-border-radius: 0; }
+    .clndr-controls .arrow.arrow-previous {
+      left: 0; }
+    .clndr-controls .arrow.arrow-next {
+      background-position: 6px -50px;
+      right: 0; }
 
 .clndr {
   width: 700px;
-  margin: 0 auto;
-  background: #ff0000; }
+  margin: 0 auto; }
 
 .clndr-grid {
-  background: #ffff00;
   text-align: center; }
-  .clndr-grid .days div {
-    background: #eee;
+  .clndr-grid .days .day {
+    background: #f5f5f5;
     border: 1px solid #ddd;
     float: left;
     height: 100px;
     line-height: 100px;
     width: 100px; }
+    .clndr-grid .days .day.active-week {
+      background-color: #dcdcdc; }
+      .clndr-grid .days .day.active-week.today {
+        background-color: #2789e4;
+        color: white; }
+    .clndr-grid .days .day .day-number.has-events {
+      color: white;
+      background-color: #123456;
+      -moz-border-radius: 50px;
+      -webkit-border-radius: 50px;
+      border-radius: 50px;
+      border: 3px solid #069; }
+    .clndr-grid .days .day .events {
+      display: none; }
 
 .prev-month, .next-month {
   color: #ccc; }

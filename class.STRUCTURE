@@ -1,9 +1,9 @@
-Calendar
-	CalendarControls
-	Day
+App
+	GoogleCalendar
+		CalendarControls
+		CalendarGrid
+			DayList (or Month Grid?)
+				GoogleEventsIndicator
 
-GoogleCalendar
-	GoogleEvent
-
-GoogleEventList
-	GoogleEvent
+	GoogleEventList
+		GoogleEvent
