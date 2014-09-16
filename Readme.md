@@ -9,4 +9,10 @@ npm install
 node server.js
 ```
 
+## To Develop
+
+```
+jsx --watch -x jsx src scripts
+```
+
 And visit http://localhost:3000/. Try opening multiple tabs!
