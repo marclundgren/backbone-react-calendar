@@ -1,16 +1,21 @@
+.eventList .event {
+  margin-top: 1em; }
+  .eventList .event .title {
+    margin-bottom: 2px; }
+
 .clndr-controls {
   position: relative;
   width: 100%; }
   .clndr-controls div {
     background: #008000;
+    cursor: pointer;
     display: inline-block;
-    width: 30%;
     padding: 5px;
     text-align: center;
-    cursor: pointer; }
+    width: 30%; }
   .clndr-controls .current-month {
-    width: 40%;
-    background: #ffc0cb; }
+    background: #ffc0cb;
+    width: 40%; }
   .clndr-controls .title {
     -webkit-font-smoothing: antialiased;
     display: inline-block;

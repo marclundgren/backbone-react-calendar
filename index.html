@@ -2,25 +2,63 @@
 <html>
   <head>
     <title>React Calendar</title>
-    <meta name="viewport" content="initial-scale=1, maximum-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 
-    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.2.0/css/bootstrap.min.css" />
     <link rel="stylesheet" href="css/base.css" />
     <link rel="stylesheet" href="css/calendar.css" />
+
+    <style>
+    .app .row {
+      height: 640px;
+    }
+
+    .app .row > div, .app #googleEventList {
+      height: 100%;
+    }
+
+    .app #googleEventList {
+      -webkit-overflow-scrolling: touch;
+      overflow-y: auto;
+    }
+    </style>
   </head>
   <body>
-    <div id="calendar"></div>
+    <div class="app">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-xs-12 col-md-8">
+            <div id="calendar"></div>
+          </div>
+          <div class="col-xs-12 col-md-4">
+            <div id="googleEventList"></div>
+          </div>
+        </div>
+      </div>
+    </div>
 
-    <div id="googleEventList"></div>
+    <div id="reactGoogleCalendar"></div>
+    <div id="list"></div>
 
     <script src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.7.0/underscore-min.js"></script>
-    <script src="http://code.jquery.com/jquery-1.10.0.min.js"></script>
-    <script src="http://fb.me/react-0.10.0.js"></script>
-    <script src="http://fb.me/JSXTransformer-0.10.0.js"></script>
-    <script src="http://cdnjs.cloudflare.com/ajax/libs/showdown/0.3.1/showdown.min.js"></script>
+    <script src="//code.jquery.com/jquery-1.10.0.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/backbone.js/1.1.2/backbone-min.js"></script>
+    <script src="//fb.me/react-0.10.0.js"></script>
+
+    <!-- React with experimental Addons for LinkedStateMixin -->
+    <!-- <script src="//dragon.ak.fbcdn.net/hphotos-ak-prn1/851582_273797162771581_30433_n.js"></script> -->
+
+    <script src="//fb.me/JSXTransformer-0.10.0.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.8.2/moment.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/moment-timezone/0.2.1/moment-timezone.min.js"></script>
-    <script type="text/jsx" src="scripts/calendar.js"></script>
-    <script type="text/jsx" src="scripts/google-calendar.js"></script>
+
+    <script src="scripts/util.js"></script>
+    <script src="scripts/calendar.js"></script>
+    <script src="scripts/google-calendar.js"></script>
+
+    <!-- Backbone -->
+    <script src="scripts/models/google-event.js"></script>
+    <script src="scripts/models/google-calendar.js"></script>
+    <script src="scripts/backbone-react.js"></script>
   </body>
 </html>

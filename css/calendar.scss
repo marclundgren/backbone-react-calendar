@@ -13,6 +13,14 @@ $background-colour: #f5f5f5;
 $date-hover-color: #f5f5f5;
 $date-hover-background-color: #27e5e4;
 
+.eventList .event {
+	margin-top: 1em;
+
+	.title {
+		margin-bottom: 2px;
+	}
+}
+
 .clndr-controls {
 	position: relative;
 	width: 100%;
