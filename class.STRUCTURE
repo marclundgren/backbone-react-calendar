@@ -1,9 +1,35 @@
-App
-	GoogleCalendar
-		CalendarControls
-		CalendarGrid
-			DayList (or Month Grid?)
-				GoogleEventsIndicator
+React
+    GoogleCalendar
 
-	GoogleEventList
-		GoogleEvent
+        GoogleCalendarFeed
+
+            GoogleCalendarGrid
+                CalendarControls (prev month, next month)
+                CalendarDays
+                    GoogleEvent(s)
+
+            GoogleEventList
+                ListControls (location, title, date)
+                GoogleEvent(s)
+
+    date, title, location
+
+    <GoogleCalendar>
+
+        <GoogleCalendarGrid data={this.state.data} />
+
+        <GoogleEventList data={this.state.data} />
+
+    </GoogleCalendar>
+
+
+
+
+Backbone
+
+    [M] app.GoogleCalendar
+        [C] app.Sources
+            [M] app.Source
+                ... on source.fetch
+                [C] app.GoogleEventList
+                    [M] app.GoogleEvent

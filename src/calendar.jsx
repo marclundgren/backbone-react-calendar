@@ -1,15 +1,11 @@
 /** @jsx React.DOM */
+
+// app namespace
+var app = app || {};
+
 moment.locale('en');
 
-var WEEK_LENGTH = 7;
-
 var Day = React.createClass({
-  getInitialState: function() {
-    return {
-      events: []
-    };
-  },
-
   render: function() {
     return (
       <div className={this.props.className}>
@@ -20,7 +16,6 @@ var Day = React.createClass({
 });
 
 var CalendarControls = React.createClass({
-
   next: function() {
     this.props.onNext();
   },
@@ -41,7 +36,6 @@ var CalendarControls = React.createClass({
 });
 
 var Calendar = React.createClass({
-
   getDefaultProps: function() {
     return {
       forceSixRows: false,
@@ -57,11 +51,11 @@ var Calendar = React.createClass({
   },
 
   next: function() {
-    this.setState({date: this.state.date.add(1, 'months')});
+    this.setState({date: this.state.date.add(1, 'month')});
   },
 
   prev: function() {
-    this.setState({date: this.state.date.subtract(1, 'months')});
+    this.setState({date: this.state.date.subtract(1, 'month')});
   },
 
   getDaysOfMonth: _.memoize(function() {
