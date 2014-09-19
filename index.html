@@ -13,18 +13,25 @@
       height: 640px;
     }
 
-    .app .row > div, .app #googleEventList, .app .googleCalendarFetcher {
+    .app .row > div, .app #googleEventList, .app #googleEventList .eventListContainer {
       height: 100%;
     }
 
-    .app #googleEventList .eventList {
+    .app .events-list {
       -webkit-overflow-scrolling: touch;
       height: 100%;
       overflow-y: auto;
     }
+
+    .entry-content {
+      /*I shouldn't need to do this...*/
+      overflow-x: hidden;
+    }
     </style>
   </head>
   <body>
+    <div id="GoogleCalendarFetcher"></div>
+
     <div class="app">
       <div class="container-fluid">
         <div class="row">
@@ -37,6 +44,8 @@
         </div>
       </div>
     </div>
+
+    <select multiple="" data-rzzzeactid=".3"><option value="A" data-rzzzeactid=".3.0">Apple</option><option value="B" data-rzzzeactid=".3.1">Banana</option><option value="C" data-rzzzeactid=".3.2">Cranberry</option></select>
 
     <div id="reactGoogleCalendar"></div>
     <div id="list"></div>
@@ -64,9 +73,5 @@
     <script src="scripts/models/source.js"></script>
     <script src="scripts/collections/sources.js"></script>
     <script src="scripts/backbone-react.js"></script>
-
-    <!-- Bootstrap for the dropdown -->
-    <script src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.2.0/js/bootstrap.min.js"></script>
-
   </body>
 </html>

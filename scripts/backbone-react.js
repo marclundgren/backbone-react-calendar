@@ -5,26 +5,37 @@
 // app namespace
 var app = app || {};
 
-var Sort = React.createClass({displayName: 'Sort',
-  getInitialState: function() {
-    return {selected: 'date'};
-  },
+// var SortableList = React.createClass({
 
-  onChange: function(e) {
-    this.setState({selected: e.target.value});
-  },
+// var Sort = React.createClass({
 
+// });
+
+var EventList = React.createClass({displayName: 'EventList',
   render: function() {
-    var selected = this.state.selected;
-    console.log('selected: ', selected);
+    console.log('this.props.sort: ', this.props.sort, this.props);
+    return React.DOM.div(null);
+  }
+});
 
+// React Component
+// app.ReactEventListSortable = React.createClass({
+//   render: function() {
+//     return <Sort className="events-sort" ref="sortBy"/>
+//   }
+// });
+
+
+
+// React Component
+app.ReactMultiSelect = React.createClass({displayName: 'ReactMultiSelect',
+  render: function() {
+    console.log('multi select');
     return (
-      React.DOM.div(null, 
-        React.DOM.select({value: this.state.selected, name: "sortby", onChange: this.onChange}, 
-          React.DOM.option({value: "date"}, "Date"), 
-          React.DOM.option({value: "title"}, "Title"), 
-          React.DOM.option({value: "location"}, "Location")
-        )
+      React.DOM.select({multiple: true, value: ['B', 'C']}, 
+        React.DOM.option({value: "A"}, "Apple"), 
+        React.DOM.option({value: "B"}, "Banana"), 
+        React.DOM.option({value: "C"}, "Cranberry")
       )
     );
   }
@@ -35,27 +46,65 @@ app.ReactEventList = React.createClass({displayName: 'ReactEventList',
     mixins: [Backbone.React.Component.mixin],
 
     createEntry: function (entry) {
+      console.log('entry: ', entry);
       return (
         React.DOM.div({className: "event"}, 
           React.DOM.h3({className: "title"}, 
-            React.DOM.a({href: entry.href}, entry.title)
+            React.DOM.a({href: entry.get('href')}, entry.get('title'))
           ), 
           React.DOM.div({className: "startTime"}, 
-            "starts: ", entry.startTime
+            "starts: ", entry.get('startTime')
           ), 
           React.DOM.div({className: "endTime"}, 
-            "ends: ", entry.endTime
-          )
+            "ends: ", entry.get('endTime')
+          ), 
+          React.DOM.div({className: "entry-content"}, entry.get('content'))
         )
       );
     },
 
+    getInitialState: function() {
+      return {sortBy: 'date'};
+    },
+
+    onChange: function(e) {
+      var sortBy = this.refs.sortBy.getDOMNode().value;
+
+      this.setState({sortBy: sortBy});
+    },
+
     render: function () {
+      // console.log('this.props, this.state: ', this.props, this.state);
+
+      // debugger;
+
+      var collection = this.props.collection;
+      // console.log('collection: ', collection);
+      // console.log('collection instanceof app.GoogleEventList: ', collection instanceof app.GoogleEventList);
+      // console.log('collection instanceof Backbone.Collection: ', collection instanceof Backbone.Collection);
+      _collection = collection;
+
+      // var sortKey = this.state.sortBy;
+      // collection.sortByField(sortKey);
+
+      collection = new app.GoogleEventList(collection);
+      var events = collection.sortBy(this.state.sortBy);
+      console.log('events: ', events);
+
+      // collection.comparator = sortKey;
+
+      // collection = collection.sort();
+      // console.log('collection sorted by : ', sortKey, collection);
+
       return (
-        React.DOM.div(null, 
+        React.DOM.div({className: "eventListContainer"}, 
+          React.DOM.select({ref: "sortBy", value: this.state.sortBy, name: "sortby", onChange: this.onChange}, 
+            React.DOM.option({value: "date"}, "Date"), 
+            React.DOM.option({value: "title"}, "Title"), 
+            React.DOM.option({value: "location"}, "Location")
+          ), 
           React.DOM.h2({className: "events-title"}, "Events"), 
-          Sort({className: "events-sort"}), 
-          React.DOM.div({className: "events-list"}, this.props.collection.map(this.createEntry))
+          React.DOM.div({className: "events-list"}, events.map(this.createEntry))
         )
       );
     }
@@ -65,7 +114,8 @@ app.ReactEventList = React.createClass({displayName: 'ReactEventList',
 
 Backbone.GoogleCalendar = Backbone.Model.extend({
   defaults: {
-    events: new Backbone.Collection(),
+    events: new app.GoogleEventList(),
+    // events: new Backbone.Collection(),
     sources: [],
     params: {}
   },
@@ -79,12 +129,23 @@ Backbone.GoogleCalendar = Backbone.Model.extend({
     this.fetchSources().done(function(results) {
       var flatList = _.flatten(results);
 
-      events = self.get('events');
 
-      React.renderComponent(
-        app.ReactEventList({collection: events}),
-        $('#googleEventList .eventList').get([0])
-      );
+
+      events = self.get('events');
+      console.log('events: ', events);
+      console.log('events instanceof app.GoogleEventList: ', events instanceof app.GoogleEventList);
+
+      var testingList, testingGrid;
+      testingList = true;
+      testingGrid = false;
+
+      if (testingList) {
+        React.renderComponent(
+          app.ReactEventList({collection: events}),
+          $('#googleEventList').get([0])
+        );
+      }
+
     });
   },
 
@@ -115,11 +176,13 @@ Backbone.GoogleCalendar = Backbone.Model.extend({
     var deferred = source.fetch();
 
     deferred.done(function(promisedData) {
+      console.log('dis');
 
       var entries = _.map(promisedData.feed.entry, function(item) {
         return {
           author:     item.author[0].name,
           content:    item.content.$t,
+          date:       item.gd$when[0].startTime,
           endTime:    item.gd$when[0].endTime,
           id:         item.id.$t,
           link:       item.link[0].href,
@@ -166,16 +229,20 @@ Backbone.GoogleCalendar = Backbone.Model.extend({
       // self.set('events', flatList);
       // console.log('flatList: ', flatList, flatList.length);
 
+      console.log(' or this');
+
       var entries = _.map(flatList, function(item) {
         return {
           author:     item.author[0].name,
           content:    item.content.$t,
+          date:  item.gd$when[0].startTime,
           endTime:    item.gd$when[0].endTime,
           id:         item.id.$t,
           link:       item.link[0].href,
           startTime:  item.gd$when[0].startTime,
           title:      item.title.$t,
           updated:    item.updated.$t,
+          location:      item.gd$where[0].valueString,
           where:      item.gd$where[0].valueString
         };
       });
