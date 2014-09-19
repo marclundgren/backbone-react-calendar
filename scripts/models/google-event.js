@@ -21,10 +21,6 @@ app.GoogleEvent = Backbone.Model.extend({
     if (this.title()) {
       console.log('Title: ', this.title());
     }
-
-    if (this.get('word')) {
-      console.log(this.get('word'));
-    }
   },
 
   title: function() {

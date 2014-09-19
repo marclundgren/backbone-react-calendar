@@ -198,45 +198,9 @@ var GoogleEventList = React.createClass({displayName: 'GoogleEventList',
   }
 });
 
-// feedIds=""
-
-// <GoogleCalendar>
-//  <GoogleCalendarFeed url="...">
-//  <GoogleCalendarFeed id="...">
-//  <GoogleCalendarFeed id="...">
-//  <GoogleCalendarFeed url="...">
-
-//  <GoogleCalendarGrid data={this.state.data} />
-
-//  <GoogleEventList data={this.state.data} />
-
-// </GoogleCalendar>
-
 React.renderComponent(
   GoogleCalendarFetcher({
     feedId: "vdmtdcektajkqjk51vvda4ni4k%40group.calendar.google.com", 
     url: "http://www.google.com/calendar/feeds/vdmtdcektajkqjk51vvda4ni4k%40group.calendar.google.com/public/full"}),
   document.getElementById('googleEventList')
 );
-
-// http://www.google.com/calendar/feeds/fidmwmo%40gmail.com/public/full
-
-// React.renderComponent(
-//   <ReactGoogleCalendar
-//     dataType="jsonp"
-//     url="http://www.google.com/calendar/feeds/vdmtdcektajkqjk51vvda4ni4k%40group.calendar.google.com/public/full"
-//     alt="json-in-script"
-//     singleevents="true"
-//     maxResults="9999"
-//     futureevents="false"
-//     orderby="starttime"
-//     sortorder="ascending">
-//     text....
-
-//     <GoogleCalendarGrid></GoogleCalendarGrid>
-//     <GoogleEventList></GoogleEventList>
-
-//   <ReactGoogleCalendar
-// ,
-//   document.getElementById('reactGoogleCalendar')
-// );
