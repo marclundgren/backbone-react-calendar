@@ -127,12 +127,7 @@ var GoogleCalendarFetcher = React.createClass({
   },
 
   render: function() {
-    return (
-      <div className="googleCalendarFetcher">
-        <h2>Events</h2>
-        <GoogleEventList data={this.state.data} />
-      </div>
-    );
+    return <GoogleEventList data={this.state.data} />;
   }
 });
 
@@ -165,6 +160,7 @@ var GoogleEventList = React.createClass({
   },
 
   render: function() {
+    console.log('?');
     var dataNodes = this.props.data.map(function(data, index) {
 
       var title = data.title.$t;
@@ -174,14 +170,14 @@ var GoogleEventList = React.createClass({
       var startMoment = moment(data.gd$when[0].startTime);
       var endMoment = moment(data.gd$when[0].endTime);
 
-      var starts = startMoment.format('YYYY MMMM DD HH:MM');
-      var ends = endMoment.format('YYYY MMMM DD HH:MM');
+      var startTime = startMoment.format('YYYY MMMM DD HH:MM');
+      var endTime = endMoment.format('YYYY MMMM DD HH:MM');
       var date = startMoment.calendar();
       var content = data.content.$t;
       var href = data.link[0].href;
 
       return (
-        <GoogleEvent content={content} date={date} end={ends} href={href} key={index} start={starts} title={title} />
+        <GoogleEvent content={content} date={date} endTime={endTime} href={href} key={index} startTime={startTime} title={title} />
       );
     });
 
