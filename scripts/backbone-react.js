@@ -5,18 +5,63 @@
 // app namespace
 var app = app || {};
 
+var Sort = React.createClass({displayName: 'Sort',
+  getInitialState: function() {
+    return {selected: 'date'};
+  },
+
+  onChange: function(e) {
+    this.setState({selected: e.target.value});
+  },
+
+  render: function() {
+    var selected = this.state.selected;
+    console.log('selected: ', selected);
+
+    return (
+      React.DOM.div(null, 
+        React.DOM.select({value: this.state.selected, name: "sortby", onChange: this.onChange}, 
+          React.DOM.option({value: "date"}, "Date"), 
+          React.DOM.option({value: "title"}, "Title"), 
+          React.DOM.option({value: "location"}, "Location")
+        )
+      )
+    );
+  }
+});
+
 // React Component
 app.ReactEventList = React.createClass({displayName: 'ReactEventList',
     mixins: [Backbone.React.Component.mixin],
 
     createEntry: function (entry) {
-      return React.DOM.div(null, entry.title);
+      return (
+        React.DOM.div({className: "event"}, 
+          React.DOM.h3({className: "title"}, 
+            React.DOM.a({href: entry.href}, entry.title)
+          ), 
+          React.DOM.div({className: "startTime"}, 
+            "starts: ", entry.startTime
+          ), 
+          React.DOM.div({className: "endTime"}, 
+            "ends: ", entry.endTime
+          )
+        )
+      );
     },
 
     render: function () {
-      return React.DOM.div(null, this.props.collection.map(this.createEntry));
+      return (
+        React.DOM.div(null, 
+          React.DOM.h2({className: "events-title"}, "Events"), 
+          Sort({className: "events-sort"}), 
+          React.DOM.div({className: "events-list"}, this.props.collection.map(this.createEntry))
+        )
+      );
     }
 });
+
+
 
 Backbone.GoogleCalendar = Backbone.Model.extend({
   defaults: {
@@ -47,13 +92,16 @@ Backbone.GoogleCalendar = Backbone.Model.extend({
     var sources = this.get('sources');
 
     if (!(sources instanceof app.Sources)) {
+      /*
+
+      to-do enable the user to change default params across all sources
+
       var params = this.get('params');
 
       _.each(sources, function(item) {
         item.params = _.extend(app.Source.defaults.params, params)
       });
-
-      console.log('sources: ', sources);
+    */
 
       sources = new app.Sources(sources);
 
@@ -158,11 +206,11 @@ Backbone.GoogleCalendar = Backbone.Model.extend({
 var params = {
   // 'max-results': '9999',
   alt: 'json-in-script',
-  // dataType: 'jsonp',
-  // futureevents: 'true',
-  // orderby: 'starttime',
-  // singleevents: 'true',
-  // sortorder: 'ascending'
+  dataType: 'jsonp',
+  futureevents: 'true',
+  orderby: 'starttime',
+  singleevents: 'true',
+  sortorder: 'ascending'
 };
 
 var sources = [
