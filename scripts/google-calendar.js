@@ -18,6 +18,8 @@ var GoogleEvent = React.createClass({displayName: 'GoogleEvent',
   render: function() {
     // this.props:  Object {title: "A: Mexico vs Cameroon (1-0)", key: 1, children: Array[2]}
 
+    console.log('ASDSDASDASD');
+    debugger;
     return (
       React.DOM.div({className: "event"}, 
         React.DOM.h3({className: "title"}, 
@@ -132,13 +134,31 @@ var GoogleCalendarFetcher = React.createClass({displayName: 'GoogleCalendarFetch
 });
 
 var GoogleEventListControls = React.createClass({displayName: 'GoogleEventListControls',
-  changeSortBy: function(val) {
-    console.log('val: ', val);
+  getInitialState: function() {
+    return {selected: 'date'};
+  },
 
-    this.setState({sortBy: val}); // re-render
+  onChange: function(e) {
+    this.setState({selected: e.target.value});
   },
 
   render: function() {
+    var selected = this.state.selected;
+
+    // debugger;
+    // console.log('k');
+    return (
+      React.DOM.div(null, 
+        React.DOM.select({value: this.state.selected, name: "sortby", onChange: this.onChange}, 
+          React.DOM.option({value: "date"}, "Date"), 
+          React.DOM.option({value: "title"}, "Title"), 
+          React.DOM.option({value: "location"}, "Location")
+        )
+      )
+    );
+  },
+
+  ____render: function() {
     var self = this;
     console.log('sanity');
     return (
@@ -159,44 +179,61 @@ var GoogleEventList = React.createClass({displayName: 'GoogleEventList',
     return {sortBy: 'date'};
   },
 
+  onChange: function(e) {
+    var sortBy = this.refs.sortBy.getDOMNode().value;
+
+    // console.log();
+
+    this.setState({sortBy: sortBy});
+  },
+
+  parseGoogleEvent: function(obj) {
+    var when = obj.gd$when[0];
+    var startMoment = moment(when.startTime);
+    var endMoment = moment(when.endTime);
+
+    console.log('test????');
+
+    return {
+      title: obj.title.$t,
+      startTime: startMoment.format('YYYY MMMM DD HH:MM'),
+      endTime: endMoment.format('YYYY MMMM DD HH:MM'),
+      date: startMoment.calendar(),
+      content: obj.content.$t,
+      href: obj.link[0].href
+    };
+  },
+
   render: function() {
-    console.log('?');
-    var dataNodes = this.props.data.map(function(data, index) {
-
-      var title = data.title.$t;
-      var start = String(Date.parse(data.gd$when[0].startTime));
-      var end = String(Date.parse(data.gd$when[0].endTime));
-
-      var startMoment = moment(data.gd$when[0].startTime);
-      var endMoment = moment(data.gd$when[0].endTime);
-
-      var startTime = startMoment.format('YYYY MMMM DD HH:MM');
-      var endTime = endMoment.format('YYYY MMMM DD HH:MM');
-      var date = startMoment.calendar();
-      var content = data.content.$t;
-      var href = data.link[0].href;
+    var dataNodes = this.props.data.map(function(item, index) {
+      var data = this.parseGoogleEvent(data);
 
       return (
-        GoogleEvent({content: content, date: date, endTime: endTime, href: href, key: index, startTime: startTime, title: title})
+        GoogleEvent({content: data.content, date: data.date, endTime: data.endTime, href: data.href, key: data.index, startTime: data.startTime, title: data.title})
       );
     });
 
-      // location, title, date
-      // console.log(this.state);
-
     return (
-      GoogleEventListControls({sortBy: this.state.sortBy}),
+      React.DOM.div({className: "anotherContainer"}, 
+        React.DOM.select({ref: "sortBy", value: this.state.sortBy, name: "sortby", onChange: this.onChange}, 
+          React.DOM.option({value: "date"}, "Date"), 
+          React.DOM.option({value: "title"}, "Title"), 
+          React.DOM.option({value: "location"}, "Location")
+        ), 
 
-      React.DOM.div({className: "eventList"}, 
-        dataNodes
+        React.DOM.div({className: "multi-select"}), 
+
+        React.DOM.div({className: "eventList"}, 
+          dataNodes
+        )
       )
     );
   }
 });
 
-React.renderComponent(
-  GoogleCalendarFetcher({
-    feedId: "vdmtdcektajkqjk51vvda4ni4k%40group.calendar.google.com", 
-    url: "http://www.google.com/calendar/feeds/vdmtdcektajkqjk51vvda4ni4k%40group.calendar.google.com/public/full"}),
-  document.getElementById('googleEventList')
-);
+// React.renderComponent(
+//   <GoogleCalendarFetcher
+//     feedId="vdmtdcektajkqjk51vvda4ni4k%40group.calendar.google.com"
+//     url="http://www.google.com/calendar/feeds/vdmtdcektajkqjk51vvda4ni4k%40group.calendar.google.com/public/full" />,
+//   document.getElementById('GoogleCalendarFetcher')
+// );

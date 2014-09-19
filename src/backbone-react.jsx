@@ -5,27 +5,38 @@
 // app namespace
 var app = app || {};
 
-var Sort = React.createClass({
-  getInitialState: function() {
-    return {selected: 'date'};
-  },
+// var SortableList = React.createClass({
 
-  onChange: function(e) {
-    this.setState({selected: e.target.value});
-  },
+// var Sort = React.createClass({
 
+// });
+
+var EventList = React.createClass({
   render: function() {
-    var selected = this.state.selected;
-    console.log('selected: ', selected);
+    console.log('this.props.sort: ', this.props.sort, this.props);
+    return <div></div>;
+  }
+});
 
+// React Component
+// app.ReactEventListSortable = React.createClass({
+//   render: function() {
+//     return <Sort className="events-sort" ref="sortBy"/>
+//   }
+// });
+
+
+
+// React Component
+app.ReactMultiSelect = React.createClass({
+  render: function() {
+    console.log('multi select');
     return (
-      <div>
-        <select value={this.state.selected} name="sortby" onChange={this.onChange}>
-          <option value="date">Date</option>
-          <option value="title">Title</option>
-          <option value="location">Location</option>
-        </select>
-      </div>
+      <select multiple={true} value={['B', 'C']}>
+        <option value="A">Apple</option>
+        <option value="B">Banana</option>
+        <option value="C">Cranberry</option>
+      </select>
     );
   }
 });
@@ -35,27 +46,65 @@ app.ReactEventList = React.createClass({
     mixins: [Backbone.React.Component.mixin],
 
     createEntry: function (entry) {
+      console.log('entry: ', entry);
       return (
         <div className="event">
           <h3 className="title">
-            <a href={entry.href}>{entry.title}</a>
+            <a href={entry.get('href')}>{entry.get('title')}</a>
           </h3>
           <div className="startTime">
-            starts: {entry.startTime}
+            starts: {entry.get('startTime')}
           </div>
           <div className="endTime">
-            ends: {entry.endTime}
+            ends: {entry.get('endTime')}
           </div>
+          <div className="entry-content">{entry.get('content')}</div>
         </div>
       );
     },
 
+    getInitialState: function() {
+      return {sortBy: 'date'};
+    },
+
+    onChange: function(e) {
+      var sortBy = this.refs.sortBy.getDOMNode().value;
+
+      this.setState({sortBy: sortBy});
+    },
+
     render: function () {
+      // console.log('this.props, this.state: ', this.props, this.state);
+
+      // debugger;
+
+      var collection = this.props.collection;
+      // console.log('collection: ', collection);
+      // console.log('collection instanceof app.GoogleEventList: ', collection instanceof app.GoogleEventList);
+      // console.log('collection instanceof Backbone.Collection: ', collection instanceof Backbone.Collection);
+      _collection = collection;
+
+      // var sortKey = this.state.sortBy;
+      // collection.sortByField(sortKey);
+
+      collection = new app.GoogleEventList(collection);
+      var events = collection.sortBy(this.state.sortBy);
+      console.log('events: ', events);
+
+      // collection.comparator = sortKey;
+
+      // collection = collection.sort();
+      // console.log('collection sorted by : ', sortKey, collection);
+
       return (
-        <div>
+        <div className="eventListContainer">
+          <select ref="sortBy" value={this.state.sortBy} name="sortby" onChange={this.onChange}>
+            <option value="date">Date</option>
+            <option value="title">Title</option>
+            <option value="location">Location</option>
+          </select>
           <h2 className="events-title">Events</h2>
-          <Sort className="events-sort" />
-          <div className="events-list">{this.props.collection.map(this.createEntry)}</div>
+          <div className="events-list">{events.map(this.createEntry)}</div>
         </div>
       );
     }
@@ -65,7 +114,8 @@ app.ReactEventList = React.createClass({
 
 Backbone.GoogleCalendar = Backbone.Model.extend({
   defaults: {
-    events: new Backbone.Collection(),
+    events: new app.GoogleEventList(),
+    // events: new Backbone.Collection(),
     sources: [],
     params: {}
   },
@@ -79,12 +129,23 @@ Backbone.GoogleCalendar = Backbone.Model.extend({
     this.fetchSources().done(function(results) {
       var flatList = _.flatten(results);
 
-      events = self.get('events');
 
-      React.renderComponent(
-        <app.ReactEventList collection={events} />,
-        $('#googleEventList .eventList').get([0])
-      );
+
+      events = self.get('events');
+      console.log('events: ', events);
+      console.log('events instanceof app.GoogleEventList: ', events instanceof app.GoogleEventList);
+
+      var testingList, testingGrid;
+      testingList = true;
+      testingGrid = false;
+
+      if (testingList) {
+        React.renderComponent(
+          <app.ReactEventList collection={events} />,
+          $('#googleEventList').get([0])
+        );
+      }
+
     });
   },
 
@@ -115,11 +176,13 @@ Backbone.GoogleCalendar = Backbone.Model.extend({
     var deferred = source.fetch();
 
     deferred.done(function(promisedData) {
+      console.log('dis');
 
       var entries = _.map(promisedData.feed.entry, function(item) {
         return {
           author:     item.author[0].name,
           content:    item.content.$t,
+          date:       item.gd$when[0].startTime,
           endTime:    item.gd$when[0].endTime,
           id:         item.id.$t,
           link:       item.link[0].href,
@@ -166,16 +229,20 @@ Backbone.GoogleCalendar = Backbone.Model.extend({
       // self.set('events', flatList);
       // console.log('flatList: ', flatList, flatList.length);
 
+      console.log(' or this');
+
       var entries = _.map(flatList, function(item) {
         return {
           author:     item.author[0].name,
           content:    item.content.$t,
+          date:  item.gd$when[0].startTime,
           endTime:    item.gd$when[0].endTime,
           id:         item.id.$t,
           link:       item.link[0].href,
           startTime:  item.gd$when[0].startTime,
           title:      item.title.$t,
           updated:    item.updated.$t,
+          location:      item.gd$where[0].valueString,
           where:      item.gd$where[0].valueString
         };
       });

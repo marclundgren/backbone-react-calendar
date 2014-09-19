@@ -7,6 +7,7 @@ app.GoogleEvent = Backbone.Model.extend({
     author:     '',
     category:   '',
     content:    '',
+    date: '',
     endTime:    '',
     id:         '',
     link:       '',
@@ -14,44 +15,6 @@ app.GoogleEvent = Backbone.Model.extend({
     title:      '',
     updated:    '',
     where:      ''
-  },
-
-  initialize: function() {
-
-    if (this.title()) {
-      console.log('Title: ', this.title());
-    }
-  },
-
-  title: function() {
-    if (!this.get('title')) {
-      return;
-    }
-    return this.get('title').$t;
-  },
-
-  when: function() {
-    return this.get('gd$when')[0];
-  },
-
-  startTime: function() {
-    var when = this.when();
-
-    return when && when.startTime;
-  },
-
-  endTime: function() {
-    var when = this.when();
-
-    return when && when.endTime;
-  },
-
-  link: function() {
-    return this.get('link')[0].href;
-  },
-
-  id: function() {
-    return this.get('id').$t;
   }
 });
 
@@ -72,4 +35,27 @@ app.GoogleEvent = Backbone.Model.extend({
 
 app.GoogleEventList = Backbone.Collection.extend({
   model: app.GoogleEvent
+
+  // __comparator: function(item) {
+  //   return [item.get('date'), item.get('title')]
+  // },
+
+  // __comparator: function(item) {
+  //   console.log('item: ', item);
+  //   return [];
+  // },
+
+  // sortKeyPrimary: 'date',
+  // sortKeySecondary: 'title', // todo
+
+  // comparator: function (item) {
+  //   console.log('test');
+  //   return item.get(this.sort_key);
+  // },
+
+  // sortByField: function (fieldName) {
+  //   this.sortKeyPrimary = fieldName;
+  //   this.sort();
+  // }
+
 });
