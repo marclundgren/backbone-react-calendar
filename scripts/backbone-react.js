@@ -52,11 +52,16 @@ app.ReactEventList = React.createClass({displayName: 'ReactEventList',
           React.DOM.h3({className: "title"}, 
             React.DOM.a({href: entry.get('href')}, entry.get('title'))
           ), 
-          React.DOM.div({className: "startTime"}, 
-            "starts: ", entry.get('startTime')
+          React.DOM.div({className: "when"}, 
+            React.DOM.div({className: "starts"}, 
+              "Starts: ", entry.starts()
+            ), 
+            React.DOM.div({className: "duration"}, 
+              "Duration: ", entry.duration()
+            )
           ), 
-          React.DOM.div({className: "endTime"}, 
-            "ends: ", entry.get('endTime')
+          React.DOM.div({className: "where"}, 
+            "Location: ", entry.get('location')
           ), 
           React.DOM.div({className: "entry-content"}, entry.get('content'))
         )
@@ -74,36 +79,20 @@ app.ReactEventList = React.createClass({displayName: 'ReactEventList',
     },
 
     render: function () {
-      // console.log('this.props, this.state: ', this.props, this.state);
+      var collection = new app.GoogleEventList(this.props.collection);
 
-      // debugger;
-
-      var collection = this.props.collection;
-      // console.log('collection: ', collection);
-      // console.log('collection instanceof app.GoogleEventList: ', collection instanceof app.GoogleEventList);
-      // console.log('collection instanceof Backbone.Collection: ', collection instanceof Backbone.Collection);
-      _collection = collection;
-
-      // var sortKey = this.state.sortBy;
-      // collection.sortByField(sortKey);
-
-      collection = new app.GoogleEventList(collection);
       var events = collection.sortBy(this.state.sortBy);
-      console.log('events: ', events);
-
-      // collection.comparator = sortKey;
-
-      // collection = collection.sort();
-      // console.log('collection sorted by : ', sortKey, collection);
 
       return (
         React.DOM.div({className: "eventListContainer"}, 
-          React.DOM.select({ref: "sortBy", value: this.state.sortBy, name: "sortby", onChange: this.onChange}, 
-            React.DOM.option({value: "date"}, "Date"), 
-            React.DOM.option({value: "title"}, "Title"), 
-            React.DOM.option({value: "location"}, "Location")
+          React.DOM.div({className: "event-list-header"}, 
+            React.DOM.h2({className: "events-title"}, "Events"), 
+            React.DOM.select({ref: "sortBy", value: this.state.sortBy, name: "sortby", onChange: this.onChange}, 
+              React.DOM.option({value: "date"}, "Date"), 
+              React.DOM.option({value: "title"}, "Title"), 
+              React.DOM.option({value: "location"}, "Location")
+            )
           ), 
-          React.DOM.h2({className: "events-title"}, "Events"), 
           React.DOM.div({className: "events-list"}, events.map(this.createEntry))
         )
       );

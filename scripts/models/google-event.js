@@ -7,55 +7,41 @@ app.GoogleEvent = Backbone.Model.extend({
     author:     '',
     category:   '',
     content:    '',
-    date: '',
+    date:       '',
     endTime:    '',
     id:         '',
+    location:   '',
     link:       '',
     startTime:  '',
     title:      '',
     updated:    '',
     where:      ''
+  },
+
+  starts: function() {
+    var startMoment = moment(this.get('startTime'));
+
+    return startMoment.format('YYYY MMMM DD hh:mm a');
+  },
+
+  duration: function() {
+    var startMoment = moment(this.get('startTime'));
+    var endMoment = moment(this.get('endTime'));
+
+    var unit = 'hours';
+
+    var count = endMoment.diff(startMoment, unit);
+
+    if (count >= 24) {
+      unit = 'days'
+
+      count = endMoment.diff(startMoment, unit);
+    }
+
+    return moment.duration(count, unit).humanize();
   }
 });
 
-// app.GoogleEventAllDay = app.GoogleEvent.extend({
-//   className: 'event event-all-day'
-// });
-
-// app.GoogleEventTimed = app.GoogleEvent.extend({
-//   defaults: {
-//     start: '',
-//     end: ''
-//   },
-
-//   className: 'event event-timed'
-// });
-
-// Collection
-
 app.GoogleEventList = Backbone.Collection.extend({
   model: app.GoogleEvent
-
-  // __comparator: function(item) {
-  //   return [item.get('date'), item.get('title')]
-  // },
-
-  // __comparator: function(item) {
-  //   console.log('item: ', item);
-  //   return [];
-  // },
-
-  // sortKeyPrimary: 'date',
-  // sortKeySecondary: 'title', // todo
-
-  // comparator: function (item) {
-  //   console.log('test');
-  //   return item.get(this.sort_key);
-  // },
-
-  // sortByField: function (fieldName) {
-  //   this.sortKeyPrimary = fieldName;
-  //   this.sort();
-  // }
-
 });

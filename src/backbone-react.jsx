@@ -52,11 +52,16 @@ app.ReactEventList = React.createClass({
           <h3 className="title">
             <a href={entry.get('href')}>{entry.get('title')}</a>
           </h3>
-          <div className="startTime">
-            starts: {entry.get('startTime')}
+          <div className="when">
+            <div className="starts">
+              Starts: {entry.starts()}
+            </div>
+            <div className="duration">
+              Duration: {entry.duration()}
+            </div>
           </div>
-          <div className="endTime">
-            ends: {entry.get('endTime')}
+          <div className="where">
+            Location: {entry.get('location')}
           </div>
           <div className="entry-content">{entry.get('content')}</div>
         </div>
@@ -74,36 +79,20 @@ app.ReactEventList = React.createClass({
     },
 
     render: function () {
-      // console.log('this.props, this.state: ', this.props, this.state);
+      var collection = new app.GoogleEventList(this.props.collection);
 
-      // debugger;
-
-      var collection = this.props.collection;
-      // console.log('collection: ', collection);
-      // console.log('collection instanceof app.GoogleEventList: ', collection instanceof app.GoogleEventList);
-      // console.log('collection instanceof Backbone.Collection: ', collection instanceof Backbone.Collection);
-      _collection = collection;
-
-      // var sortKey = this.state.sortBy;
-      // collection.sortByField(sortKey);
-
-      collection = new app.GoogleEventList(collection);
       var events = collection.sortBy(this.state.sortBy);
-      console.log('events: ', events);
-
-      // collection.comparator = sortKey;
-
-      // collection = collection.sort();
-      // console.log('collection sorted by : ', sortKey, collection);
 
       return (
         <div className="eventListContainer">
-          <select ref="sortBy" value={this.state.sortBy} name="sortby" onChange={this.onChange}>
-            <option value="date">Date</option>
-            <option value="title">Title</option>
-            <option value="location">Location</option>
-          </select>
-          <h2 className="events-title">Events</h2>
+          <div className="event-list-header">
+            <h2 className="events-title">Events</h2>
+            <select ref="sortBy" value={this.state.sortBy} name="sortby" onChange={this.onChange}>
+              <option value="date">Date</option>
+              <option value="title">Title</option>
+              <option value="location">Location</option>
+            </select>
+          </div>
           <div className="events-list">{events.map(this.createEntry)}</div>
         </div>
       );
