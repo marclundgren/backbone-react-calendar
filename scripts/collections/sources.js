@@ -1,6 +1,3 @@
-// app namespace
-var app = app || {};
-
-app.Sources = Backbone.Collection.extend({
-  model: app.Source
+Backbone.Sources = Backbone.Collection.extend({
+  model: Backbone.Source
 });

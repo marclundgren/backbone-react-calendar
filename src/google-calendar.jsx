@@ -5,235 +5,137 @@
 // app namespace
 var app = app || {};
 
-// data: Google CalendarEvents
-
-var GoogleCalendar = React.createClass({
-  render: function() {
-    // todo
-  }
-});
-
-// for now, assume Timed Event
-var GoogleEvent = React.createClass({
-  render: function() {
-    // this.props:  Object {title: "A: Mexico vs Cameroon (1-0)", key: 1, children: Array[2]}
-
-    console.log('ASDSDASDASD');
-    debugger;
-    return (
-      <div className="event">
-        <h3 className="title">
-          <a href={this.props.href}>{this.props.title}</a>
-        </h3>
-        <div className="starts">
-          starts: {this.props.start}
-        </div>
-        <div className="ends">
-          ends: {this.props.end}
-        </div>
-      </div>
-    );
-  }
-});
-
-var GoogleCalendarFetcher = React.createClass({
-  getDefaultProps: function() {
-    return {
-      alt: 'json-in-script',
-      dataType: 'jsonp',
-      futureevents: 'false',
-      maxResults: '9999',
-      orderby: 'starttime',
-      singleevents: 'true',
-      sortorder: 'ascending'
-    };
+Backbone.GoogleCalendar = Backbone.Model.extend({
+  defaults: {
+    events: new Backbone.GoogleEvents(),
+    sources: [],
+    params: {}
   },
 
-  getInitialState: function() {
-    return {data: []};
-  },
+  // to-do
+  // MAP_SOURCES: {},
 
-  loadDataFromServer: function() {
+  initialize: function() {
     var self = this;
 
-    params = {
-      alt: self.props.alt,
-      futureevents: self.props.futureevents,
-      maxResults: self.props.maxResults,
-      orderby: self.props.orderby,
-      singleevents: self.props.singleevents,
-      sortorder: self.props.sortorder
-    };
+    this.fetchSources().done(function(results) {
+      events = self.get('events');
 
-    var url = app.Util.addParams(self.props.url, params);
+      var date = new Date(2014, 7, 9, 17, 0); // August 9, 1984
 
-    $.when(
-        $.ajax({
-            cache: true,
-            dataType: self.props.dataType,
-            // FIDM
-            url: app.Util.addParams('http://www.google.com/calendar/feeds/fidmwmo%40gmail.com/public/full', params)
-        }),
-        $.ajax({
-            cache: true,
-            dataType: self.props.dataType,
-            // FIFA
-            url: url
-        })
-    ).done(function() {
-
-      function getEntries(result) {
-        return result[0].feed.entry; // [{}, ..., {}]
-      }
-
-      return;
-      // reduce
-      var reduce = _.reduce(arguments, getEntries); console.log('reduce: ', reduce.length, reduce);
-
-      // map
-      var map = _.map(arguments, getEntries); console.log('map: ', map.length, map);
-
-      // reduceRight
-      var reduceRight = _.reduceRight(arguments, getEntries); console.log('reduceRight: ', reduceRight.length, reduceRight);
-    });
-
-    // $.ajax({
-    //     cache: true,
-    //     dataType: self.props.dataType,
-    //     // FIDM
-    //     url: app.Util.addParams('http://www.google.com/calendar/feeds/fidmwmo%40gmail.com/public/full', params)
-    // }).done(function(fidmResultsSolo) {
-    //   console.log('fidmResultsSolo: ', fidmResultsSolo);
-    // });
-
-    return;
-
-    var allDeferred = [deferred];
-
-    $.when(allDeferred).done(function(args) {
-      var promisedValues = arguments;
-      console.log('args: ', args);
-      console.log('promisedValues: ', promisedValues);
-
-      var entries = _.map(promisedValues, function(item) {
-        console.log('item: ', item);
-        return item.feed.entry;
-      });
-
-      self.setState({data: entries});
-    });
-  },
-
-  componentDidMount: function() {
-    this.loadDataFromServer();
-  },
-
-  render: function() {
-    return <GoogleEventList data={this.state.data} />;
-  }
-});
-
-var GoogleEventListControls = React.createClass({
-  getInitialState: function() {
-    return {selected: 'date'};
-  },
-
-  onChange: function(e) {
-    this.setState({selected: e.target.value});
-  },
-
-  render: function() {
-    var selected = this.state.selected;
-
-    // debugger;
-    // console.log('k');
-    return (
-      <div>
-        <select value={this.state.selected} name="sortby" onChange={this.onChange}>
-          <option value="date">Date</option>
-          <option value="title">Title</option>
-          <option value="location">Location</option>
-        </select>
-      </div>
-    );
-  },
-
-  ____render: function() {
-    var self = this;
-    console.log('sanity');
-    return (
-      <label>
-        Sort by:
-        <input type="select" className='event-list-controls' onChange={self.changeSortBy}>
-          <option value="date">date</option>
-          <option value="location">location</option>
-          <option value="title">title</option>
-        </input>
-      </label>
-    );
-  }
-});
-
-var GoogleEventList = React.createClass({
-  getInitialState: function() {
-    return {sortBy: 'date'};
-  },
-
-  onChange: function(e) {
-    var sortBy = this.refs.sortBy.getDOMNode().value;
-
-    // console.log();
-
-    this.setState({sortBy: sortBy});
-  },
-
-  parseGoogleEvent: function(obj) {
-    var when = obj.gd$when[0];
-    var startMoment = moment(when.startTime);
-    var endMoment = moment(when.endTime);
-
-    console.log('test????');
-
-    return {
-      title: obj.title.$t,
-      startTime: startMoment.format('YYYY MMMM DD HH:MM'),
-      endTime: endMoment.format('YYYY MMMM DD HH:MM'),
-      date: startMoment.calendar(),
-      content: obj.content.$t,
-      href: obj.link[0].href
-    };
-  },
-
-  render: function() {
-    var dataNodes = this.props.data.map(function(item, index) {
-      var data = this.parseGoogleEvent(data);
-
-      return (
-        <GoogleEvent content={data.content} date={data.date} endTime={data.endTime} href={data.href} key={data.index} startTime={data.startTime} title={data.title} />
+      React.renderComponent(
+        <app.Calendar date={date} events={events} />,
+        document.getElementById('calendar')
       );
     });
+  },
 
-    return (
-      <div className="anotherContainer">
-        <select ref="sortBy" value={this.state.sortBy} name="sortby" onChange={this.onChange}>
-          <option value="date">Date</option>
-          <option value="title">Title</option>
-          <option value="location">Location</option>
-        </select>
+  getSources: function() {
+    var sources = this.get('sources');
 
-        <div className="multi-select"></div>
+    if (!(sources instanceof Backbone.Sources)) {
+      /*
 
-        <div className="eventList">
-          {dataNodes}
-        </div>
-      </div>
-    );
+      to-do enable the user to change default params across all sources
+
+      var params = this.get('params');
+
+      _.each(sources, function(item) {
+        item.params = _.extend(app.Source.defaults.params, params)
+      });
+
+    */
+
+      sources = new Backbone.Sources(sources);
+
+      this.set('sources', sources);
+    }
+
+    return sources;
+  },
+
+  addSource: function(source) {
+    var deferred = source.fetch();
+
+    deferred.done(function(promisedData) {
+      var entries = _.map(promisedData.feed.entry, function(item) {
+        return {
+          author:     item.author[0].name,
+          content:    item.content.$t,
+          date:       item.gd$when[0].startTime,
+          endTime:    item.gd$when[0].endTime,
+          id:         item.id.$t,
+          link:       item.link[0].href,
+          startTime:  item.gd$when[0].startTime,
+          title:      item.title.$t,
+          updated:    item.updated.$t,
+          where:      item.gd$where[0].valueString
+        };
+      });
+
+      // this.eventList = new Backbone.GoogleEvents(entries);
+      // console.log('this.eventList: ', this.eventList);
+    });
+
+    return deferred;
+  },
+
+  fetchSources: function(callback) {
+    var self = this;
+
+    var sources = this.getSources();
+    _sources = sources;
+
+    var complete = sources.map(this.addSource, this);
+
+    var deferred = $.Deferred(function(defer) {
+      $.when.apply($, complete).done(function() {
+        var entries = _.map(arguments, function(data) {
+          return data[0].feed.entry || [];
+        });
+
+        defer.resolve(entries);
+      });
+    });
+
+    deferred.done(function(results) {
+      var flatList = _.flatten(results);
+
+      var entries = _.map(flatList, function(item) {
+        return {
+          author:     item.author[0].name,
+          content:    item.content.$t,
+          date:  item.gd$when[0].startTime,
+          endTime:    item.gd$when[0].endTime,
+          id:         item.id.$t,
+          link:       item.link[0].href,
+          startTime:  item.gd$when[0].startTime,
+          title:      item.title.$t,
+          updated:    item.updated.$t,
+          location:      item.gd$where[0].valueString,
+          where:      item.gd$where[0].valueString
+        };
+      });
+
+      self.set('events', new Backbone.GoogleEvents(entries));
+    });
+
+    return deferred;
+  },
+
+  extendURLOptions: function(obj) {
+    if (obj.urlOptions) {
+      var options = _.extend(obj.urlOptions || {}, this.get('urlOptions'));
+
+      this.set('urlOptions', options);
+    }
+  },
+
+  uri: function(id) {
+    var urlOptions = this.get('urlOptions');
+
+    var uri = urlOptions.url + urlOptions.urnHead + id + urlOptions.urnTail;
+
+    return app.Util.addParams(uri, urlOptions.params);
   }
 });
-
-// React.renderComponent(
-//   <GoogleCalendarFetcher
-//     feedId="vdmtdcektajkqjk51vvda4ni4k%40group.calendar.google.com"
-//     url="http://www.google.com/calendar/feeds/vdmtdcektajkqjk51vvda4ni4k%40group.calendar.google.com/public/full" />,
-//   document.getElementById('GoogleCalendarFetcher')
-// );
