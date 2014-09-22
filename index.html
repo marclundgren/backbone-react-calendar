@@ -7,53 +7,11 @@
     <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.2.0/css/bootstrap.min.css" />
     <link rel="stylesheet" href="css/base.css" />
     <link rel="stylesheet" href="css/calendar.css" />
-
-    <style>
-    .app .row {
-      height: 640px;
-    }
-
-    .app .row > div, .app #googleEventList, .app #googleEventList .eventListContainer {
-      height: 100%;
-    }
-
-    .app .events-list {
-      -webkit-overflow-scrolling: touch;
-      height: 100%;
-      overflow-y: auto;
-    }
-
-    .app .events-list .event {
-      margin-top: 1em;
-    }
-
-    .app .events-title {
-      margin-bottom: 0;
-    }
-
-    .entry-content {
-      /*I shouldn't need to do this...*/
-      overflow-x: hidden;
-    }
-    </style>
   </head>
   <body>
-    <div id="GoogleCalendarFetcher"></div>
-
     <div class="app">
-      <div class="container-fluid">
-        <div class="row">
-          <div class="col-xs-12 col-md-8">
-            <div id="calendar"></div>
-          </div>
-          <div class="col-xs-12 col-md-4">
-            <div id="googleEventList"></div>
-          </div>
-        </div>
-      </div>
+      <div id="calendar"></div>
     </div>
-
-    <select multiple="" data-rzzzeactid=".3"><option value="A" data-rzzzeactid=".3.0">Apple</option><option value="B" data-rzzzeactid=".3.1">Banana</option><option value="C" data-rzzzeactid=".3.2">Cranberry</option></select>
 
     <div id="reactGoogleCalendar"></div>
     <div id="list"></div>
@@ -65,21 +23,28 @@
     <script src="//fb.me/react-0.10.0.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/backbone-react-component/0.7.0/backbone-react-component.js"></script>
 
-    <!-- React with experimental Addons for LinkedStateMixin -->
-    <!-- <script src="//dragon.ak.fbcdn.net/hphotos-ak-prn1/851582_273797162771581_30433_n.js"></script> -->
-
     <script src="//fb.me/JSXTransformer-0.10.0.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.8.2/moment.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/moment-timezone/0.2.1/moment-timezone.min.js"></script>
 
-    <script src="scripts/util.js"></script>
-    <script src="scripts/calendar.js"></script>
-    <script src="scripts/google-calendar.js"></script>
+    <!-- Utility -->
+    <script src="scripts/util/util.js"></script>
 
     <!-- Backbone -->
     <script src="scripts/models/google-event.js"></script>
+    <script src="scripts/collections/google-events.js"></script>
+    <script src="scripts/models/source-param.js"></script>
+    <script src="scripts/collections/source-params.js"></script>
     <script src="scripts/models/source.js"></script>
     <script src="scripts/collections/sources.js"></script>
-    <script src="scripts/backbone-react.js"></script>
+
+    <!-- React -->
+    <script src="scripts/react-build/calendar-day.js"></script>
+    <script src="scripts/react-build/calendar-controls.js"></script>
+    <script src="scripts/react-build/calendar-grid.js"></script>
+    <script src="scripts/react-build/calendar-event-list.js"></script>
+    <script src="scripts/react-build/calendar.js"></script>
+    <script src="scripts/react-build/google-calendar.js"></script>
+    <script src="scripts/react-build/calendar-app.js"></script>
   </body>
 </html>

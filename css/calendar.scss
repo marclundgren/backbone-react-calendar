@@ -13,187 +13,216 @@ $background-colour: #f5f5f5;
 $date-hover-color: #f5f5f5;
 $date-hover-background-color: #27e5e4;
 
+.app {
+  .row {
+    height: 640px;
+
+    > div, #googleEventList, .eventListContainer {
+      height: 100%;
+    }
+  }
+
+  .events-list {
+    -webkit-overflow-scrolling: touch;
+    height: 100%;
+    overflow-y: auto;
+
+    .event {
+      margin-top: 1em;
+    }
+  }
+
+  .events-title {
+    margin-bottom: 0;
+  }
+}
+
+.entry-content {
+  /*I shouldn't need to do this...*/
+  overflow-x: hidden;
+}
+
 .clndr-controls {
-	position: relative;
-	width: 100%;
+  position: relative;
+  width: 100%;
 
-	div {
-		background: #008000;
-		cursor: pointer;
-		display: inline-block;
-		padding:5px;
-		text-align: center;
-		width: 30%;
-	}
+  div {
+    background: #008000;
+    cursor: pointer;
+    display: inline-block;
+    padding:5px;
+    text-align: center;
+    width: 30%;
+  }
 
-	.current-month {
-		background: #ffc0cb;
-		width: 40%;
-	}
+  .current-month {
+    background: #ffc0cb;
+    width: 40%;
+  }
 
-	.title {
-		-webkit-font-smoothing: antialiased;
-		display: inline-block;
-		text-align: center;
-		width: 100%;
-	}
+  .title {
+    -webkit-font-smoothing: antialiased;
+    display: inline-block;
+    text-align: center;
+    width: 100%;
+  }
 
-	.arrow {
-		width: 30px;
-		height: 27px;
-		display: inline-block;
-		vertical-align: middle;
-		padding: 0;
-		position: absolute;
-		opacity: 0.4;
-		outline: none;
-		background: url(https://d3dma7a8zw52bz.cloudfront.net/assets/icons/calendar_sprite-ef547d27ebbb5ec4e7b2c7e752471164.png) no-repeat 0 0 #fff;
-		border-radius: 0;
-		-webkit-border-radius: 0;
-		-moz-border-radius: 0;
+  .arrow {
+    width: 30px;
+    height: 27px;
+    display: inline-block;
+    vertical-align: middle;
+    padding: 0;
+    position: absolute;
+    opacity: 0.4;
+    outline: none;
+    background: url(https://d3dma7a8zw52bz.cloudfront.net/assets/icons/calendar_sprite-ef547d27ebbb5ec4e7b2c7e752471164.png) no-repeat 0 0 #fff;
+    border-radius: 0;
+    -webkit-border-radius: 0;
+    -moz-border-radius: 0;
 
-		&.arrow-previous {
-			left: 0;
-		}
+    &.arrow-previous {
+      left: 0;
+    }
 
-		&.arrow-next {
-			background-position: 6px -50px;
-			right: 0;
-		}
-	}
+    &.arrow-next {
+      background-position: 6px -50px;
+      right: 0;
+    }
+  }
 }
 
 .clndr {
-	width: 700px;
-	margin: 0 auto;
+  width: 700px;
+  margin: 0 auto;
 }
 
-.clndr-grid {
-	text-align: center;
+.calendar-grid {
+  text-align: center;
 
-	.days {
-		.day {
-			background: #f5f5f5;
-			border: 1px solid #ddd;
-			float: left;
-			height: 100px;
-			line-height: 100px;
-			width: 100px;
+  .days {
+    .day {
+      background: #f5f5f5;
+      border: 1px solid #ddd;
+      float: left;
+      height: 100px;
+      line-height: 100px;
+      width: 100px;
 
-			&.active-week {
-				background-color: #dcdcdc;
+      &.active-week {
+        background-color: #dcdcdc;
 
-				&.today {
-					background-color: #2789e4;
-					color: white;
-				}
-			}
+        &.today {
+          background-color: #2789e4;
+          color: white;
+        }
+      }
 
-			.day-number {
-				// todo
+      .day-number {
+        // todo
 
-				&.has-events {
-					color: white;
-					background-color: #123456;
-					-moz-border-radius: 50px;
-					-webkit-border-radius: 50px;
-					border-radius: 50px;
-					border: 3px solid #069;
-				}
-			}
+        &.has-events {
+          color: white;
+          background-color: #123456;
+          -moz-border-radius: 50px;
+          -webkit-border-radius: 50px;
+          border-radius: 50px;
+          border: 3px solid #069;
+        }
+      }
 
-			.events {
-				display: none;
-			}
-		}
-	}
+      .events {
+        display: none;
+      }
+    }
+  }
 }
 
 .prev-month, .next-month {
-	color: #ccc;
+  color: #ccc;
 }
 
 .clearfix {
-	clear: both;
+  clear: both;
 }
 
 .grid-calendar {
-	max-width: $max-width;
-	min-width: $min-width;
+  max-width: $max-width;
+  min-width: $min-width;
 
-	.row {
-		margin: 0;
-	}
+  .row {
+    margin: 0;
+  }
 
-	// Grid Cell base
-	.grid-cell {
-		display: inline-block;
-		float: left;
-		font-weight: 500;
-		min-height: 1px;
-		padding: 0;
-		width: $column-width;
+  // Grid Cell base
+  .grid-cell {
+    display: inline-block;
+    float: left;
+    font-weight: 500;
+    min-height: 1px;
+    padding: 0;
+    width: $column-width;
 
-		> div {
-			position: relative;
-			padding: 50% 0;
+    > div {
+      position: relative;
+      padding: 50% 0;
 
-			> div {
-				-ms-transform: translate(-50%, -50%);
-				-webkit-transform: translate(-50%, -50%);
-				left: 50%;
-				overflow: auto;
-				position: absolute;
-				text-align: center;
-				top: 50%;
-				transform: translate(-50%, -50%);
-				width: 50%;
-			}
-		}
-	}
+      > div {
+        -ms-transform: translate(-50%, -50%);
+        -webkit-transform: translate(-50%, -50%);
+        left: 50%;
+        overflow: auto;
+        position: absolute;
+        text-align: center;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        width: 50%;
+      }
+    }
+  }
 
-	// Grid Cell Week Header
-	.week-header {
-		.title {
-			text-align: center;
-		}
+  // Grid Cell Week Header
+  .week-header {
+    .title {
+      text-align: center;
+    }
 
-		.grid-cell > div > div {
-			color: $date-colour-header;
-			padding: 10% 0;
-			height: auto;
-		}
-	}
+    .grid-cell > div > div {
+      color: $date-colour-header;
+      padding: 10% 0;
+      height: auto;
+    }
+  }
 
-	// Grid Cell Week Body
-	.week-body {
-		background-color: $background-colour;
+  // Grid Cell Week Body
+  .week-body {
+    background-color: $background-colour;
 
-		&.active-week {
-			background-color: $background-colour-active-week;
+    &.active-week {
+      background-color: $background-colour-active-week;
 
-			.active-day {
-				background-color: $background-colour-active-day;
-				color: $date-hover-color;
-			}
-		}
+      .active-day {
+        background-color: $background-colour-active-day;
+        color: $date-hover-color;
+      }
+    }
 
-		.grid-cell {
-			color: $date-colour-body;
+    .grid-cell {
+      color: $date-colour-body;
 
-			&.previous-month, &.next-month {
-				color: $date-colour-inactive;
-			}
+      &.previous-month, &.next-month {
+        color: $date-colour-inactive;
+      }
 
-			&:hover {
-				color: $date-hover-color;
-				background-color: $date-hover-background-color;
-			}
-		}
+      &:hover {
+        color: $date-hover-color;
+        background-color: $date-hover-background-color;
+      }
+    }
 
-		.event-indicator {
-			font-size: 2em;
-			top: 75%;
-		}
-	}
+    .event-indicator {
+      font-size: 2em;
+      top: 75%;
+    }
+  }
 }

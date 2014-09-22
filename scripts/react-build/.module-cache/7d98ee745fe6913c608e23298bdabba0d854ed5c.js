@@ -7,7 +7,7 @@ var app = app || {};
 
 Backbone.GoogleCalendar = Backbone.Model.extend({
   defaults: {
-    events: [],
+    events: new Backbone.GoogleEventList(),
     sources: [],
     params: {}
   },
@@ -72,6 +72,9 @@ Backbone.GoogleCalendar = Backbone.Model.extend({
           where:      item.gd$where[0].valueString
         };
       });
+
+      // this.eventList = new Backbone.GoogleEventList(entries);
+      // console.log('this.eventList: ', this.eventList);
     });
 
     return deferred;
@@ -114,7 +117,7 @@ Backbone.GoogleCalendar = Backbone.Model.extend({
         };
       });
 
-      self.set('events', entries);
+      self.set('events', new Backbone.GoogleEventList(entries));
     });
 
     return deferred;

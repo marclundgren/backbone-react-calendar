@@ -7,7 +7,7 @@ var app = app || {};
 
 Backbone.GoogleCalendar = Backbone.Model.extend({
   defaults: {
-    events: [],
+    events: new Backbone.GoogleEvents(),
     sources: [],
     params: {}
   },
@@ -33,7 +33,7 @@ Backbone.GoogleCalendar = Backbone.Model.extend({
   getSources: function() {
     var sources = this.get('sources');
 
-    if (!(sources instanceof app.Sources)) {
+    if (!(sources instanceof Backbone.Sources)) {
       /*
 
       to-do enable the user to change default params across all sources
@@ -46,7 +46,7 @@ Backbone.GoogleCalendar = Backbone.Model.extend({
 
     */
 
-      sources = new app.Sources(sources);
+      sources = new Backbone.Sources(sources);
 
       this.set('sources', sources);
     }
@@ -72,6 +72,9 @@ Backbone.GoogleCalendar = Backbone.Model.extend({
           where:      item.gd$where[0].valueString
         };
       });
+
+      // this.eventList = new Backbone.GoogleEvents(entries);
+      // console.log('this.eventList: ', this.eventList);
     });
 
     return deferred;
@@ -114,7 +117,7 @@ Backbone.GoogleCalendar = Backbone.Model.extend({
         };
       });
 
-      self.set('events', entries);
+      self.set('events', new Backbone.GoogleEvents(entries));
     });
 
     return deferred;

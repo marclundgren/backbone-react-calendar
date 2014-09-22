@@ -1,8 +1,5 @@
-// app namespace
-var app = app || {};
-
 // Models
-app.GoogleEvent = Backbone.Model.extend({
+Backbone.GoogleEvent = Backbone.Model.extend({
   defaults: {
     author:     '',
     category:   '',
@@ -40,8 +37,4 @@ app.GoogleEvent = Backbone.Model.extend({
 
     return moment.duration(count, unit).humanize();
   }
-});
-
-app.GoogleEventList = Backbone.Collection.extend({
-  model: app.GoogleEvent
 });

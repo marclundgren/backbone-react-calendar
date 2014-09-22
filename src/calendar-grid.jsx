@@ -3,39 +3,7 @@
 // app namespace
 var app = app || {};
 
-moment.locale('en');
-
-var Day = React.createClass({displayName: 'Day',
-  render: function() {
-    return (
-      React.DOM.div({className: this.props.className}, 
-        React.DOM.div({className: "day-number"}, this.props.moment.date())
-      )
-    );
-  }
-});
-
-var CalendarControls = React.createClass({displayName: 'CalendarControls',
-  next: function() {
-    this.props.onNext();
-  },
-
-  prev: function() {
-    this.props.onPrev();
-  },
-
-  render: function() {
-    return (
-      React.DOM.nav({className: "clndr-controls"}, 
-        React.DOM.div({className: "arrow arrow-previous", onClick: this.prev}), 
-        React.DOM.h3({className: "title"}, this.props.date.format('MMMM YYYY')), 
-        React.DOM.div({className: "arrow arrow-next", onClick: this.next})
-      )
-    );
-  }
-});
-
-var Calendar = React.createClass({displayName: 'Calendar',
+app.CalendarGrid = React.createClass({
   getDefaultProps: function() {
     return {
       forceSixRows: false,
@@ -48,6 +16,16 @@ var Calendar = React.createClass({displayName: 'Calendar',
     return {
       date: moment(this.props.date)
     };
+  },
+
+  createDay: function(item) {
+    var dayConfig = {moment: item.moment};
+
+    if (item.className) {
+      dayConfig.className = item.className;
+    }
+
+    return app.CalendarDay(dayConfig);
   },
 
   next: function() {
@@ -63,30 +41,18 @@ var Calendar = React.createClass({displayName: 'Calendar',
   }),
 
   render: function() {
-    function renderDay(item) {
-      var dayConfig = {moment: item.moment};
-
-      if (item.className) {
-        dayConfig.className = item.className;
-      }
-
-      return Day(dayConfig);
-    }
-
     var monthYear = this.state.date.format('MMYY'); // e.g. "0914" for Sept, 2014
 
     var days = this.getDaysOfMonth(monthYear);
 
     return (
-      React.DOM.div({className: "clndr"}, 
-        CalendarControls({date: this.state.date, onNext: this.next, onPrev: this.prev}), 
-        React.DOM.div({className: "clndr-grid"}, 
-          React.DOM.div({className: "days"}, 
-            _.map(days, renderDay)
-          ), 
-          React.DOM.div({className: "clearfix"})
-        )
-      )
+      <div className='clndr'>
+        <app.CalendarControls date={this.state.date} onNext={this.next} onPrev={this.prev} />
+        <div className='calendar-grid'>
+          <div className="days">{days.map(this.createDay)}</div>
+          <div className='clearfix'></div>
+        </div>
+      </div>
     );
   },
 
@@ -146,10 +112,3 @@ var Calendar = React.createClass({displayName: 'Calendar',
     return days;
   }
 });
-
-var date = new Date(2014, 7, 9, 17, 0); // August 9, 1984
-
-React.renderComponent(
-  Calendar({date: date}),
-  document.getElementById('calendar')
-);
