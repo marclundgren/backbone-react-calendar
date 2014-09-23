@@ -32,9 +32,25 @@ $date-hover-background-color: #27e5e4;
     }
   }
 
-  .events-title {
-    margin-bottom: 0;
+  .event-list-header {
+    border-bottom: 1px solid #eee;
+
+    .events-title {
+      border: none;
+      display: inline-block;
+      margin-right: 1em;
+      margin-bottom: 0;
+    }
+
+    select {
+      vertical-align: super;
+    }
+
+    h2, select {
+      display: inline-block;
+    }
   }
+
 }
 
 .entry-content {

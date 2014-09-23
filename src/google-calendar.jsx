@@ -19,12 +19,8 @@ Backbone.GoogleCalendar = Backbone.Model.extend({
     var self = this;
 
     this.fetchSources().done(function(results) {
-      events = self.get('events');
-
-      var date = new Date(2014, 7, 9, 17, 0); // August 9, 1984
-
       React.renderComponent(
-        <app.Calendar date={date} events={events} />,
+        <app.Calendar collection={self.get('events')} />,
         document.getElementById('calendar')
       );
     });

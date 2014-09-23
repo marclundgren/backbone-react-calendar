@@ -8,8 +8,17 @@
   overflow-y: auto; }
   .app .events-list .event {
     margin-top: 1em; }
-.app .events-title {
-  margin-bottom: 0; }
+.app .event-list-header {
+  border-bottom: 1px solid #eee; }
+  .app .event-list-header .events-title {
+    border: none;
+    display: inline-block;
+    margin-right: 1em;
+    margin-bottom: 0; }
+  .app .event-list-header select {
+    vertical-align: super; }
+  .app .event-list-header h2, .app .event-list-header select {
+    display: inline-block; }
 
 .entry-content {
   /*I shouldn't need to do this...*/
