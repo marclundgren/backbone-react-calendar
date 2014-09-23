@@ -12,17 +12,29 @@ Backbone.GoogleEvent = Backbone.Model.extend({
     startTime:  '',
     title:      '',
     updated:    '',
-    where:      ''
+    where:      '',
+    yearMonth: ''
+  },
+
+  initialize: function() {
+    this.set('yearMonth', app.Util.yearMonth(this.get('startTime')));
+
+    var startMoment = this._getStartMoment();
+    this.set('day', startMoment.day());
   },
 
   starts: function() {
-    var startMoment = moment(this.get('startTime'));
+    var startMoment = this._getStartMoment();
 
     return startMoment.format('YYYY MMMM DD hh:mm a');
   },
 
+  _getStartMoment: function() {
+    return moment(this.get('startTime'));
+  },
+
   duration: function() {
-    var startMoment = moment(this.get('startTime'));
+    var startMoment = this._getStartMoment();
     var endMoment = moment(this.get('endTime'));
 
     var unit = 'hours';

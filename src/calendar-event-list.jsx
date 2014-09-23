@@ -6,7 +6,7 @@
 var app = app || {};
 
 // React Component
-app.EventList = React.createClass({
+app.CalendarEventList = React.createClass({
     mixins: [Backbone.React.Component.mixin],
 
     createEntry: function (entry) {

@@ -4,6 +4,8 @@
 var app = app || {};
 
 app.CalendarGrid = React.createClass({displayName: 'CalendarGrid',
+  mixins: [Backbone.React.Component.mixin],
+
   getDefaultProps: function() {
     return {
       forceSixRows: false,
@@ -13,6 +15,8 @@ app.CalendarGrid = React.createClass({displayName: 'CalendarGrid',
   },
 
   getInitialState: function() {
+    this.props.date
+
     return {
       date: moment(this.props.date)
     };
@@ -42,12 +46,14 @@ app.CalendarGrid = React.createClass({displayName: 'CalendarGrid',
 
   render: function() {
     var monthYear = this.state.date.format('MMYY'); // e.g. "0914" for Sept, 2014
+    // todo, remove this and use app.Util.yearMonth
 
     var days = this.getDaysOfMonth(monthYear);
 
     return (
       React.DOM.div({className: "clndr"}, 
         app.CalendarControls({date: this.state.date, onNext: this.next, onPrev: this.prev}), 
+
         React.DOM.div({className: "calendar-grid"}, 
           React.DOM.div({className: "days"}, days.map(this.createDay)), 
           React.DOM.div({className: "clearfix"})
@@ -56,11 +62,28 @@ app.CalendarGrid = React.createClass({displayName: 'CalendarGrid',
     );
   },
 
+  _getEventsOfMonth: function(yearMonth) {
+    var googleEvents = new Backbone.GoogleEvents(this.props.collection);
+
+    return googleEvents.where({
+      yearMonth: yearMonth
+    });
+  },
+
   /**
    * Return an array of days for the current month
    */
   _getDaysOfMonth: function() {
     var days = [];
+
+    var yearMonth = app.Util.yearMonth(this.state.date);
+
+    var events = this._getEventsOfMonth(yearMonth);
+    console.log('events: ', events.length); // Array
+
+    events = Backbone.Collection(events);
+
+    debugger;
 
     var iterator = this.state.date.clone().startOf('month');
     var previousMonthIterator = iterator.clone().weekday(0);
@@ -78,11 +101,17 @@ app.CalendarGrid = React.createClass({displayName: 'CalendarGrid',
     // days in month
     var daysInMonth = iterator.daysInMonth();
 
-    for (var i = 0; i < daysInMonth; i++) {
+    for (var index = 0; index < daysInMonth; i++) {
       var day = {
         moment: iterator.clone(),
         className: 'day'
       };
+
+      var dayEvents = events.where({day: iterator.dayOfMonth});
+
+      if (dayEvents.length) {
+        console.log('event today!', dayEvents);
+      }
 
       var now = moment();
 
