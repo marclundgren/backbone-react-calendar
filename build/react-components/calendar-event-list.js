@@ -7,15 +7,12 @@ var app = app || {};
 
 // React Component
 app.CalendarEventList = React.createClass({displayName: 'CalendarEventList',
-    // mixins: [Backbone.React.Component.mixin],
-
     getInitialState: function() {
       return {
-        collection: [], // Backbone Models,
+        collection: [],
         sortValue: 'date'
       };
     },
-
 
     createEntry: function (entry) {
       return (
@@ -46,13 +43,6 @@ app.CalendarEventList = React.createClass({displayName: 'CalendarEventList',
     },
 
     render: function () {
-      // test
-      // this.props.collection = [];
-
-      // debugger;
-
-      // var googleEventList = new Backbone.GoogleEvents(this.props.collection);
-      // var googleEventList = this.props.eventscollection;
       var googleEvents = this.state.collection;
 
       if (googleEvents.length && !(googleEvents instanceof Backbone.GoogleEvents)) {
