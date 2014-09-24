@@ -4,30 +4,8 @@
 var app = app || {};
 
 app.Calendar = React.createClass({
-  // mixins: [Backbone.React.Component.mixin],
-
-  componentWillMount: function() {
-    this.props.eventscollection.on('change', this.forceUpdate);
-    this.props.eventscollection.on('add', this.forceUpdate);
-    this.props.eventscollection.on('remove', this.forceUpdate);
-    this.props.eventscollection.on('reset', this.forceUpdate);
-    this.props.eventscollection.on('sort', this.forceUpdate);
-
-    // todo: test adding thse as an array like ['add', 'remove', 'reset']
-    this.props.sources.on('add', this.forceUpdate);
-    this.props.sources.on('remove', this.forceUpdate);
-    this.props.sources.on('change', this.forceUpdate);
-    this.props.sources.on('reset', this.forceUpdate);
-  },
-
   getInitialState: function() {
     return {date: new Date() };
-  },
-
-  onSourceToggle: function() {
-    // remove add some events
-
-    // this.setState(events)
   },
 
   onChange: function(event) {
@@ -39,7 +17,6 @@ app.Calendar = React.createClass({
       return self.props.eventscollection.where({calendarName: name})
     });
 
-    // filteredEvents
     var flatFilteredEvents = _.flatten(filteredEvents);
 
     this.refs.calendarGrid.setState({collection: flatFilteredEvents});
@@ -47,7 +24,6 @@ app.Calendar = React.createClass({
   },
 
   createOption: function(item) {
-    // <option value=""></option>
     return app.CalendarSourceOption({
       name: item.get('name')
     });
@@ -55,11 +31,6 @@ app.Calendar = React.createClass({
 
   render: function() {
     var names = this.props.sources.pluck('name');
-    console.log('names: ', names);
-
-    // debugger;
-
-    // defaultValue={names}
 
     return (
       <div className="container-fluid">
@@ -76,17 +47,15 @@ app.Calendar = React.createClass({
         <div className="row">
           <div className="col-xs-12 col-md-8">
             <app.CalendarGrid
-              ref="calendarGrid"
+              date={this.state.date}
               collection={this.props.collection}
-              eventscollection={this.props.eventscollection}
-              date={this.state.date} />
+              ref="calendarGrid" />
           </div>
 
           <div className="col-xs-12 col-md-4">
             <app.CalendarEventList
-              ref="calendarEventList"
               collection={this.props.collection}
-              eventscollection={this.props.eventscollection}/>
+              ref="calendarEventList" />
           </div>
         </div>
       </div>
