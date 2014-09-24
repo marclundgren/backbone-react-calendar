@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="css/calendar.css" />
   </head>
   <body>
+
     <div class="app">
       <div id="calendar"></div>
     </div>
@@ -28,23 +29,24 @@
     <script src="//cdnjs.cloudflare.com/ajax/libs/moment-timezone/0.2.1/moment-timezone.min.js"></script>
 
     <!-- Utility -->
-    <script src="scripts/util/util.js"></script>
+    <script src="build/util/util.js"></script>
 
     <!-- Backbone -->
-    <script src="scripts/models/google-event.js"></script>
-    <script src="scripts/collections/google-events.js"></script>
-    <script src="scripts/models/source-param.js"></script>
-    <script src="scripts/collections/source-params.js"></script>
-    <script src="scripts/models/source.js"></script>
-    <script src="scripts/collections/sources.js"></script>
+    <script src="build/models/google-event.js"></script>
+    <script src="build/collections/google-events.js"></script>
+    <script src="build/models/source-param.js"></script>
+    <script src="build/collections/source-params.js"></script>
+    <script src="build/models/source.js"></script>
+    <script src="build/collections/sources.js"></script>
 
     <!-- React -->
-    <script src="scripts/react-build/calendar-day.js"></script>
-    <script src="scripts/react-build/calendar-controls.js"></script>
-    <script src="scripts/react-build/calendar-grid.js"></script>
-    <script src="scripts/react-build/calendar-event-list.js"></script>
-    <script src="scripts/react-build/calendar.js"></script>
-    <script src="scripts/react-build/google-calendar.js"></script>
-    <script src="scripts/react-build/calendar-app.js"></script>
+    <script src="build/react-components/calendar-day.js"></script>
+    <script src="build/react-components/calendar-controls.js"></script>
+    <script src="build/react-components/calendar-sources.js"></script>
+    <script src="build/react-components/calendar-grid.js"></script>
+    <script src="build/react-components/calendar-event-list.js"></script>
+    <script src="build/react-components/calendar.js"></script>
+    <script src="build/react-components/google-calendar.js"></script>
+    <script src="build/react-components/calendar-app.js"></script>
   </body>
 </html>

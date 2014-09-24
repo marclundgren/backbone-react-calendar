@@ -1,24 +1,33 @@
-.app .row {
-  height: 640px; }
-  .app .row > div, .app .row #googleEventList, .app .row .eventListContainer {
-    height: 100%; }
-.app .events-list {
-  -webkit-overflow-scrolling: touch;
-  height: 100%;
-  overflow-y: auto; }
-  .app .events-list .event {
-    margin-top: 1em; }
-.app .event-list-header {
-  border-bottom: 1px solid #eee; }
-  .app .event-list-header .events-title {
-    border: none;
+.app .calendar-source-filter {
+  margin: 1em 0; }
+  .app .calendar-source-filter .calendar-source {
     display: inline-block;
-    margin-right: 1em;
-    margin-bottom: 0; }
-  .app .event-list-header select {
-    vertical-align: super; }
-  .app .event-list-header h2, .app .event-list-header select {
-    display: inline-block; }
+    font-weight: bold;
+    padding: 0 1em;
+    text-align: center;
+    width: 160px; }
+    .app .calendar-source-filter .calendar-source.selected {
+      color: #000; }
+.app .eventListContainer {
+  height: 640px; }
+  .app .eventListContainer .event-list-header {
+    border-bottom: 1px solid #eee; }
+    .app .eventListContainer .event-list-header .events-title {
+      border: none;
+      display: inline-block;
+      margin-right: 1em;
+      margin-bottom: 0;
+      margin-bottom: 7px; }
+    .app .eventListContainer .event-list-header select {
+      vertical-align: super; }
+    .app .eventListContainer .event-list-header h2, .app .eventListContainer .event-list-header select {
+      display: inline-block; }
+  .app .eventListContainer .events-list {
+    -webkit-overflow-scrolling: touch;
+    height: 100%;
+    overflow-y: auto; }
+    .app .eventListContainer .events-list .event {
+      margin-top: 1em; }
 
 .entry-content {
   /*I shouldn't need to do this...*/
@@ -67,26 +76,32 @@
 
 .calendar-grid {
   text-align: center; }
-  .calendar-grid .days .day {
+  .calendar-grid .days .date {
     background: #f5f5f5;
     border: 1px solid #ddd;
     float: left;
     height: 100px;
     line-height: 100px;
     width: 100px; }
-    .calendar-grid .days .day.active-week {
+    .calendar-grid .days .date.active-week {
       background-color: #dcdcdc; }
-      .calendar-grid .days .day.active-week.today {
+      .calendar-grid .days .date.active-week.today {
         background-color: #2789e4;
         color: white; }
-    .calendar-grid .days .day .day-number.has-events {
+    .calendar-grid .days .date.events {
+      color: red;
+      cursor: pointer; }
+      .calendar-grid .days .date.events:hover {
+        color: #f5f5f5;
+        background-color: #27e5e4; }
+    .calendar-grid .days .date .date-number.has-events {
       color: white;
       background-color: #123456;
       -moz-border-radius: 50px;
       -webkit-border-radius: 50px;
       border-radius: 50px;
       border: 3px solid #069; }
-    .calendar-grid .days .day .events {
+    .calendar-grid .days .date .events {
       display: none; }
 
 .prev-month, .next-month {
