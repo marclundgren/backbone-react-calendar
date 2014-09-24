@@ -18,7 +18,7 @@ app.CalendarEventList = React.createClass({
       return (
         <div className="event">
           <h3 className="title">
-            <a href={entry.get('href')}>{entry.get('title')}</a>
+            <a href={entry.get('link')}>{entry.get('title')}</a>
           </h3>
           <div className="when">
             <div className="starts">

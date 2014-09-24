@@ -262,6 +262,10 @@ $date-hover-background-color: #27e5e4;
     .event-indicator {
       font-size: 2em;
       top: 75%;
+
+      &.has-events:after {
+        content:"·"
+      }
     }
   }
 }

@@ -4,14 +4,6 @@
 var app = app || {};
 
 app.CalendarGrid = React.createClass({displayName: 'CalendarGrid',
-  getDefaultProps: function() {
-    return {
-      forceSixRows: false,
-      lang: 'en',
-      weekOffset: 0
-    };
-  },
-
   getInitialState: function() {
     return {
       collection: [],
@@ -19,8 +11,42 @@ app.CalendarGrid = React.createClass({displayName: 'CalendarGrid',
     };
   },
 
-  createDay: function(item) {
+  createEntry: function (entry) {
+    return (
+      React.DOM.div({className: "event"}, 
+        React.DOM.h3({className: "title"}, 
+          React.DOM.a({href: entry.get('link')}, entry.get('title'))
+        ), 
+        React.DOM.div({className: "when"}, 
+          React.DOM.div({className: "starts"}, 
+            "Starts: ", entry.starts()
+          ), 
+          React.DOM.div({className: "duration"}, 
+            "Duration: ", entry.duration()
+          )
+        ), 
+        React.DOM.div({className: "where"}, 
+          "Location: ", entry.get('location')
+        ), 
+        React.DOM.div({className: "entry-content"}, entry.get('content'))
+      )
+    );
+  },
+
+  createDate: function(item) {
     return app.CalendarDate(item);
+  },
+
+  createCell: function(item) {
+    return app.CalendarGridDate(item);
+  },
+
+  createRow: function() {
+    return (
+      React.DOM.div({className: "row"}
+      )
+    );
+    return app.CalendarGridRow(item);
   },
 
   next: function() {
@@ -31,21 +57,42 @@ app.CalendarGrid = React.createClass({displayName: 'CalendarGrid',
     this.setState({date: this.state.date.subtract(1, 'month')});
   },
 
+  getWeeks: function() {
+    // convert the collection into weeks
+
+    var collection = this.state.collection;
+
+
+    // magic
+
+    return [];
+  },
+
   render: function() {
     var monthYear = this.state.date.format('MMYY'); // e.g. "0914" for Sept, 2014
 
-    var days = this.getDaysOfMonth(monthYear);
+    var dates = this.getDaysOfMonth(monthYear);
+
+    var events = this._getEventsOfMonth();
 
     return (
       React.DOM.div({className: "clndr"}, 
         app.CalendarControls({date: this.state.date, onPrev: this.prev, onNext: this.next}), 
 
         React.DOM.div({className: "calendar-grid"}, 
-          React.DOM.div({className: "days"}, days.map(this.createDay)), 
-          React.DOM.div({className: "clearfix"})
+          app.CalendarGridHeader(null), 
+          app.CalendarGridBody({events: events, dates: dates})
         )
       )
     );
+  },
+
+  _getEventsOfWeek: function() {
+    // todo
+
+    // var eventsOfMonth = this._getEventsOfMonth();
+
+    // var eventsOfWeek =
   },
 
   _getEventsOfMonth: function(yearMonth) {

@@ -19,12 +19,6 @@ Backbone.GoogleEvent = Backbone.Model.extend({
 
   initialize: function() {
     this.set('yearMonth', app.Util.yearMonth(this.get('startTime')));
-
-    if (!window.flag) {
-      window.flag = 1;
-
-      window._this = this;
-    }
   },
 
   starts: function() {
