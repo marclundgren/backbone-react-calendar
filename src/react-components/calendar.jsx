@@ -5,7 +5,7 @@ var app = app || {};
 
 app.Calendar = React.createClass({
   getInitialState: function() {
-    return {date: new Date() };
+    return {date: new Date()};
   },
 
   onChange: function(event) {
@@ -24,9 +24,7 @@ app.Calendar = React.createClass({
   },
 
   createOption: function(item) {
-    return app.CalendarSourceOption({
-      name: item.get('name')
-    });
+    return app.CalendarSourceOption({name: item.get('name')});
   },
 
   render: function() {
