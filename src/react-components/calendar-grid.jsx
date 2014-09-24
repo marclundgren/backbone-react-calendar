@@ -4,14 +4,6 @@
 var app = app || {};
 
 app.CalendarGrid = React.createClass({
-  getDefaultProps: function() {
-    return {
-      forceSixRows: false,
-      lang: 'en',
-      weekOffset: 0
-    };
-  },
-
   getInitialState: function() {
     return {
       collection: [],
@@ -19,8 +11,42 @@ app.CalendarGrid = React.createClass({
     };
   },
 
-  createDay: function(item) {
+  createEntry: function (entry) {
+    return (
+      <div className="event">
+        <h3 className="title">
+          <a href={entry.get('link')}>{entry.get('title')}</a>
+        </h3>
+        <div className="when">
+          <div className="starts">
+            Starts: {entry.starts()}
+          </div>
+          <div className="duration">
+            Duration: {entry.duration()}
+          </div>
+        </div>
+        <div className="where">
+          Location: {entry.get('location')}
+        </div>
+        <div className="entry-content">{entry.get('content')}</div>
+      </div>
+    );
+  },
+
+  createDate: function(item) {
     return app.CalendarDate(item);
+  },
+
+  createCell: function(item) {
+    return app.CalendarGridDate(item);
+  },
+
+  createRow: function() {
+    return (
+      <div className='row'>
+      </div>
+    );
+    return app.CalendarGridRow(item);
   },
 
   next: function() {
@@ -31,21 +57,42 @@ app.CalendarGrid = React.createClass({
     this.setState({date: this.state.date.subtract(1, 'month')});
   },
 
+  getWeeks: function() {
+    // convert the collection into weeks
+
+    var collection = this.state.collection;
+
+
+    // magic
+
+    return [];
+  },
+
   render: function() {
     var monthYear = this.state.date.format('MMYY'); // e.g. "0914" for Sept, 2014
 
-    var days = this.getDaysOfMonth(monthYear);
+    var dates = this.getDaysOfMonth(monthYear);
+
+    var events = this._getEventsOfMonth();
 
     return (
       <div className='clndr'>
         <app.CalendarControls date={this.state.date} onPrev={this.prev} onNext={this.next} />
 
         <div className="calendar-grid">
-          <div className="days">{days.map(this.createDay)}</div>
-          <div className='clearfix'></div>
+          <app.CalendarGridHeader />
+          <app.CalendarGridBody events={events} dates={dates} />
         </div>
       </div>
     );
+  },
+
+  _getEventsOfWeek: function() {
+    // todo
+
+    // var eventsOfMonth = this._getEventsOfMonth();
+
+    // var eventsOfWeek =
   },
 
   _getEventsOfMonth: function(yearMonth) {
