@@ -1,6 +1,6 @@
+*.css.map
 *~
-node_modules
 .DS_Store
 build/.module-cache/
 css/.sass-cache/
-*.css.map
+node_modules
