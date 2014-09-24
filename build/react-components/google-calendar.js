@@ -57,7 +57,6 @@ Backbone.GoogleCalendar = Backbone.Model.extend({
   },
 
   entries: function() {
-    // _.flatten(sources.pluck('entries'));
     var sources = this.getSources();
 
     return sources.pluck('entries');
@@ -88,9 +87,6 @@ Backbone.GoogleCalendar = Backbone.Model.extend({
       });
 
       source.set('entries', entries);
-
-      // this.eventList = new Backbone.GoogleEvents(entries);
-      // console.log('this.eventList: ', this.eventList);
     });
 
     return deferred;
@@ -100,8 +96,6 @@ Backbone.GoogleCalendar = Backbone.Model.extend({
     var self = this;
 
     var sources = this.getSources();
-    // _sources = sources;
-
 
     var complete = sources.map(this.addSource, this);
 
