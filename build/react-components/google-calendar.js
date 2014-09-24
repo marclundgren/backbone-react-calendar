@@ -8,8 +8,8 @@ var app = app || {};
 Backbone.GoogleCalendar = Backbone.Model.extend({
   defaults: {
     events: new Backbone.GoogleEvents(),
-    sources: [],
-    params: {}
+    params: {},
+    sources: []
   },
 
   // to-do
@@ -19,8 +19,6 @@ Backbone.GoogleCalendar = Backbone.Model.extend({
     var self = this;
 
     this.fetchSources().done(function(results) {
-      // debugger;
-
       React.renderComponent(
         app.Calendar({
           sources: self.get('sources'), 
@@ -48,7 +46,6 @@ Backbone.GoogleCalendar = Backbone.Model.extend({
     */
 
       sources = new Backbone.Sources(sources);
-      console.log('sources: ', sources);
 
       this.set('sources', sources);
     }

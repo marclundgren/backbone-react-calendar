@@ -7,8 +7,9 @@ var app = app || {};
 
 app.CalendarDate = React.createClass({
   onClick: function() {
-    // console.log('hello there!');
-    // this.props.events
+
+    // todo: show these events
+
     console.log('this.props.events: ', this.props.events);
   },
 

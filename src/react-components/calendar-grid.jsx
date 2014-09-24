@@ -4,8 +4,6 @@
 var app = app || {};
 
 app.CalendarGrid = React.createClass({
-  mixins: [Backbone.React.Component.mixin],
-
   getDefaultProps: function() {
     return {
       forceSixRows: false,
@@ -16,32 +14,13 @@ app.CalendarGrid = React.createClass({
 
   getInitialState: function() {
     return {
-      date: moment(this.props.date),
-      collection: [] // Backbone Models
+      collection: [],
+      date: moment(this.props.date)
     };
   },
 
   createDay: function(item) {
-
-    // item.onClick = function(e) {
-    //   console.log('hmmmm', e);
-    //   debugger;
-    // };
-
     return app.CalendarDate(item);
-
-    var dayConfig = {moment: item.moment};
-
-    if (item.className) {
-      dayConfig.className = item.className;
-    }
-
-    if (item.events && item.events.length) {
-      dayConfig.events = item.events;
-      console.log('dayConfig.events: ', dayConfig.events);
-    }
-
-    return app.CalendarDate(dayConfig);
   },
 
   next: function() {
@@ -52,20 +31,8 @@ app.CalendarGrid = React.createClass({
     this.setState({date: this.state.date.subtract(1, 'month')});
   },
 
-  // getDaysOfMonth: _.memoize(function() {
-  //   return this._getDaysOfMonth();
-  // }),
-
-  getDaysOfMonth: function() {
-    return this._getDaysOfMonth();
-  },
-
   render: function() {
-    // test
-    // this.props.collection = [];
-
     var monthYear = this.state.date.format('MMYY'); // e.g. "0914" for Sept, 2014
-    // todo, remove this and use app.Util.yearMonth
 
     var days = this.getDaysOfMonth(monthYear);
 
@@ -82,21 +49,15 @@ app.CalendarGrid = React.createClass({
   },
 
   _getEventsOfMonth: function(yearMonth) {
-    // var googleEvents = new Backbone.GoogleEvents(this.props.collection);
-
-    // var googleEvents = this.props.eventscollection;
     var googleEvents = this.state.collection;
 
     if (googleEvents.length && !(googleEvents instanceof Backbone.GoogleEvents)) {
       googleEvents = new Backbone.GoogleEvents(googleEvents);
     }
 
-    // console.log('gridGoogleEvents: ', googleEvents);
-    // window.gridGoogleEvents = googleEvents;
+    // todo cleanup
 
     var eventsOfMonth = googleEvents.length && googleEvents.where({yearMonth: yearMonth}) || [];
-    console.log('googleEvents: ', googleEvents);
-    console.log('eventsOfMonth: ', eventsOfMonth.length);
 
     return eventsOfMonth;
   },
@@ -104,18 +65,15 @@ app.CalendarGrid = React.createClass({
   /**
    * Return an array of days for the current month
    */
-  _getDaysOfMonth: function() {
+  getDaysOfMonth: function() {
     var days = [];
 
     var yearMonth = app.Util.yearMonth(this.state.date);
 
     var events = this._getEventsOfMonth(yearMonth);
 
-    events = new Backbone.Collection(events);
-
-    // debugger;
-
     var iterator = this.state.date.clone().startOf('month');
+
     var previousMonthIterator = iterator.clone().weekday(0);
 
     // previous month in first week
@@ -128,10 +86,9 @@ app.CalendarGrid = React.createClass({
       previousMonthIterator.add(1, 'day');
     }
 
-    // days in month
+    // days in this month
     var daysInMonth = iterator.daysInMonth();
 
-    // for (var index = 1; index <= daysInMonth; index++) {
     var month = iterator.month();
 
     while (month === iterator.month()) {
@@ -144,7 +101,9 @@ app.CalendarGrid = React.createClass({
 
       var now = moment();
 
-      var dateEvents = events.filter(function(item) {
+      var collectionEvents = new Backbone.Collection(events);
+
+      var dateEvents = collectionEvents.filter(function(item) {
         return moment(item.get('date')).date() === iteratorDate;
       });
 
