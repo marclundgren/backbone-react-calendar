@@ -31,7 +31,6 @@ app.CalendarEventList = React.createClass({
           <div className="where">
             Location: {entry.get('location')}
           </div>
-
         </div>
       );
     },
