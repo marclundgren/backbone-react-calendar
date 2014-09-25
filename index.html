@@ -5,24 +5,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 
     <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.2.0/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="css/base.css" />
+    <!-- <link rel="stylesheet" href="css/base.css" /> -->
     <link rel="stylesheet" href="css/calendar.css" />
   </head>
   <body>
 
-    <div class="app">
-      <div id="calendar"></div>
-    </div>
+    <div id="googleCalendar"></div>
 
-    <script src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.7.0/underscore-min.js"></script>
-    <script src="//code.jquery.com/jquery-1.10.0.min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/backbone.js/1.1.2/backbone-min.js"></script>
+    <script src="app/bower_components/underscore/underscore-min.js"></script>
+    <script src="app/bower_components/jquery/dist/jquery.min.js"></script>
+    <script src="app/bower_components/backbone/backbone.js"></script>
 
-    <script src="//fb.me/react-0.10.0.js"></script>
+    <script src="vendor/react-0.10.0.js"></script>
 
-    <script src="//fb.me/JSXTransformer-0.10.0.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.8.2/moment.min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/moment-timezone/0.2.1/moment-timezone.min.js"></script>
+    <script src="vendor/JSXTransformer-0.10.0.js"></script>
+    <script src="vendor/moment.min.js"></script>
+    <script src="vendor/moment-timezone.min.js"></script>
 
     <!-- Utility -->
     <script src="build/util/util.js"></script>
@@ -43,6 +41,8 @@
     <script src="build/react-components/calendar-event-list.js"></script>
     <script src="build/react-components/calendar.js"></script>
     <script src="build/react-components/google-calendar.js"></script>
+
+    <!-- App -->
     <script src="build/react-components/calendar-app.js"></script>
   </body>
 </html>

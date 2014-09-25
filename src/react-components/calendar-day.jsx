@@ -62,7 +62,7 @@ app.CalendarGridHeader = React.createClass({
   getDefaultProps: function() {
     return {
       // to-do, build these with moment's locale
-      names: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
+      names: ['S', 'M', 'T', 'W', 'T', 'F', 'S']
     }
   },
 
@@ -80,12 +80,9 @@ app.CalendarGridHeader = React.createClass({
 app.CalendarGridBody = React.createClass({
   getDefaultProps: function() {
     return {
-      // var events = CalendarGrid._getEventsOfMonth();
-      // var dates = CalendarGrid.getDaysOfMonth(monthYear);
-
       events: [],
-      dates: []
-      // weeks: []
+      dates: [],
+      weeks: []
     };
   },
 
@@ -103,7 +100,14 @@ app.CalendarGridBody = React.createClass({
   },
 
   createWeek: function(item) {
-    return new app.CalendarGridBodyRow({dates: item.dates});
+    return (
+      <app.CalendarGridBodyRow dates={item} />
+    );
+    // debugger;
+
+
+
+    // return new app.CalendarGridBodyRow({dates: item});
   },
 
   render: function() {
@@ -145,6 +149,17 @@ app.CalendarGridHeaderRow = React.createClass({
 
 app.CalendarGridBodyRow = React.createClass({
   createCell: function(item) {
+    // debugger;
+      return (
+        <app.CalendarGridBodyCell
+          activeMonth={item.get('activeMonth')}
+          activeWeek={item.get('activeWeek')}
+          activeDay={item.get('activeDay')}
+          date={item.get('moment').date()}
+          events={item.get('events')} />
+      );
+
+      // will not reach here
       return new app.CalendarGridBodyCell({date: item});
     },
 
@@ -166,14 +181,29 @@ app.CalendarGridBodyCell = React.createClass({
   },
 
   render: function() {
+      var className = '';
+
+      if (this.props.activeMonth) {
+        className += ' active-month';
+
+        if (this.props.activeWeek) {
+          className += ' active-week';
+
+          if (this.props.activeDay) {
+            className += ' active-day';
+          }
+        }
+      }
+
       return (
         <div className='grid-cell'>
-          <div>
+          <div className={className}>
             <div>
               <span>{this.props.date}</span>
             </div>
+
+            <app.EventIndicator hasEvents={this.props.events.length} />
           </div>
-          <app.EventIndicator hasEvents={this.props.events.length} />
         </div>
       );
     }

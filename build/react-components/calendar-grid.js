@@ -46,6 +46,8 @@ app.CalendarGrid = React.createClass({displayName: 'CalendarGrid',
       React.DOM.div({className: "row"}
       )
     );
+
+    // will not run
     return app.CalendarGridRow(item);
   },
 
@@ -58,14 +60,22 @@ app.CalendarGrid = React.createClass({displayName: 'CalendarGrid',
   },
 
   getWeeks: function() {
-    // convert the collection into weeks
+    var daysOfMonth = this.getDaysOfMonth();
+    // todo: make this clear, we're returning a grid that may include days prior to and after the current month
 
-    var collection = this.state.collection;
+    var weeksInMonth = (daysOfMonth.length / 7);
 
+    var daysOfMonthCollection = new Backbone.Collection(daysOfMonth);
 
-    // magic
+    var weeks = [];
 
-    return [];
+    for (var index = 0; index < weeksInMonth; index++) {
+      weeks[index] = daysOfMonthCollection.where({week: index + 1});
+    }
+
+    console.log('weeks', weeks);
+
+    return weeks;
   },
 
   render: function() {
@@ -75,13 +85,18 @@ app.CalendarGrid = React.createClass({displayName: 'CalendarGrid',
 
     var events = this._getEventsOfMonth();
 
+    var weeks = this.getWeeks();
+    console.log('weeks: ', weeks);
+
+    // todo move calendar and controls into calendar.jsx
+
     return (
-      React.DOM.div({className: "clndr"}, 
+      React.DOM.div({className: "calendar"}, 
         app.CalendarControls({date: this.state.date, onPrev: this.prev, onNext: this.next}), 
 
         React.DOM.div({className: "calendar-grid"}, 
           app.CalendarGridHeader(null), 
-          app.CalendarGridBody({events: events, dates: dates})
+          app.CalendarGridBody({events: events, dates: dates, weeks: weeks})
         )
       )
     );
@@ -123,61 +138,78 @@ app.CalendarGrid = React.createClass({displayName: 'CalendarGrid',
 
     var previousMonthIterator = iterator.clone().weekday(0);
 
+    var weekOfMonth = 1;
+
     // previous month in first week
     while (previousMonthIterator.weekday() < iterator.weekday()) {
       days.push({
+        activeMonth: false,
+        activeWeek: false,
+        activeDay: false,
+        className: 'date prev-month',
+        events: [],
         moment: previousMonthIterator.clone(),
-        className: 'date prev-month'
+        week: weekOfMonth
       });
 
       previousMonthIterator.add(1, 'day');
     }
-
-    // days in this month
-    var daysInMonth = iterator.daysInMonth();
 
     var month = iterator.month();
 
     while (month === iterator.month()) {
       var iteratorDate = iterator.date();
 
-      var date = {
-        moment: iterator.clone(),
-        className: 'date'
-      };
-
-      var now = moment();
-
       var collectionEvents = new Backbone.Collection(events);
 
+      // IF i change the DATE attr, i could collectionEvents.where({date: iteratorDate})
       var dateEvents = collectionEvents.filter(function(item) {
         return moment(item.get('date')).date() === iteratorDate;
       });
 
-      date.events = dateEvents;
+      var now = moment();
 
-      if (date.events.length) {
-        date.className += ' events';
-      }
+      var activeWeek = now.week() === iterator.week();
 
-      if (now.week() === iterator.week()) {
+      var activeDay = now.dayOfYear() === iterator.dayOfYear();
+
+      if (activeWeek) {
         date.className += ' active-week';
 
-        if (now.dayOfYear() === iterator.dayOfYear()) {
+        if (activeDay) {
           date.className += ' today';
         }
       }
 
+      var date = {
+        activeMonth: true,
+        activeWeek: activeWeek,
+        activeDay: activeDay,
+        className: 'date',
+        events: dateEvents,
+        moment: iterator.clone(),
+        week: weekOfMonth
+      };
+
       days.push(date);
 
       iterator.add(1, 'day');
+
+      if (days.length % 7 === 0) {
+        weekOfMonth++;
+      }
     }
 
     // next month in last week
     while (iterator.weekday() !== 0) {
       days.push({
+        activeMonth: false,
+        activeWeek: false,
+        activeDay: false,
         moment: iterator.clone(),
-        className: 'date next-month'
+        className: 'date next-month',
+        events: [],
+        week: weekOfMonth
       });
 
       iterator.add(1, 'day');
