@@ -62,7 +62,7 @@ app.CalendarGridHeader = React.createClass({displayName: 'CalendarGridHeader',
   getDefaultProps: function() {
     return {
       // to-do, build these with moment's locale
-      names: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
+      names: ['S', 'M', 'T', 'W', 'T', 'F', 'S']
     }
   },
 
@@ -80,25 +80,34 @@ app.CalendarGridHeader = React.createClass({displayName: 'CalendarGridHeader',
 app.CalendarGridBody = React.createClass({displayName: 'CalendarGridBody',
   getDefaultProps: function() {
     return {
-      // var events = CalendarGrid._getEventsOfMonth();
-      // var dates = CalendarGrid.getDaysOfMonth(monthYear);
-
       events: [],
-      dates: []
-      // weeks: []
+      dates: [],
+      weeks: []
     };
   },
 
   getEventsByWeek: function() {
-    var eventsByWeek = [];
+    var eventsByWeek = this.props.events;
 
     // magic goes here
+    debugger;
+
+    // make sure this is a collection
+
+
 
     return eventsByWeek;
   },
 
   createWeek: function(item) {
-    return new app.CalendarGridBodyRow({dates: item.dates});
+    return (
+      app.CalendarGridBodyRow({dates: item})
+    );
+    // debugger;
+
+
+
+    // return new app.CalendarGridBodyRow({dates: item});
   },
 
   render: function() {
@@ -140,6 +149,17 @@ app.CalendarGridHeaderRow = React.createClass({displayName: 'CalendarGridHeaderR
 
 app.CalendarGridBodyRow = React.createClass({displayName: 'CalendarGridBodyRow',
   createCell: function(item) {
+    // debugger;
+      return (
+        app.CalendarGridBodyCell({
+          activeMonth: item.get('activeMonth'), 
+          activeWeek: item.get('activeWeek'), 
+          activeDay: item.get('activeDay'), 
+          date: item.get('moment').date(), 
+          events: item.get('events')})
+      );
+
+      // will not reach here
       return new app.CalendarGridBodyCell({date: item});
     },
 
@@ -161,14 +181,29 @@ app.CalendarGridBodyCell = React.createClass({displayName: 'CalendarGridBodyCell
   },
 
   render: function() {
+      var className = '';
+
+      if (this.props.activeMonth) {
+        className += ' active-month';
+
+        if (this.props.activeWeek) {
+          className += ' active-week';
+
+          if (this.props.activeDay) {
+            className += ' active-day';
+          }
+        }
+      }
+
       return (
         React.DOM.div({className: "grid-cell"}, 
-          React.DOM.div(null, 
+          React.DOM.div({className: className}, 
             React.DOM.div(null, 
               React.DOM.span(null, this.props.date)
-            )
-          ), 
-          app.EventIndicator({hasEvents: this.props.events.length})
+            ), 
+
+            app.EventIndicator({hasEvents: this.props.events.length})
+          )
         )
       );
     }

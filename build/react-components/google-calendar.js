@@ -5,6 +5,24 @@
 // app namespace
 var app = app || {};
 
+app.GoogleCalendar = React.createClass({displayName: 'GoogleCalendar',
+  getDefaultProps: function() {
+    return {
+      params: {},
+      sources: []
+    };
+  },
+
+  render: function() {
+    // todo: this.trasnferPropsTo (app.googleClaendar)
+    return (
+      React.DOM.div({className: "google-calendar"}, 
+        app.Calendar({params: this.props.params, sources: this.props.sources})
+      )
+    );
+  }
+});
+
 Backbone.GoogleCalendar = Backbone.Model.extend({
   defaults: {
     events: new Backbone.GoogleEvents(),
@@ -18,15 +36,15 @@ Backbone.GoogleCalendar = Backbone.Model.extend({
   initialize: function() {
     var self = this;
 
-    this.fetchSources().done(function(results) {
-      React.renderComponent(
-        app.Calendar({
-          sources: self.get('sources'), 
-          eventscollection: self.get('events'), 
-          collection: self.get('events')}),
-        document.getElementById('calendar')
-      );
-    });
+    // this.fetchSources().done(function(results) {
+    //   React.renderComponent(
+    //     <app.Calendar
+    //       sources={self.get('sources')}
+    //       eventscollection={self.get('events')}
+    //       collection={self.get('events')} />,
+    //     document.getElementById('calendar')
+    //   );
+    // });
   },
 
   getSources: function() {

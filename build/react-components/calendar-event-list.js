@@ -30,8 +30,8 @@ app.CalendarEventList = React.createClass({displayName: 'CalendarEventList',
           ), 
           React.DOM.div({className: "where"}, 
             "Location: ", entry.get('location')
-          ), 
-          React.DOM.div({className: "entry-content"}, entry.get('content'))
+          )
+
         )
       );
     },

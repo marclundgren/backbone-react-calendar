@@ -2,6 +2,9 @@
  * @jsx React.DOM
  */
 
+// app namespace
+var app = app || {};
+
 var params = {
   // 'max-results': '9999',
   alt: 'json-in-script',
@@ -19,7 +22,7 @@ var sources = [
   {name: 'For Educators', id: 'qtr7ue6scgnc0noa9eb34ku220%40group.calendar.google.com', params: params}
 ];
 
-new Backbone.GoogleCalendar({
-  params: params, // optional
-  sources: sources
-});
+React.renderComponent(
+  app.GoogleCalendar({params: params, sources: sources}),
+  document.getElementById('googleCalendar')
+);

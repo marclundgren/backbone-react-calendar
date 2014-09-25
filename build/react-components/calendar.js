@@ -4,8 +4,42 @@
 var app = app || {};
 
 app.Calendar = React.createClass({displayName: 'Calendar',
+  getDefaultProps: function() {
+    return {
+      params: {},
+      sources: []
+    };
+  },
+
   getInitialState: function() {
-    return {date: new Date()};
+    return {
+      date: new Date(),
+      collection: new Backbone.GoogleCalendar
+    };
+  },
+
+  componentDidMount: function() {
+    var self = this;
+
+    var googleCalendar = new Backbone.GoogleCalendar({
+      params: this.props.params,
+      sources: this.props.sources
+    });
+
+    googleCalendar.fetchSources().done(function(results) {
+      var collection = googleCalendar.get('events');
+
+      if (!(collection instanceof Backbone.GoogleEvents)) {
+        collection = new Backbone.GoogleEvents(collection);
+      }
+
+      self.setState({collection: collection});
+
+      self.refs.calendarGrid.setState({collection: collection});
+      self.refs.calendarEventList.setState({collection: collection});
+
+      console.log('collection: ', collection);
+    });
   },
 
   onChange: function(event) {
@@ -14,7 +48,7 @@ app.Calendar = React.createClass({displayName: 'Calendar',
     var vals = $(event.currentTarget).val();
 
     var filteredEvents = vals.map(function(name) {
-      return self.props.eventscollection.where({calendarName: name})
+      return self.state.collection.where({calendarName: name})
     });
 
     var flatFilteredEvents = _.flatten(filteredEvents);
@@ -24,11 +58,13 @@ app.Calendar = React.createClass({displayName: 'Calendar',
   },
 
   createOption: function(item) {
-    return app.CalendarSourceOption({name: item.get('name')});
+    return app.CalendarSourceOption({name: item.name});
   },
 
   render: function() {
-    var names = this.props.sources.pluck('name');
+    var sources = new Backbone.Collection(this.props.sources);
+
+    var names = sources.pluck('name');
 
     return (
       React.DOM.div({className: "container-fluid"}, 
@@ -43,14 +79,14 @@ app.Calendar = React.createClass({displayName: 'Calendar',
         ), 
 
         React.DOM.div({className: "row"}, 
-          React.DOM.div({className: "col-xs-12 col-md-8"}, 
+          React.DOM.div({className: "col-xs-12 col-md-4"}, 
             app.CalendarGrid({
               date: this.state.date, 
               collection: this.props.collection, 
               ref: "calendarGrid"})
           ), 
 
-          React.DOM.div({className: "col-xs-12 col-md-4"}, 
+          React.DOM.div({className: "col-xs-12 col-md-8"}, 
             app.CalendarEventList({
               collection: this.props.collection, 
               ref: "calendarEventList"})

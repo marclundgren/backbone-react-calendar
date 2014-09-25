@@ -14,17 +14,16 @@ Backbone.GoogleEvent = Backbone.Model.extend({
     title:      '',
     updated:    '',
     where:      '',
+    week:      '',
     yearMonth: ''
   },
 
   initialize: function() {
-    this.set('yearMonth', app.Util.yearMonth(this.get('startTime')));
+    this.set('yearMonth', this.get('startTime')); //todo: remove?
 
-    if (!window.flag) {
-      window.flag = 1;
+    var startMoment = this._getStartMoment();
 
-      window._this = this;
-    }
+    this.set('week', startMoment.week());
   },
 
   starts: function() {
