@@ -6,6 +6,12 @@
 var app = app || {};
 
 app.CalendarControls = React.createClass({displayName: 'CalendarControls',
+  getDefaultProps: function() {
+    return {
+      date: moment()
+    };
+  },
+
   next: function() {
     this.props.onNext();
   },

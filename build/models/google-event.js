@@ -14,11 +14,14 @@ Backbone.GoogleEvent = Backbone.Model.extend({
     title:      '',
     updated:    '',
     where:      '',
-    yearMonth: ''
+    yearMonth: '',
+    yearMonthDay: ''
   },
 
   initialize: function() {
     this.set('yearMonth', app.Util.yearMonth(this.get('startTime')));
+
+    this.set('yearMonthDay', this._getStartMoment().format('YYYY-MM-DD'));
   },
 
   starts: function() {

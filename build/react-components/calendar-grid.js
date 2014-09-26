@@ -4,36 +4,30 @@
 var app = app || {};
 
 app.CalendarGrid = React.createClass({displayName: 'CalendarGrid',
-  getInitialState: function() {
+  getDefaultProps: function() {
     return {
-      collection: [],
-      date: moment(this.props.date)
+      className: 'calendar-grid',
+      // date: moment(),
+      headerNames: ['S', 'M', 'T', 'W', 'T', 'F', 'S']
     };
   },
 
-  createDate: function(item) {
-    return app.CalendarDate(item);
+  getInitialState: function() {
+    return {
+      collection: []
+    };
   },
 
-  createCell: function(item) {
-    return app.CalendarGridDate(item);
-  },
-
-  next: function() {
-    this.setState({date: this.state.date.add(1, 'month')});
-  },
-
-  prev: function() {
-    this.setState({date: this.state.date.subtract(1, 'month')});
+  componentWillMount: function() {
+    this.setState({collection: new Backbone.GoogleEvents(this.state.collection)});
   },
 
   getWeeks: function() {
     var weeks = [];
 
     var daysOfMonth = this.getDaysOfMonth();
-    // todo: make this clear, we're returning a grid that may include days prior to and after the current month
 
-    var weeksInMonth = (daysOfMonth.length / 7);
+    var weeksInMonth = (daysOfMonth.length / this.props.headerNames.length);
 
     var daysOfMonthCollection = new Backbone.Collection(daysOfMonth);
 
@@ -45,18 +39,18 @@ app.CalendarGrid = React.createClass({displayName: 'CalendarGrid',
   },
 
   render: function() {
-    var monthYear = this.state.date.format('MMYY'); // e.g. "0914" for Sept, 2014
+    var monthYear = this.props.date.format('MMYY'); // e.g. "0914" for Sept, 2014
 
-    // todo move calendar and controls into calendar.jsx
+    var dates = this.getDaysOfMonth(monthYear);
 
     return (
-      React.DOM.div({className: "calendar"}, 
-        app.CalendarControls({date: this.state.date, onPrev: this.prev, onNext: this.next}), 
-
-        React.DOM.div({className: "calendar-grid"}, 
-          app.CalendarGridHeader(null), 
-          app.CalendarGridBody({events: this._getEventsOfMonth(), dates: this.getDaysOfMonth(monthYear), weeks: this.getWeeks()})
-        )
+      React.DOM.div({className: this.props.className}, 
+        app.CalendarGridHeader({names: this.props.headerNames}), 
+        app.CalendarGridBody({
+          events: this._getEventsOfMonth(), 
+          dates: dates, 
+          onGridSelect: this.props.onGridSelect, 
+          weeks: this.getWeeks()})
       )
     );
   },
@@ -76,16 +70,17 @@ app.CalendarGrid = React.createClass({displayName: 'CalendarGrid',
   },
 
   /**
-   * Return an array of days for the current month
+   * Return an array of days for the current month that may include days prior to and after the current month
+   * to complete the grid.
    */
   getDaysOfMonth: function() {
     var days = [];
 
-    var yearMonth = app.Util.yearMonth(this.state.date);
+    var yearMonth = app.Util.yearMonth(this.props.date);
 
     var events = this._getEventsOfMonth(yearMonth);
 
-    var iterator = this.state.date.clone().startOf('month');
+    var iterator = this.props.date.clone().startOf('month');
 
     var previousMonthIterator = iterator.clone().weekday(0);
 
@@ -94,11 +89,8 @@ app.CalendarGrid = React.createClass({displayName: 'CalendarGrid',
     // previous month in first week
     while (previousMonthIterator.weekday() < iterator.weekday()) {
       days.push({
-        activeMonth: false,
-        activeWeek: false,
-        activeDay: false,
         className: 'date prev-month',
-        events: [],
+        fullDate: iterator.toDate(),
         moment: previousMonthIterator.clone(),
         week: weekOfMonth
       });
@@ -118,11 +110,13 @@ app.CalendarGrid = React.createClass({displayName: 'CalendarGrid',
         return moment(item.get('date')).date() === iteratorDate;
       });
 
-      var now = moment();
+      // var now = moment();
+      var date = this.props.date;
 
-      var activeWeek = now.week() === iterator.week();
+      var activeWeek = date.week() === iterator.week();
 
-      var activeDay = now.dayOfYear() === iterator.dayOfYear();
+      var activeDay = date.dayOfYear() === iterator.dayOfYear();
+      // var activeDay = now.dayOfYear() === iterator.dayOfYear();
 
       if (activeWeek) {
         date.className += ' active-week';
@@ -138,6 +132,7 @@ app.CalendarGrid = React.createClass({displayName: 'CalendarGrid',
         activeDay: activeDay,
         className: 'date',
         events: dateEvents,
+        fullDate: iterator.toDate(),
         moment: iterator.clone(),
         week: weekOfMonth
       };
@@ -154,12 +149,9 @@ app.CalendarGrid = React.createClass({displayName: 'CalendarGrid',
     // next month in last week
     while (iterator.weekday() !== 0) {
       days.push({
-        activeMonth: false,
-        activeWeek: false,
-        activeDay: false,
-        moment: iterator.clone(),
         className: 'date next-month',
-        events: [],
+        fullDate: iterator.toDate(),
+        moment: iterator.clone(),
         week: weekOfMonth
       });
 

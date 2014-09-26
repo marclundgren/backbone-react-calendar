@@ -12,7 +12,7 @@
 
 .calendar {
   margin-bottom: 1em;
-  max-width: 350px;
+  max-width: 630px;
   min-width: 290px; }
   .calendar .row {
     margin: 0; }
@@ -48,11 +48,8 @@
       color: #dcdcdc;
       cursor: pointer; }
       .calendar .week-body .grid-cell .circle {
-        border-radius: 50%;
-        width: 50px;
-        height: 50px;
-        /* width and height can be anything, as long as they're equal */
         background-color: #2789e4;
+        border-radius: 50%;
         color: #fff; }
       .calendar .week-body .grid-cell .active-month {
         color: #3f3f3f; }
@@ -69,9 +66,7 @@
         .calendar .week-body .grid-cell .active-month:hover {
           color: #f5f5f5;
           background-color: #27e5e4;
-          border-radius: 50%;
-          width: 50px;
-          height: 50px; }
+          border-radius: 50%; }
       .calendar .week-body .grid-cell .event-indicator {
         font-size: 2em;
         top: 75%; }
@@ -125,6 +120,7 @@
     font-size: 0;
     height: 0;
     line-height: 0;
+    margin: 0 12px;
     position: absolute;
     width: 0; }
   .calendar-controls .arrow-next {

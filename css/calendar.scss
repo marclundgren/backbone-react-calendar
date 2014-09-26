@@ -4,7 +4,7 @@ $number-of-days: 7;
 // dimensions
 $container-padding-horizontal: 30px;
 $iphone-width: 320px;
-$max-width: 50px * $number-of-days;
+$max-width: 90px * $number-of-days;
 $min-width: $iphone-width - $container-padding-horizontal;
 $column-width: percentage(1/$number-of-days);
 
@@ -96,13 +96,11 @@ $date-hover-background-color: #27e5e4;
       cursor: pointer;
 
       .circle {
-        border-radius: 50%;
-        width: 50px;
-        height: 50px;
-        /* width and height can be anything, as long as they're equal */
-
         background-color: $background-colour-active-day;
+        border-radius: 50%;
         color: $date-active-color-selected;
+        // height: 100%;
+        // width: 100%;
       }
 
       .active-month {
@@ -129,10 +127,7 @@ $date-hover-background-color: #27e5e4;
         &:hover {
           color: $date-hover-color;
           background-color: $date-hover-background-color;
-
           border-radius: 50%;
-          width: 50px;
-          height: 50px;
         }
       }
 
@@ -216,6 +211,7 @@ $date-hover-background-color: #27e5e4;
     font-size: 0;
     height: 0;
     line-height: 0;
+    margin: 0 12px;
     position: absolute;
     width: 0;
   }
