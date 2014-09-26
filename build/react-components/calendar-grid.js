@@ -11,44 +11,12 @@ app.CalendarGrid = React.createClass({displayName: 'CalendarGrid',
     };
   },
 
-  createEntry: function (entry) {
-    return (
-      React.DOM.div({className: "event"}, 
-        React.DOM.h3({className: "title"}, 
-          React.DOM.a({href: entry.get('link')}, entry.get('title'))
-        ), 
-        React.DOM.div({className: "when"}, 
-          React.DOM.div({className: "starts"}, 
-            "Starts: ", entry.starts()
-          ), 
-          React.DOM.div({className: "duration"}, 
-            "Duration: ", entry.duration()
-          )
-        ), 
-        React.DOM.div({className: "where"}, 
-          "Location: ", entry.get('location')
-        ), 
-        React.DOM.div({className: "entry-content"}, entry.get('content'))
-      )
-    );
-  },
-
   createDate: function(item) {
     return app.CalendarDate(item);
   },
 
   createCell: function(item) {
     return app.CalendarGridDate(item);
-  },
-
-  createRow: function() {
-    return (
-      React.DOM.div({className: "row"}
-      )
-    );
-
-    // will not run
-    return app.CalendarGridRow(item);
   },
 
   next: function() {
@@ -60,6 +28,8 @@ app.CalendarGrid = React.createClass({displayName: 'CalendarGrid',
   },
 
   getWeeks: function() {
+    var weeks = [];
+
     var daysOfMonth = this.getDaysOfMonth();
     // todo: make this clear, we're returning a grid that may include days prior to and after the current month
 
@@ -67,26 +37,15 @@ app.CalendarGrid = React.createClass({displayName: 'CalendarGrid',
 
     var daysOfMonthCollection = new Backbone.Collection(daysOfMonth);
 
-    var weeks = [];
-
     for (var index = 0; index < weeksInMonth; index++) {
       weeks[index] = daysOfMonthCollection.where({week: index + 1});
     }
-
-    console.log('weeks', weeks);
 
     return weeks;
   },
 
   render: function() {
     var monthYear = this.state.date.format('MMYY'); // e.g. "0914" for Sept, 2014
-
-    var dates = this.getDaysOfMonth(monthYear);
-
-    var events = this._getEventsOfMonth();
-
-    var weeks = this.getWeeks();
-    console.log('weeks: ', weeks);
 
     // todo move calendar and controls into calendar.jsx
 
@@ -96,18 +55,10 @@ app.CalendarGrid = React.createClass({displayName: 'CalendarGrid',
 
         React.DOM.div({className: "calendar-grid"}, 
           app.CalendarGridHeader(null), 
-          app.CalendarGridBody({events: events, dates: dates, weeks: weeks})
+          app.CalendarGridBody({events: this._getEventsOfMonth(), dates: this.getDaysOfMonth(monthYear), weeks: this.getWeeks()})
         )
       )
     );
-  },
-
-  _getEventsOfWeek: function() {
-    // todo
-
-    // var eventsOfMonth = this._getEventsOfMonth();
-
-    // var eventsOfWeek =
   },
 
   _getEventsOfMonth: function(yearMonth) {

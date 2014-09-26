@@ -8,7 +8,6 @@ Backbone.GoogleEvent = Backbone.Model.extend({
     date:       '',
     endTime:    '',
     id:         '',
-    location:   '',
     link:       '',
     startTime:  '',
     title:      '',

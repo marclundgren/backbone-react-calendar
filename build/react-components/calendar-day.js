@@ -43,6 +43,8 @@ app.CalendarGridDate = React.createClass({displayName: 'CalendarGridDate',
       className += ' active-day';
     }
 
+    console.log('blah blah');
+
     return (
       React.DOM.div({className: this.props.className, onClick: this.onClick}, 
         React.DOM.div({className: className}, 
@@ -103,11 +105,6 @@ app.CalendarGridBody = React.createClass({displayName: 'CalendarGridBody',
     return (
       app.CalendarGridBodyRow({dates: item})
     );
-    // debugger;
-
-
-
-    // return new app.CalendarGridBodyRow({dates: item});
   },
 
   render: function() {
@@ -148,6 +145,12 @@ app.CalendarGridHeaderRow = React.createClass({displayName: 'CalendarGridHeaderR
 });
 
 app.CalendarGridBodyRow = React.createClass({displayName: 'CalendarGridBodyRow',
+  getDefaultProps: function() {
+    return {
+      active: false
+    };
+  },
+
   createCell: function(item) {
     // debugger;
       return (
@@ -180,6 +183,12 @@ app.CalendarGridBodyCell = React.createClass({displayName: 'CalendarGridBodyCell
     };
   },
 
+  onClick: function() {
+    console.log('clicky');
+
+    console.log(this.props.events);
+  },
+
   render: function() {
       var className = '';
 
@@ -190,13 +199,13 @@ app.CalendarGridBodyCell = React.createClass({displayName: 'CalendarGridBodyCell
           className += ' active-week';
 
           if (this.props.activeDay) {
-            className += ' active-day';
+            className += ' circle active-day';
           }
         }
       }
 
       return (
-        React.DOM.div({className: "grid-cell"}, 
+        React.DOM.div({className: "grid-cell", onClick: this.onClick}, 
           React.DOM.div({className: className}, 
             React.DOM.div(null, 
               React.DOM.span(null, this.props.date)

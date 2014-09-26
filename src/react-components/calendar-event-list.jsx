@@ -29,7 +29,7 @@ app.CalendarEventList = React.createClass({
             </div>
           </div>
           <div className="where">
-            Location: {entry.get('location')}
+            Location: {entry.get('where')}
           </div>
         </div>
       );
