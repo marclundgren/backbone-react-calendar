@@ -4,20 +4,23 @@ $number-of-days: 7;
 // dimensions
 $container-padding-horizontal: 30px;
 $iphone-width: 320px;
-$max-width: 150px * $number-of-days;
+$max-width: 50px * $number-of-days;
 $min-width: $iphone-width - $container-padding-horizontal;
 $column-width: percentage(1/$number-of-days);
 
 // colours
+$date-active-color: #000000;
+$date-active-color-selected: #fff;
 $date-colour-header: #b4b4b4;
 $date-colour-body: #3f3f3f;
 $date-colour-inactive: #dcdcdc;
 $background-colour-active-week: #dcdcdc;
+// $background-colour-active-week: #f5f5f5;
 $background-colour-active-day: #2789e4;;
 $background-colour: #f5f5f5;
+// $background-colour: #dcdcdc;
 $date-hover-color: #f5f5f5;
 $date-hover-background-color: #27e5e4;
-
 
 .calendar-source-filter {
   margin: 1em 0;
@@ -92,31 +95,54 @@ $date-hover-background-color: #27e5e4;
       color: $date-colour-inactive;
       cursor: pointer;
 
-      &:hover {
-        color: $date-hover-color;
-        background-color: $date-hover-background-color;
+      .circle {
+        border-radius: 50%;
+        width: 50px;
+        height: 50px;
+        /* width and height can be anything, as long as they're equal */
+
+        background-color: $background-colour-active-day;
+        color: $date-active-color-selected;
       }
 
       .active-month {
         color: $date-colour-body;
 
-        &.active-week {
-          background-color: $background-colour-active-week;
+        &.circle {
+          color: $date-active-color-selected;
+        }
 
-          &.active-day {
-            background-color: $background-colour-active-day;
-            color: $date-hover-color;
+        &.active-week-zzzzz {
+          background-color: $background-colour-active-week;
+        }
+
+        &.active-day {
+          background-color: $background-colour-active-day;
+          color: $date-active-color;
+          font-weight: bolder;
+
+          &.circle {
+            color: $date-active-color-selected;
           }
         }
+
+        &:hover {
+          color: $date-hover-color;
+          background-color: $date-hover-background-color;
+
+          border-radius: 50%;
+          width: 50px;
+          height: 50px;
+        }
       }
-    }
 
-    .event-indicator {
-      font-size: 2em;
-      top: 75%;
+      .event-indicator {
+        font-size: 2em;
+        top: 75%;
 
-      &.has-events:after {
-        content: "·"
+        &.has-events:after {
+          content: "·"
+        }
       }
     }
   }
@@ -180,8 +206,7 @@ $date-hover-background-color: #27e5e4;
   .title {
     -webkit-font-smoothing: antialiased;
     display: inline-block;
-    // text-align: center;
-    // width: 100%;
+    font-size: 17px;
     margin: 0;
   }
 
@@ -205,29 +230,5 @@ $date-hover-background-color: #27e5e4;
     left: 0;
     border-right-color: black;
     border-right-width: 12px;
-  }
-
-  .__arrow {
-    width: 30px;
-    height: 27px;
-    display: inline-block;
-    vertical-align: middle;
-    padding: 0;
-    position: absolute;
-    opacity: 0.4;
-    outline: none;
-    background: url(https://d3dma7a8zw52bz.cloudfront.net/assets/icons/calendar_sprite-ef547d27ebbb5ec4e7b2c7e752471164.png) no-repeat 0 0 #fff;
-    border-radius: 0;
-    -webkit-border-radius: 0;
-    -moz-border-radius: 0;
-
-    &.arrow-previous {
-      left: 0;
-    }
-
-    &.arrow-next {
-      background-position: 6px -50px;
-      right: 0;
-    }
   }
 }

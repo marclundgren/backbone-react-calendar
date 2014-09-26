@@ -43,6 +43,8 @@ app.CalendarGridDate = React.createClass({
       className += ' active-day';
     }
 
+    console.log('blah blah');
+
     return (
       <div className={this.props.className} onClick={this.onClick}>
         <div className={className}>
@@ -103,11 +105,6 @@ app.CalendarGridBody = React.createClass({
     return (
       <app.CalendarGridBodyRow dates={item} />
     );
-    // debugger;
-
-
-
-    // return new app.CalendarGridBodyRow({dates: item});
   },
 
   render: function() {
@@ -148,6 +145,12 @@ app.CalendarGridHeaderRow = React.createClass({
 });
 
 app.CalendarGridBodyRow = React.createClass({
+  getDefaultProps: function() {
+    return {
+      active: false
+    };
+  },
+
   createCell: function(item) {
     // debugger;
       return (
@@ -180,6 +183,12 @@ app.CalendarGridBodyCell = React.createClass({
     };
   },
 
+  onClick: function() {
+    console.log('clicky');
+
+    console.log(this.props.events);
+  },
+
   render: function() {
       var className = '';
 
@@ -190,13 +199,13 @@ app.CalendarGridBodyCell = React.createClass({
           className += ' active-week';
 
           if (this.props.activeDay) {
-            className += ' active-day';
+            className += ' circle active-day';
           }
         }
       }
 
       return (
-        <div className='grid-cell'>
+        <div className='grid-cell' onClick={this.onClick}>
           <div className={className}>
             <div>
               <span>{this.props.date}</span>
