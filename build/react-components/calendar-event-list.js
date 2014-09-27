@@ -7,17 +7,28 @@ var app = app || {};
 
 // React Component
 app.CalendarEventList = React.createClass({displayName: 'CalendarEventList',
+    getDefaultProps: function() {
+      return {
+        title: 'All Events'
+      };
+    },
+
     getInitialState: function() {
       return {
         collection: [],
-        sortValue: 'date'
+        sortValue: 'date',
+        visible: true
       };
+    },
+
+    toggleVisible: function() {
+      this.setState({visible: !this.state.visible});
     },
 
     createEntry: function (entry) {
       return (
         React.DOM.div({className: "event"}, 
-          React.DOM.h3({className: "title"}, 
+          React.DOM.h5({className: "title"}, 
             React.DOM.a({href: entry.get('link')}, entry.get('title'))
           ), 
           React.DOM.div({className: "when"}, 
@@ -28,8 +39,8 @@ app.CalendarEventList = React.createClass({displayName: 'CalendarEventList',
               "Duration: ", entry.duration()
             )
           ), 
-          React.DOM.div({className: "where"}, 
-            "Location: ", entry.get('where')
+          React.DOM.div({className: "location"}, 
+            "Location: ", entry.get('location')
           )
         )
       );
@@ -37,6 +48,7 @@ app.CalendarEventList = React.createClass({displayName: 'CalendarEventList',
 
     onChange: function(e) {
       var sortValue = this.refs.sortValue.getDOMNode().value;
+      console.log('sortValue: ', sortValue);
 
       this.setState({sortValue: sortValue});
     },
@@ -51,19 +63,29 @@ app.CalendarEventList = React.createClass({displayName: 'CalendarEventList',
       // todo clean this up!
       var events = googleEvents.length && googleEvents.sortBy(this.state.sortValue) || [];
 
+      var classNameEventsList = 'events-list';
+
+      if (!this.state.visible) {
+        classNameEventsList += ' hide';
+      }
+
       return (
         React.DOM.div({className: "eventListContainer"}, 
           React.DOM.div({className: "event-list-header"}, 
-            React.DOM.h2({className: "events-title"}, "Events"), 
+            React.DOM.h3({className: "events-title"}, this.props.title), 
 
             React.DOM.select({ref: "sortValue", value: this.state.sortValue, name: "sortvalue", onChange: this.onChange}, 
               React.DOM.option({value: "date"}, "Date"), 
               React.DOM.option({value: "title"}, "Title"), 
               React.DOM.option({value: "location"}, "Location")
+            ), 
+
+            React.DOM.div({class: "toggleVisible", onClick: this.toggleVisible}, 
+              "toggle visible"
             )
           ), 
 
-          React.DOM.div({className: "events-list"}, events.map(this.createEntry))
+          React.DOM.div({className: classNameEventsList}, events.map(this.createEntry))
         )
       );
     }

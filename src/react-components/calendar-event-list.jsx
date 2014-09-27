@@ -7,19 +7,30 @@ var app = app || {};
 
 // React Component
 app.CalendarEventList = React.createClass({
+    getDefaultProps: function() {
+      return {
+        title: 'All Events'
+      };
+    },
+
     getInitialState: function() {
       return {
         collection: [],
-        sortValue: 'date'
+        sortValue: 'date',
+        visible: true
       };
+    },
+
+    toggleVisible: function() {
+      this.setState({visible: !this.state.visible});
     },
 
     createEntry: function (entry) {
       return (
         <div className="event">
-          <h3 className="title">
+          <h5 className="title">
             <a href={entry.get('link')}>{entry.get('title')}</a>
-          </h3>
+          </h5>
           <div className="when">
             <div className="starts">
               Starts: {entry.starts()}
@@ -28,8 +39,8 @@ app.CalendarEventList = React.createClass({
               Duration: {entry.duration()}
             </div>
           </div>
-          <div className="where">
-            Location: {entry.get('where')}
+          <div className="location">
+            Location: {entry.get('location')}
           </div>
         </div>
       );
@@ -37,6 +48,7 @@ app.CalendarEventList = React.createClass({
 
     onChange: function(e) {
       var sortValue = this.refs.sortValue.getDOMNode().value;
+      console.log('sortValue: ', sortValue);
 
       this.setState({sortValue: sortValue});
     },
@@ -51,19 +63,29 @@ app.CalendarEventList = React.createClass({
       // todo clean this up!
       var events = googleEvents.length && googleEvents.sortBy(this.state.sortValue) || [];
 
+      var classNameEventsList = 'events-list';
+
+      if (!this.state.visible) {
+        classNameEventsList += ' hide';
+      }
+
       return (
         <div className="eventListContainer">
           <div className="event-list-header">
-            <h2 className="events-title">Events</h2>
+            <h3 className="events-title">{this.props.title}</h3>
 
             <select ref="sortValue" value={this.state.sortValue} name="sortvalue" onChange={this.onChange}>
               <option value="date">Date</option>
               <option value="title">Title</option>
               <option value="location">Location</option>
             </select>
+
+            <div class="toggleVisible" onClick={this.toggleVisible}>
+              toggle visible
+            </div>
           </div>
 
-          <div className="events-list">{events.map(this.createEntry)}</div>
+          <div className={classNameEventsList}>{events.map(this.createEntry)}</div>
         </div>
       );
     }

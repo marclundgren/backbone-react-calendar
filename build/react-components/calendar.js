@@ -19,9 +19,10 @@ app.CalendarDayEvents = React.createClass({displayName: 'CalendarDayEvents',
   createEvent: function(item) {
     return (
       React.DOM.div({className: "event"}, 
-        React.DOM.h3({className: "title"}, 
+        React.DOM.h4({className: "event-title"}, 
           React.DOM.a({href: item.get('link')}, item.get('title'))
         ), 
+
         React.DOM.div({className: "when"}, 
           React.DOM.div({className: "starts"}, 
             "Starts: ", item.starts()
@@ -31,21 +32,32 @@ app.CalendarDayEvents = React.createClass({displayName: 'CalendarDayEvents',
           )
         ), 
         React.DOM.div({className: "where"}, 
-          "Location: ", item.get('where')
+          "Location: ", item.get('location')
         ), 
 
         React.DOM.div({className: "content"}, 
-          "Location: ", item.get('content')
+          React.DOM.div(null, item.get('content'))
         )
       )
     );
   },
 
   render: function() {
+    var events;
+
+    if (this.state.collection.length) {
+      events = this.state.collection.map(this.createEvent);
+    }
+    else {
+      events = 'There are no events.';
+    }
+
     return (
-      React.DOM.div(null, 
-        React.DOM.h2(null, this.props.title), 
-        this.state.collection.map(this.createEvent)
+      React.DOM.div({className: "selected-events-list"}, 
+        React.DOM.div({className: "selected-events-list-header"}, 
+          React.DOM.h3({className: "title"}, this.props.title)
+        ), 
+        events
       )
     );
   }
@@ -54,9 +66,10 @@ app.CalendarDayEvents = React.createClass({displayName: 'CalendarDayEvents',
 app.Calendar = React.createClass({displayName: 'Calendar',
   getDefaultProps: function() {
     return {
-      classNameGrid:      'col-xs-12 col-sm-6 col-md-4 col-lg-6',
-      classNameDayEvents: 'col-xs-12 col-sm-6 col-md-4 col-lg-3',
+      classNameGrid:      'col-xs-12 col-sm-6  col-md-4 col-lg-6',
+      classNameDayEvents: 'col-xs-12 col-sm-6  col-md-4 col-lg-3',
       classNameEventList: 'col-xs-12 col-sm-12 col-md-4 col-lg-3',
+      debounceDelay: 800,
       params: {},
       sources: []
     };
@@ -71,7 +84,6 @@ app.Calendar = React.createClass({displayName: 'Calendar',
   },
 
   componentWillMount: function() {
-    // leverage Moment
     this.setState({date: moment(this.state.date)});
   },
 
@@ -83,25 +95,45 @@ app.Calendar = React.createClass({displayName: 'Calendar',
       sources: this.props.sources
     });
 
-    googleCalendar.fetchSources().done(function(results) {
-      var collection = googleCalendar.get('events');
+    googleCalendar.get('entries').on('add', _.debounce(function(event) {
+      self.updateCalendarComponents(googleCalendar);
+    }), this.props.debounceDelay);
 
-      if (!(collection instanceof Backbone.GoogleEvents)) {
-        collection = new Backbone.GoogleEvents(collection);
-      }
+    googleCalendar.fetchSources();
 
-      // 99% sure this is not needed...
-      self.setState({collection: collection});
+    // googleCalendar.fetchSources().done(function(results) {
+    //   console.log('fetch all sources complete');
 
-      self.refs.calendarGrid.setState({collection: collection});
-      self.refs.calendarEventList.setState({collection: collection});
+    //   var collection = googleCalendar.get('entries');
 
-      var dateEvents = collection.where({
-        yearMonthDay: moment(self.state.date).format('YYYY-MM-DD')
-      });
+    //   // 99% sure this is not needed...
+    //   self.setState({collection: collection});
 
-      self.refs.calendarDayEvents.setState({collection: dateEvents});
+    //   self.refs.calendarGrid.setState({collection: collection});
+    //   self.refs.calendarEventList.setState({collection: collection});
+
+    //   var dateEvents = collection.where({
+    //     yearMonthDay: moment(self.state.date).format('YYYY-MM-DD')
+    //   });
+
+    //   self.refs.calendarDayEvents.setState({collection: dateEvents});
+    // });
+  },
+
+  updateCalendarComponents: function(calendar) {
+    var collection = calendar.get('entries');
+
+    // 99% sure this is not needed...
+    this.setState({collection: collection});
+
+    this.refs.calendarGrid.setState({collection: collection});
+    this.refs.calendarEventList.setState({collection: collection});
+
+    var dateEvents = collection.where({
+      yearMonthDay: moment(this.state.date).format('YYYY-MM-DD')
     });
+
+    this.refs.calendarDayEvents.setState({collection: dateEvents});
   },
 
   onGridSelect: function(cell) {
@@ -152,6 +184,8 @@ app.Calendar = React.createClass({displayName: 'Calendar',
 
     var yearMonthDay = this.state.date.format('YYYY-MM-DD');
 
+    var title = this.state.date.format('MMMM DD') + ' Events';
+
     return (
       React.DOM.div({className: "container-fluid"}, 
         React.DOM.div({className: "row"}, 
@@ -178,7 +212,7 @@ app.Calendar = React.createClass({displayName: 'Calendar',
           ), 
 
           React.DOM.div({className: this.props.classNameDayEvents}, 
-            app.CalendarDayEvents({collection: this.state.activeDayEvents, ref: "calendarDayEvents"})
+            app.CalendarDayEvents({title: title, collection: this.state.activeDayEvents, ref: "calendarDayEvents"})
           ), 
 
           React.DOM.div({className: this.props.classNameEventList}, 
