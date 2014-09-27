@@ -12,7 +12,7 @@ Backbone.GoogleEvent = Backbone.Model.extend({
     startTime:  '',
     title:      '',
     updated:    '',
-    where:      '',
+    location:      '',
     week:      '',
     yearMonth: ''
   },

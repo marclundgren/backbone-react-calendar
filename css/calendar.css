@@ -63,36 +63,41 @@
           font-weight: bolder; }
           .calendar .week-body .grid-cell .active-month.active-day.circle {
             color: #fff; }
-        .calendar .week-body .grid-cell .active-month:hover {
-          color: #f5f5f5;
-          background-color: #27e5e4;
-          border-radius: 50%; }
       .calendar .week-body .grid-cell .event-indicator {
         font-size: 2em;
         top: 75%; }
         .calendar .week-body .grid-cell .event-indicator.has-events:after {
           content: "·"; }
 
-.eventListContainer {
-  height: 640px; }
-  .eventListContainer .event-list-header {
-    border-bottom: 1px solid #eee; }
-    .eventListContainer .event-list-header .events-title {
-      border: none;
-      display: inline-block;
-      margin-right: 1em;
-      margin-bottom: 0;
-      margin-bottom: 7px; }
-    .eventListContainer .event-list-header select {
-      vertical-align: super; }
-    .eventListContainer .event-list-header h2, .eventListContainer .event-list-header select {
-      display: inline-block; }
-  .eventListContainer .events-list {
+/* Desktops and laptops ----------- */
+@media only screen and (min-width: 1224px) {
+  .selected-events-list, .events-list {
     -webkit-overflow-scrolling: touch;
+    max-height: 580px;
     height: 100%;
-    overflow-y: auto; }
-    .eventListContainer .events-list .event {
-      margin-top: 1em; }
+    overflow-y: auto; } }
+/* iPads (landscape) ----------- */
+@media only screen and (min-device-width: 768px) and (max-device-width: 1024px) {
+  .selected-events-list, .events-list {
+    -webkit-overflow-scrolling: touch;
+    max-height: 580px;
+    height: 100%;
+    overflow-y: auto; } }
+.selected-events-list-header, .event-list-header {
+  border-bottom: 1px solid #eee; }
+
+.eventListContainer {
+  height: 580px; }
+  .eventListContainer .event-list-header .events-title {
+    border: none;
+    display: inline-block;
+    margin-right: 1em; }
+  .eventListContainer .event-list-header select {
+    vertical-align: super; }
+  .eventListContainer .event-list-header h2, .eventListContainer .event-list-header select {
+    display: inline-block; }
+  .eventListContainer .events-list .event {
+    margin-top: 1em; }
 
 .entry-content {
   /*I shouldn't need to do this...*/

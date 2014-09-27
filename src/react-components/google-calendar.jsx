@@ -25,32 +25,20 @@ app.GoogleCalendar = React.createClass({
 
 Backbone.GoogleCalendar = Backbone.Model.extend({
   defaults: {
-    events: new Backbone.GoogleEvents(),
     params: {},
-    sources: []
+    sources: new Backbone.Sources(),
+    entries: new Backbone.GoogleEvents()
   },
-
-  // to-do
-  // MAP_SOURCES: {},
 
   initialize: function() {
-    var self = this;
-
-    // this.fetchSources().done(function(results) {
-    //   React.renderComponent(
-    //     <app.Calendar
-    //       sources={self.get('sources')}
-    //       eventscollection={self.get('events')}
-    //       collection={self.get('events')} />,
-    //     document.getElementById('calendar')
-    //   );
-    // });
-  },
-
-  getSources: function() {
     var sources = this.get('sources');
 
     if (!(sources instanceof Backbone.Sources)) {
+      sources = new Backbone.Sources(sources);
+
+      this.set('sources', sources);
+    }
+
       /*
 
       to-do enable the user to change default params across all sources
@@ -62,46 +50,34 @@ Backbone.GoogleCalendar = Backbone.Model.extend({
       });
 
     */
-
-      sources = new Backbone.Sources(sources);
-
-      this.set('sources', sources);
-    }
-
-    return sources;
-  },
-
-  entries: function() {
-    var sources = this.getSources();
-
-    return sources.pluck('entries');
-  },
-
-  entriesFlat: function() {
-    return _.flatten(this.entries());
   },
 
   addSource: function(source) {
+    var self = this;
+
     var deferred = source.fetch();
 
     deferred.done(function(promisedData) {
+      console.log('done! ', promisedData);
       var entries = _.map(promisedData.feed.entry, function(item) {
         return {
           author:       item.author[0].name,
-          content:      item.content.$t,
           calendarName: source.get('name'),
+          content:      item.content.$t,
           date:         item.gd$when[0].startTime,
           endTime:      item.gd$when[0].endTime,
           id:           item.id.$t,
           link:         item.link[0].href,
+          location:     item.gd$where[0].valueString,
           startTime:    item.gd$when[0].startTime,
           title:        item.title.$t,
-          updated:      item.updated.$t,
-          where:        item.gd$where[0].valueString
+          updated:      item.updated.$t
         };
       });
 
       source.set('entries', entries);
+
+      self.get('entries').add(entries);
     });
 
     return deferred;
@@ -110,9 +86,7 @@ Backbone.GoogleCalendar = Backbone.Model.extend({
   fetchSources: function(callback) {
     var self = this;
 
-    var sources = this.getSources();
-
-    var complete = sources.map(this.addSource, this);
+    var complete = this.get('sources').map(this.addSource, this);
 
     var deferred = $.Deferred(function(defer) {
       $.when.apply($, complete).done(function() {
@@ -122,10 +96,6 @@ Backbone.GoogleCalendar = Backbone.Model.extend({
 
         defer.resolve(entries);
       });
-    });
-
-    deferred.done(function(results) {
-      self.set('events', new Backbone.GoogleEvents(self.entriesFlat()));
     });
 
     return deferred;

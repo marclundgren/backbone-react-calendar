@@ -2,6 +2,9 @@
  * @jsx React.DOM
  */
 
+// cache data during development
+$.ajaxSetup({ cache: true });
+
 // app namespace
 var app = app || {};
 
@@ -16,6 +19,7 @@ var params = {
 };
 
 var sources = [
+  {name: 'Marc\'s Calendar', id: 'marclundgren2.0@gmail.com', params: params},
   {name: 'Admissions', id: 'fidmwmo%40gmail.com', params: params},
   {name: 'On campus', id: '5mtlu2lndo671s83a87eojp7ks%40group.calendar.google.com', params: params},
   {name: 'College Fairs', id: 'h5db9jueqak0mq8teomdjie7jc%40group.calendar.google.com', params: params},

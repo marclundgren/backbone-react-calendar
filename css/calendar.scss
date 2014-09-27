@@ -124,11 +124,11 @@ $date-hover-background-color: #27e5e4;
           }
         }
 
-        &:hover {
-          color: $date-hover-color;
-          background-color: $date-hover-background-color;
-          border-radius: 50%;
-        }
+        // &:hover {
+        //   color: $date-hover-color;
+        //   background-color: $date-hover-background-color;
+        //   border-radius: 50%;
+        // }
       }
 
       .event-indicator {
@@ -143,18 +143,41 @@ $date-hover-background-color: #27e5e4;
   }
 }
 
+.calendar, .selected-events-list, .eventListContainer {
+  // max-height: 580px;
+}
+
+/* Desktops and laptops ----------- */
+@media only screen and (min-width : 1224px) {
+  .selected-events-list, .events-list {
+    -webkit-overflow-scrolling: touch;
+    max-height: 580px;
+    height: 100%;
+    overflow-y: auto;
+  }
+}
+/* iPads (landscape) ----------- */
+@media only screen and (min-device-width : 768px) and (max-device-width : 1024px) {
+  .selected-events-list, .events-list {
+    -webkit-overflow-scrolling: touch;
+    max-height: 580px;
+    height: 100%;
+    overflow-y: auto;
+  }
+}
+
+.selected-events-list-header, .event-list-header {
+  border-bottom: 1px solid #eee;
+}
+
 .eventListContainer {
-  height: 640px;
+  height: 580px;
 
   .event-list-header {
-    border-bottom: 1px solid #eee;
-
     .events-title {
       border: none;
       display: inline-block;
       margin-right: 1em;
-      margin-bottom: 0;
-      margin-bottom: 7px;
     }
 
     select {
@@ -166,14 +189,8 @@ $date-hover-background-color: #27e5e4;
     }
   }
 
-  .events-list {
-    -webkit-overflow-scrolling: touch;
-    height: 100%;
-    overflow-y: auto;
-
-    .event {
-      margin-top: 1em;
-    }
+  .events-list .event {
+    margin-top: 1em;
   }
 }
 
