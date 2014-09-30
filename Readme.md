@@ -1,4 +1,5 @@
 # react-calendar
+## (in progress)
 
 [React](http://facebook.github.io/react/) calendar component inspired by [CLNDR.js](http://kylestetz.github.io/CLNDR/).
 
