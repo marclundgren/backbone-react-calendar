@@ -7,7 +7,10 @@
 
 ```
 npm install
+
 node server.js
+
+open http://localhost:3000
 ```
 
 ## To Develop
@@ -15,5 +18,3 @@ node server.js
 ```
 jsx --watch -x jsx src scripts
 ```
-
-And visit http://localhost:3000/. Try opening multiple tabs!
