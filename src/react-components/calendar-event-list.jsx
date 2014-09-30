@@ -56,8 +56,8 @@ app.CalendarEventList = React.createClass({
     render: function () {
       var googleEvents = this.state.collection;
 
-      if (googleEvents.length && !(googleEvents instanceof Backbone.GoogleEvents)) {
-        googleEvents = new Backbone.GoogleEvents(googleEvents);
+      if (googleEvents.length && !(googleEvents instanceof Backbone.CalendarEvents)) {
+        googleEvents = new Backbone.CalendarEvents(googleEvents);
       }
 
       // todo clean this up!
@@ -80,7 +80,7 @@ app.CalendarEventList = React.createClass({
               <option value="location">Location</option>
             </select>
 
-            <div class="toggleVisible" onClick={this.toggleVisible}>
+            <div className="toggleVisible" onClick={this.toggleVisible}>
               toggle visible
             </div>
           </div>

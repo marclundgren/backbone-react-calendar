@@ -26,20 +26,5 @@ app.Util = {
   // e.g. September 14, 2014 => 09-2014
   yearMonth: function(datetime) {
     return moment(datetime).format('YYYY-MM');
-  },
-
-  today: function(compareTo) {
-    var today = moment().dayOfYear();
-
-    var returnVal;
-
-    if (compareTo) {
-      returnVal = (today === compareTo.dayOfYear());
-    }
-    else {
-      returnVal = today;
-    }
-
-    return returnVal;
   }
 };

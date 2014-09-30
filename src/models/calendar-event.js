@@ -1,27 +1,28 @@
 // Models
-Backbone.GoogleEvent = Backbone.Model.extend({
+Backbone.CalendarEvent = Backbone.Model.extend({
   defaults: {
     author:     '',
     category:   '',
-    calendarName: '',
+    calendar: '',
     content:    '',
     date:       '',
     endTime:    '',
-    id:         '',
-    location:   '',
+    id         '',
     link:       '',
     startTime:  '',
     title:      '',
     updated:    '',
-    where:      '',
-    yearMonth: '',
-    yearMonthDay: ''
+    location:      '',
+    week:      '',
+    yearMonth: ''
   },
 
   initialize: function() {
-    this.set('yearMonth', app.Util.yearMonth(this.get('startTime')));
+    this.set('yearMonth', this.get('startTime')); //todo: remove?
 
-    this.set('yearMonthDay', this._getStartMoment().format('YYYY-MM-DD'));
+    var startMoment = this._getStartMoment();
+
+    this.set('week', startMoment.week());
   },
 
   starts: function() {

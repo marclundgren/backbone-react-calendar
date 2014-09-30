@@ -1,5 +1,5 @@
 // Models
-Backbone.GoogleEvent = Backbone.Model.extend({
+Backbone.CalendarEvent = Backbone.Model.extend({
   defaults: {
     author:     '',
     category:   '',

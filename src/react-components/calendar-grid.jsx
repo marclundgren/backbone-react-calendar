@@ -19,7 +19,7 @@ app.CalendarGrid = React.createClass({
   },
 
   componentWillMount: function() {
-    this.setState({collection: new Backbone.GoogleEvents(this.state.collection)});
+    this.setState({collection: new Backbone.CalendarEvents(this.state.collection)});
   },
 
   getWeeks: function() {
@@ -58,8 +58,8 @@ app.CalendarGrid = React.createClass({
   _getEventsOfMonth: function(yearMonth) {
     var googleEvents = this.state.collection;
 
-    if (googleEvents.length && !(googleEvents instanceof Backbone.GoogleEvents)) {
-      googleEvents = new Backbone.GoogleEvents(googleEvents);
+    if (googleEvents.length && !(googleEvents instanceof Backbone.CalendarEvents)) {
+      googleEvents = new Backbone.CalendarEvents(googleEvents);
     }
 
     // todo cleanup
