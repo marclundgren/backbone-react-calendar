@@ -5,29 +5,11 @@
 // app namespace
 var app = app || {};
 
-app.GoogleCalendar = React.createClass({
-  getDefaultProps: function() {
-    return {
-      params: {},
-      sources: []
-    };
-  },
-
-  render: function() {
-    // todo: this.trasnferPropsTo (app.googleClaendar)
-    return (
-      <div className='google-calendar'>
-        <app.Calendar params={this.props.params} sources={this.props.sources} />
-      </div>
-    );
-  }
-});
-
 Backbone.GoogleCalendar = Backbone.Model.extend({
   defaults: {
     params: {},
     sources: new Backbone.Sources(),
-    entries: new Backbone.GoogleEvents()
+    entries: new Backbone.CalendarEvents()
   },
 
   initialize: function() {
@@ -39,7 +21,15 @@ Backbone.GoogleCalendar = Backbone.Model.extend({
       this.set('sources', sources);
     }
 
-      /*
+    var entries = this.get('entries');
+
+    if (!(entries instanceof Backbone.CalendarEvents)) {
+      entries = new Backbone.CalendarEvents(entries);
+
+      this.set('entries', entries);
+    }
+
+    /*
 
       to-do enable the user to change default params across all sources
 
@@ -58,7 +48,6 @@ Backbone.GoogleCalendar = Backbone.Model.extend({
     var deferred = source.fetch();
 
     deferred.done(function(promisedData) {
-      console.log('done! ', promisedData);
       var entries = _.map(promisedData.feed.entry, function(item) {
         return {
           author:       item.author[0].name,

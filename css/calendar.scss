@@ -38,6 +38,21 @@ $date-hover-background-color: #27e5e4;
   }
 }
 
+.calendar-filter {
+  color: #ccc;
+  cursor: pointer;
+  padding: 1em 0;
+
+  .filter {
+    display: inline-block;
+    padding: 0 0.5em;
+  }
+
+  .active {
+    color: rgb(51, 51, 51);
+  }
+}
+
 .calendar {
   margin-bottom: 1em;
   max-width: $max-width;

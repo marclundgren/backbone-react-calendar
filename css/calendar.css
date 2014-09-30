@@ -10,6 +10,16 @@
     .calendar-source-filter .calendar-source.selected {
       color: #000; }
 
+.calendar-filter {
+  color: #ccc;
+  cursor: pointer;
+  padding: 1em 0; }
+  .calendar-filter .filter {
+    display: inline-block;
+    padding: 0 0.5em; }
+  .calendar-filter .active {
+    color: #333333; }
+
 .calendar {
   margin-bottom: 1em;
   max-width: 630px;

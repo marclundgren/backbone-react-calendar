@@ -1,6 +1,3 @@
-// cache data during development
-$.ajaxSetup({ cache: true });
-
 Backbone.SourceParams = Backbone.Collection.extend({
   model: Backbone.SourceParam,
 
