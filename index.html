@@ -5,22 +5,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 
     <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.2.0/css/bootstrap.min.css" />
-    <!-- <link rel="stylesheet" href="css/base.css" /> -->
     <link rel="stylesheet" href="css/calendar.css" />
   </head>
   <body>
+    <div id="calendar"></div>
 
-    <div id="googleCalendar"></div>
-
+    <!-- Dependencies -->
     <script src="app/bower_components/underscore/underscore-min.js"></script>
     <script src="app/bower_components/jquery/dist/jquery.min.js"></script>
     <script src="app/bower_components/backbone/backbone.js"></script>
-
-    <script src="vendor/react-0.10.0.js"></script>
-
-    <script src="vendor/JSXTransformer-0.10.0.js"></script>
-    <script src="vendor/moment.min.js"></script>
-    <script src="vendor/moment-timezone.min.js"></script>
+    <script src="app/bower_components/react/react.min.js"></script>
+    <script src="app/bower_components/react.backbone/react.backbone.js"></script>
+    <script src="app/bower_components/moment/min/moment-with-locales.min.js"></script>
 
     <!-- Utility -->
     <script src="build/util/util.js"></script>
@@ -32,9 +28,12 @@
     <script src="build/collections/source-params.js"></script>
     <script src="build/models/source.js"></script>
     <script src="build/collections/sources.js"></script>
-    <script src="build/models/google-calendar.js"></script>
+    <script src="build/models/calendar.js"></script>
 
-    <!-- React Views -->
+    <!-- Mixins -->
+    <script src="build/mixins/router-mixin.js"></script>
+
+    <!-- React Components -->
     <script src="build/react-components/calendar-controls.js"></script>
     <script src="build/react-components/calendar-source-options.js"></script>
     <script src="build/react-components/event-indicator.js"></script>
@@ -46,6 +45,9 @@
     <script src="build/react-components/calendar-grid-header.js"></script>
     <script src="build/react-components/calendar-grid.js"></script>
     <script src="build/react-components/calendar-event-list.js"></script>
+    <script src="build/react-components/calendar-day-events.js"></script>
+    <script src="build/react-components/filter-entry.js"></script>
+    <script src="build/react-components/calendar-filter.js"></script>
     <script src="build/react-components/calendar.js"></script>
 
     <!-- App -->

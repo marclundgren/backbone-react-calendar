@@ -84,16 +84,29 @@ var data = [{
   title: 'Washington', subtitle: 'One-on-One Admissions Meeting', location: 'SEATTLE', when: 'October 26-27'
 }];
 
+// app namespace
+var app = app || {};
+
+// Define your sources
+// var sources = new Backbone.Sources([
 var sources = [
-  // {name: 'Bad Calendar', id: 'marclundgren2.0@gmail.com', params: params},
+  // {name: 'No Such Calendar', id: 'marclundgren2.0@gmail.com', params: params},
   // {name: 'Server-side events', events: data},
   {name: 'Admissions', id: 'fidmwmo%40gmail.com', params: params},
   {name: 'On campus', id: '5mtlu2lndo671s83a87eojp7ks%40group.calendar.google.com', params: params},
   {name: 'College Fairs', id: 'h5db9jueqak0mq8teomdjie7jc%40group.calendar.google.com', params: params},
   {name: 'For Educators', id: 'qtr7ue6scgnc0noa9eb34ku220%40group.calendar.google.com', params: params}
+// ]);
 ];
 
-React.renderComponent(
-  <app.Calendar sources={sources} />,
-  document.getElementById('googleCalendar')
-);
+// Create your Calendar Model
+var calendar = new Backbone.Calendar({sources: sources});
+
+// Create your Calendar View
+var calendarView = app.CalendarView({
+  model: calendar,
+  collection: sources
+});
+
+// Mount your Calendar Component
+React.renderComponent(calendarView, document.getElementById('calendar'));

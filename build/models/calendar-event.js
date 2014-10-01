@@ -14,15 +14,16 @@ Backbone.CalendarEvent = Backbone.Model.extend({
     updated:    '',
     location:      '',
     week:      '',
-    yearMonth: ''
+    yearMonth: '',
+    yearMonthDay: ''
   },
 
   initialize: function() {
-    this.set('yearMonth', this.get('startTime')); //todo: remove?
-
     var startMoment = this._getStartMoment();
 
     this.set('week', startMoment.week());
+    this.set('yearMonth', startMoment.format('YYYY-MM'));
+    this.set('yearMonthDay', startMoment.format('YYYY-MM-DD'));
   },
 
   starts: function() {
