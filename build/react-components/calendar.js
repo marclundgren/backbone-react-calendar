@@ -1,131 +1,16 @@
-/** @jsx React.DOM */
+/**
+ * @jsx React.DOM
+ */
 
 // app namespace
 var app = app || {};
 
-app.FilterEntry = React.createClass({displayName: 'FilterEntry',
-  getDefaultProps: function() {
-    return {
-      className: 'filter',
-      name: '',
-      model: new Backbone.Model()
-      // filter: function(){}
-    };
-  },
+// consider: namespace Backbone to app.Backbone
 
-  getInitialState: function() {
-    return {
-      active: true
-    };
-  },
+// app.Calendar = React.createClass({
+app.CalendarView = React.createBackboneClass({
+  mixins : [Backbone.RouterMixin],
 
-  toggleActive: function() {
-    this.setState({active: !this.state.active});
-
-    this.props.filter(this.props.model);
-  },
-
-  render: function() {
-    var className = this.props.className;
-
-    if (this.state.active) {
-      className += ' active';
-    }
-
-    return (
-      React.DOM.div({className: className, onClick: this.toggleActive}, this.props.name)
-    );
-  }
-});
-
-app.CalendarFilter = React.createClass({displayName: 'CalendarFilter',
-  getDefaultProps: function() {
-    return {
-      sources: []
-    };
-  },
-
-  createEntry: function(item) {
-    // debugger;
-    return (
-      app.FilterEntry({model: item, name: item.get('name'), filter: this.props.filter})
-    );
-  },
-
-  render: function() {
-    // this.props.sources
-    // console.log('this.props.sources: ', this.props.sources);
-
-    return (
-      React.DOM.div({className: "col-md-12 calendar-filter"}, 
-        this.props.sources.map(this.createEntry)
-      )
-    );
-  }
-});
-
-// todo move this to its own file
-app.CalendarDayEvents = React.createClass({displayName: 'CalendarDayEvents',
-  getInitialState: function() {
-    return {
-      collection: []
-    };
-  },
-
-  getDefaultProps: function() {
-    return {
-      title: 'Detailed View'
-    };
-  },
-
-  createEvent: function(item) {
-    return (
-      React.DOM.div({className: "event"}, 
-        React.DOM.h4({className: "event-title"}, 
-          React.DOM.a({href: item.get('link')}, item.get('title'))
-        ), 
-
-        React.DOM.div({className: "when"}, 
-          React.DOM.div({className: "starts"}, 
-            "Starts: ", item.starts()
-          ), 
-          React.DOM.div({className: "duration"}, 
-            "Duration: ", item.duration()
-          )
-        ), 
-        React.DOM.div({className: "where"}, 
-          "Location: ", item.get('location')
-        ), 
-
-        React.DOM.div({className: "content"}, 
-          React.DOM.div(null, item.get('content'))
-        )
-      )
-    );
-  },
-
-  render: function() {
-    var events;
-
-    if (this.state.collection.length) {
-      events = this.state.collection.map(this.createEvent);
-    }
-    else {
-      events = 'There are no events.';
-    }
-
-    return (
-      React.DOM.div({className: "selected-events-list"}, 
-        React.DOM.div({className: "selected-events-list-header"}, 
-          React.DOM.h3({className: "title"}, this.props.title)
-        ), 
-        events
-      )
-    );
-  }
-});
-
-app.Calendar = React.createClass({displayName: 'Calendar',
   getDefaultProps: function() {
     return {
       classNameGrid:      'col-xs-12 col-sm-6  col-md-4 col-lg-6',
@@ -140,7 +25,7 @@ app.Calendar = React.createClass({displayName: 'Calendar',
   getInitialState: function() {
     return {
       activeDayEvents: new Backbone.Collection(),
-      collection: new Backbone.CalendarEvents([]),
+      collection: new Backbone.CalendarEvents(),
       date: moment(new Date()),
       filters: new Backbone.Collection(this.props.sources)
     };
@@ -162,11 +47,10 @@ app.Calendar = React.createClass({displayName: 'Calendar',
       console.log('this.props.sources: ', this.props.sources);
     }
 
-    var googleCalendar = new Backbone.GoogleCalendar({
-      // entries: this.props.entries,
-      params: this.props.params,
-      sources: this.props.sources
-    });
+    // var googleCalendar = new Backbone.GoogleCalendar({
+    //   params: this.props.params,
+    //   sources: this.props.sources
+    // });
 
     googleCalendar.get('entries').on('add', _.debounce(function(event) {
       self.updateCalendarComponents(googleCalendar);
@@ -184,52 +68,21 @@ app.Calendar = React.createClass({displayName: 'Calendar',
   updateCalendarComponents: function(calendar) {
     var collection = calendar.get('entries');
 
-    // console.log('updateCalendarComponents...');
-
-    // 98% sure this is not needed...
-    // this.setState({collection: collection});
-
-    this.refs.calendarGrid.setState({collection: collection});
-    this.refs.calendarEventList.setState({collection: collection});
-
     var dateEvents = collection.where({
       yearMonthDay: moment(this.state.date).format('YYYY-MM-DD')
     });
 
     this.refs.calendarDayEvents.setState({collection: dateEvents});
+    this.refs.calendarEventList.setState({collection: collection});
+    this.refs.calendarGrid.setState({collection: collection});
+
+    this.setState({collection: collection});
   },
 
   onGridSelect: function(cell) {
-    this.setState({date: cell.props.date});
-
     this.refs.calendarDayEvents.setState({collection: cell.props.events});
-  },
 
-  filterEvents: function(names) {
-    var self = this;
-
-    var filteredEvents = names.map(function(name) {
-      return self.state.collection.where({calendarName: name})
-    });
-
-    var flatFilteredEvents = _.flatten(filteredEvents);
-
-    this.refs.calendarGrid.setState({collection: flatFilteredEvents});
-    this.refs.calendarEventList.setState({collection: flatFilteredEvents});
-
-    flatFilteredEvents = new Backbone.Collection(flatFilteredEvents);
-
-    var dateEvents = flatFilteredEvents.where({
-      yearMonthDay: moment(self.state.date).format('YYYY-MM-DD')
-    });
-
-    self.refs.calendarDayEvents.setState({collection: dateEvents});
-  },
-
-  onChange: function(event) {
-    var vals = $(event.currentTarget).val();
-
-    filterEvents(vals);
+    this.setState({date: cell.props.date});
   },
 
   next: function() {
@@ -240,13 +93,8 @@ app.Calendar = React.createClass({displayName: 'Calendar',
     this.setState({date: this.state.date.subtract(1, 'month')});
   },
 
-  createOption: function(item) {
-    return app.CalendarSourceOption({name: item.name});
-  },
-
   filter: function(source) {
-
-    console.log('source: ', source);
+    var self = this;
 
     var filters = this.state.filters;
 
@@ -254,56 +102,48 @@ app.Calendar = React.createClass({displayName: 'Calendar',
       filters = new Backbone.Collection(filters);
     }
 
-    var filters = new Backbone.Collection(this.state.filters);
-
     var match = filters.where({name: source.get('name')});
 
-    // toggle
-    if (match) {
+    if (match.length) {
       filters.remove(match);
     }
     else {
-      filters.add(match);
+      filters.add(source);
     }
 
-    var filteredEvents = filters.toJSON();
-
-    debugger;
-
-    this.setState({filters: filteredEvents});
+    var filteredEvents = filters.map(function(item) {
+      return self.state.collection.where({calendarName: item.get('name')})
+    });
 
     var flatFilteredEvents = _.flatten(filteredEvents);
 
-    this.refs.calendarGrid.setState({collection: flatFilteredEvents});
-    this.refs.calendarEventList.setState({collection: flatFilteredEvents});
-
     flatFilteredEvents = new Backbone.Collection(flatFilteredEvents);
+
+    // todo: speed up this operation (and similar procedures elsewhere) with the following algo
+
+    // pluck the names from Filters
+
+    // filter the collection
+      // return true if names.find(item.name)
+
+    // the filtered collection should be a flat list
 
     var dateEvents = flatFilteredEvents.where({
       yearMonthDay: moment(self.state.date).format('YYYY-MM-DD')
     });
 
-    self.refs.calendarDayEvents.setState({collection: dateEvents});
+    this.refs.calendarDayEvents.setState({collection: dateEvents});
+    this.refs.calendarEventList.setState({collection: flatFilteredEvents});
+    this.refs.calendarGrid.setState({collection: flatFilteredEvents});
+
+    this.setState({filters: filters.toJSON()});
   },
 
-  // createFilter: function(item) {
-  //   return (
-  //     <app.Filter name={item.name} />
-  //   );
-  // },
-
   render: function() {
-    // var sources = new Backbone.Sources(this.props.sources);
     var sources = this.props.sources;
 
     if (!(sources instanceof Backbone.Collection)) {
       sources = new Backbone.Collection(this.props.sources);
-    }
-    // var sources = this.props.sources;
-    console.log('sources: ', sources);
-
-    if (sources.length === 1) {
-      debugger;
     }
 
     var names = sources.pluck('name');
@@ -312,15 +152,12 @@ app.Calendar = React.createClass({displayName: 'Calendar',
 
     var title = this.state.date.format('MMMM DD') + ' Events';
 
-    // this.state.filters
-    console.log('this.state.filters: ', this.state.filters);
-
     var filters = new Backbone.Collection(filters);
 
     return (
       React.DOM.div({className: "container-fluid"}, 
         React.DOM.div({className: "row"}, 
-          app.CalendarFilter({filters: filters, sources: sources, filter: this.filter})
+          app.CalendarFilter({ref: "calendarFilter", filters: filters, sources: sources, filter: this.filter})
         ), 
 
         React.DOM.div({className: "row"}, 
@@ -329,9 +166,9 @@ app.Calendar = React.createClass({displayName: 'Calendar',
               app.CalendarControls({date: this.state.date, onPrev: this.prev, onNext: this.next}), 
 
               app.CalendarGrid({
+                calendarFilter: this.refs.calendarFilter, 
                 onGridSelect: this.onGridSelect, 
                 date: this.state.date, 
-                collection: this.props.collection, 
                 ref: "calendarGrid"})
             )
           ), 

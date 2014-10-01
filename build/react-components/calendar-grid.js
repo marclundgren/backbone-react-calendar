@@ -19,6 +19,10 @@ app.CalendarGrid = React.createClass({displayName: 'CalendarGrid',
   },
 
   componentWillMount: function() {
+    console.log('this.props: ', this.props);
+    console.log('this.state: ', this.state);
+
+    // debugger;
     this.setState({collection: new Backbone.CalendarEvents(this.state.collection)});
   },
 

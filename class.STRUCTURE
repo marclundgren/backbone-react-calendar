@@ -1,35 +1,37 @@
 React
-    GoogleCalendar
+========
+CalendarView
+  EventsOrSources
+    Filter
+      FilterEntry
 
-        GoogleCalendarFeed
+    Controls
 
-            GoogleCalendarGrid
-                CalendarControls (prev month, next month)
-                CalendarDays
-                    GoogleEvent(s)
+    Grid
+      GridHeader
+        GridHeaderRow
+          GridHeaderCell
+      GridBody
+        Controls (prev month, next month)
+        GridBodyRow
+          GridBodyCell
+            EventIndicator
 
-            GoogleEventList
-                ListControls (location, title, date)
-                GoogleEvent(s)
+    DayEventsList
+      Events
+        Event
 
-    date, title, location
-
-    <GoogleCalendar>
-
-        <GoogleCalendarGrid data={this.state.data} />
-
-        <GoogleEventList data={this.state.data} />
-
-    </GoogleCalendar>
-
-
+    AllEventsList
+      Controls (location, title, date)
+      Events
+        Event
 
 
 Backbone
+========
+[M] Calendar
+  [C] Sources
+    [M] Source
 
-    [M] app.GoogleCalendar
-        [C] app.Sources
-            [M] app.Source
-                ... on source.fetch
-                [C] app.GoogleEventList
-                    [M] app.GoogleEvent
+  [C] Events
+    [M] Event

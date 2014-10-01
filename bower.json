@@ -1,5 +1,5 @@
 {
-  "name": "react-calendar",
+  "name": "react-backbone-calendar",
   "version": "0.0.0",
   "homepage": "https://github.com/marclundgren/react-calendar",
   "authors": [
@@ -14,7 +14,6 @@
     "calendar"
   ],
   "license": "MIT",
-  "private": true,
   "ignore": [
     "**/.*",
     "node_modules",
@@ -24,6 +23,8 @@
     "tests"
   ],
   "dependencies": {
-    "react.backbone": "~0.5.0"
+    "jquery": "~2.1.1",
+    "underscore": "~1.7.0",
+    "backbone": "~1.1.2"
   }
 }
