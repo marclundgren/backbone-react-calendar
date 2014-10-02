@@ -2,6 +2,7 @@ Backbone.Source = Backbone.Model.extend({
   defaults: {
     cache: true,
     dataType: 'jsonp',
+    events: [],
     id: '',
     name: '',
     timeout: 0,
@@ -10,15 +11,13 @@ Backbone.Source = Backbone.Model.extend({
     urnTail: '/public/full',
     visible: true,
 
-    params: function() {
-      new Backbone.SourceParams([
-        {alt: 'json-in-script'},
-        {dataType: 'jsonp'},
-        {futureevents: 'true'},
-        {orderby: 'starttime'},
-        {singleevents: 'true'},
-        {sortorder: 'ascending'}
-      ]);
+    params: {
+      alt: 'json-in-script',
+      dataType: 'jsonp',
+      futureevents: 'true',
+      orderby: 'starttime',
+      singleevents: 'true',
+      sortorder: 'ascending'
     }
   },
 
@@ -43,6 +42,7 @@ Backbone.Source = Backbone.Model.extend({
   },
 
   uri: function() {
+    // var uri = this.get('urlBase') + this.get('urnHead') + encodeURIComponent(this.get('id')) + this.get('urnTail');
     var uri = this.get('urlBase') + this.get('urnHead') + this.get('id') + this.get('urnTail');
 
     return app.Util.addParams(uri, this.get('params'));

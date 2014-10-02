@@ -52,17 +52,17 @@ app.CalendarView = React.createBackboneClass({
     //   sources: this.props.sources
     // });
 
-    googleCalendar.get('entries').on('add', _.debounce(function(event) {
-      self.updateCalendarComponents(googleCalendar);
+    var model = this.getModel();
+
+    model.get('entries').on('add', _.debounce(function(event) {
+      self.updateCalendarComponents(model);
     }), this.props.debounceDelay);
 
-    googleCalendar.fetchSources();
-
-    this._googleCalendar = googleCalendar;
+    model.fetchSources();
   },
 
   componentWillUnmount: function() {
-    this._googleCalendar.destroy();
+    this.model.destroy();
   },
 
   updateCalendarComponents: function(calendar) {

@@ -10,15 +10,13 @@ Backbone.Source = Backbone.Model.extend({
     urnTail: '/public/full',
     visible: true,
 
-    params: function() {
-      new Backbone.SourceParams([
-        {alt: 'json-in-script'},
-        {dataType: 'jsonp'},
-        {futureevents: 'true'},
-        {orderby: 'starttime'},
-        {singleevents: 'true'},
-        {sortorder: 'ascending'}
-      ]);
+    params: {
+      alt: 'json-in-script',
+      dataType: 'jsonp',
+      futureevents: 'true',
+      orderby: 'starttime',
+      singleevents: 'true',
+      sortorder: 'ascending'
     }
   },
 

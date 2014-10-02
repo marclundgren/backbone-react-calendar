@@ -99,6 +99,8 @@ var sources = [
 // ]);
 ];
 
+sources = new Backbone.Sources(sources);
+
 // Create your Calendar Model
 var calendar = new Backbone.Calendar({sources: sources});
 
