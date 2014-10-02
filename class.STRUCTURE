@@ -32,6 +32,60 @@ Backbone
 [M] Calendar
   [C] Sources
     [M] Source
+      [C] Events
+        [M] Event
 
-  [C] Events
-    [M] Event
+
+source -> events (data)
+
+
+
+
+
+
+Default Router
+  All Sources
+
+ROUTE:category
+
+
+
+
+
+Calendar
+  Sources
+    Events
+      Event
+
+
+
+
+
+
+
+
+
+
+Routers
+======
+
+Event
+
+
+Date
+  e.g. calendar#Sept-30-2014
+
+Sources
+  e.g.
+    calendar/educators/#Sept-30-2014
+    calendar/all/#Sept-30-2014
+    calendar/adimssions/#Sept-30-2014
+
+    this.date('Sept-30-2014')
+
+
+Grid
+DayEvents
+AllEvents
+
+
