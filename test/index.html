@@ -7,6 +7,11 @@
     <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.2.0/css/bootstrap.min.css" />
   </head>
   <body>
+
+    <div>
+      <a href="http://localhost/Sites/Dev/react/react-calendar/test/">REFRESH</a>
+    </div>
+
     <div id="calendarView"></div>
 
     <!-- Dependencies -->
@@ -16,6 +21,15 @@
     <script src="../app/bower_components/react/react.min.js"></script>
     <script src="../app/bower_components/react.backbone/react.backbone.js"></script>
     <script src="../app/bower_components/moment/min/moment-with-locales.min.js"></script>
+
+    <!-- Utility -->
+    <script src="../build/util/util.js"></script>
+
+    <!-- Backbone -->
+    <script src="../build/models/calendar-event.js"></script>
+    <script src="../build/collections/calendar-events.js"></script>
+    <script src="../build/models/source.js"></script>
+    <script src="../build/collections/sources.js"></script>
 
     <!-- App -->
     <script src="../build/react-components/router-test.js"></script>
