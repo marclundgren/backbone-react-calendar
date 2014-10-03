@@ -5,25 +5,14 @@
 // namespace
 var app = app || {};
 
-// Route-Based Components
+var EventsView = React.createBackboneClass({
+  getDefaultProps: function() {
+    return {
+      title: 'Events',
+      subtitle: ''
+    };
+  },
 
-app.GridView = React.createClass({
-  render: function() {
-    return (
-      <div>GridView</div>
-    );
-  }
-});
-
-app.DayEventsView = React.createClass({
-  render: function() {
-    return (
-      <div>DayEventsView</div>
-    );
-  }
-});
-
-app.AllEventsView = React.createBackboneClass({
   createEvent: function(item) {
     return (
       <app.EventPreviewView router={this.props.router} model={item} />
@@ -31,9 +20,44 @@ app.AllEventsView = React.createBackboneClass({
   },
 
   render: function() {
+    var events;
+
+    if (this.props.events.length) {
+      events = this.props.events.map(this.createEvent);
+    }
+    else {
+      events = 'I could not find any events.'
+    }
+
     return (
       <div>
-        <div>app.AllEventsView</div>
+        <h2>{this.props.title}</h2>
+        <h4>{this.props.subtitle}</h4>
+        <div>{events}</div>
+      </div>
+    );
+  }
+});
+
+app.AllEventsView = React.createBackboneClass({
+  getDefaultProps: function() {
+    return {
+      title: 'Events'
+    };
+  },
+
+  createEvent: function(item) {
+    return (
+      <app.EventPreviewView router={this.props.router} model={item} />
+    );
+  },
+
+  render: function() {
+    return <div></div>;
+
+    return (
+      <div>
+        <div>{this.props.title}</div>
         <div>{this.props.events.map(this.createEvent)}</div>
       </div>
     );
@@ -41,28 +65,46 @@ app.AllEventsView = React.createBackboneClass({
 });
 
 app.CalendarView = React.createClass({
+  getDefaultProps: function() {
+    return {
+      className: 'calendar-view',
+      selected: false
+    };
+  },
+
   onClick: function() {
     this.props.changeCalendar(this.props.name);
   },
 
   render: function() {
+    var classNameSelected = this.props.selected ? 'selected' : '';
+
     return (
-      <div className='calendar-view' onClick={this.onClick}>{this.props.name}</div>
+      <div className={this.props.className} onClick={this.onClick}>
+        <div className={classNameSelected}>{this.props.name}</div>
+      </div>
     );
   }
 });
 
 app.CalendarListView = React.createClass({
+  getDefaultProps: function() {
+    return {
+      className: 'col-md-12 calendar-list'
+    }
+  },
+
   createCalendar: function(item) {
+    var selected = item === this.props.selected;
 
     return (
-      <app.CalendarView changeCalendar={this.props.changeCalendar} name={item} />
+      <app.CalendarView selected={selected} changeCalendar={this.props.changeCalendar} name={item} />
     );
   },
 
   render: function() {
     return (
-      <div className="col-md-12 calendar-list">
+      <div className={this.props.className}>
         {this.props.calendars.map(this.createCalendar)}
       </div>
     );
@@ -70,14 +112,25 @@ app.CalendarListView = React.createClass({
 });
 
 app.MultiCalendarView = React.createBackboneClass({
-  changeCalendar: function(calendar) {
-    var nav = 'calendar/'
+  getDefaultProps: function() {
+    return {
+      classNameGridContainer:      'calendar-grid-container col-xs-12 col-sm-6  col-md-4 col-lg-6'
+      // classNameDayEvents: 'col-xs-12 col-sm-6  col-md-4 col-lg-3',
+      // classNameEventList: 'col-xs-12 col-sm-12 col-md-4 col-lg-3',
+      // debounceDelay: 800,
+      // params: {},
+      // sources: []
+      // router: new Backbone.CalendarRouter()
+    };
+  },
 
-    nav += calendar;
-
-    this.props.router.navigate(nav, {
-      trigger: true
-    });
+  getInitialState: function() {
+    return {
+      // activeDayEvents: new Backbone.Collection(),
+      // collection: new Backbone.CalendarEvents(),
+      // filters: new Backbone.Collection(this.props.sources),
+      date: moment()
+    };
   },
 
   render: function() {
@@ -85,57 +138,156 @@ app.MultiCalendarView = React.createBackboneClass({
 
     var model = this.getModel();
 
-    var events = calendar ? model.getEventsByCalendar(calendar) : model.getEvents();
+    var events, title;
 
-    var calendars = model.getCalendars();
+    if (calendar) {
+      title = calendar;
+
+      events = model.getEventsByCalendar(calendar);
+    }
+    else {
+      events = model.getEvents();
+    }
+
+    // var date = this.state.date;
+    var date = model.get('date');
+    console.log('date: ', date);
+
+    // EventsView
+    var specific_events, specific_title, specific_subtitle;
+
+    specific_title = 'Events';
+    specific_subtitle = calendar || '';
+
+    var narrowBy = model.get('narrowBy');
+    // date, month, year, event
+
+    if (narrowBy) {
+      if (narrowBy === 'date') {
+        events = model.getEvents({date: date});
+
+        specific_subtitle += ' ' + date.format('MMMM DD, YYYY');
+      }
+      else if (narrowBy === 'month') {
+        events = model.getEvents({month: date});
+
+        specific_subtitle += ' ' + date.format('MMMM, YYYY');
+      }
+      else if (narrowBy === 'year') {
+        events = model.getEvents({year: date});
+
+        specific_subtitle += ' ' + date.format('YYYY');
+      }
+
+      specific_subtitle += ' events';
+
+      specific_events = events;
+    }
+
 
     return (
       <div className="container-fluid calendars">
         <div className="row">
-          <app.CalendarListView changeCalendar={this.changeCalendar} calendar={calendar} calendars={calendars} />
+          <app.CalendarListView changeCalendar={this.changeCalendar} selected={calendar} calendars={model.getCalendars()} />
         </div>
 
         <div className="row">
-          <app.GridView      date={model.get('date')} calendar={model.get('calendar')} />
-          <app.DayEventsView date={model.get('date')} calendar={model.get('calendar')} />
-          <app.AllEventsView router={this.props.router} events={events} date={model.get('date')} calendar={model.get('calendar')} />
+          <div className={this.props.classNameGridContainer}>
+            <app.CalendarControls date={date} onPrev={this.prev} onNext={this.next} />
+
+            <app.CalendarGrid
+              onGridSelect={this.onGridSelect}
+              date={date}
+              ref="calendarGrid" />
+          </div>
+
+          <EventsView events={specific_events} subtitle={specific_subtitle} title={specific_title} router={this.props.router} />
         </div>
 
       </div>
     );
+  },
+
+  changeCalendar: function(calendar) {
+    var nav = 'calendar/'
+
+    nav += calendar;
+
+    this.getModel().set('narrowBy', calendar);
+
+    this.props.router.navigate(nav, {
+      trigger: true
+    });
+  },
+
+  next: function() {
+    var model = this.getModel();
+
+    var date = model.get('date');
+
+    model.set('date', date.add(1, 'month'));
+
+    // todo: find out why the react component isn't re-rending after model.set ...
+    this.forceUpdate();
+  },
+
+  prev: function() {
+    var model = this.getModel();
+
+    var date = model.get('date');
+
+    model.set('date', date.subtract(1, 'month'));
+
+    // todo: find out why the react component isn't re-rending after model.set ...
+    this.forceUpdate();
+  },
+
+  onGridSelect: function(cell) {
+    if (this.refs.calendarDayEvents) { // todo, is this needed?
+      this.refs.calendarDayEvents.setState({collection: cell.props.events});
+    }
+
+    var model = this.getModel();
+
+    model.set('date', cell.props.date);
+
+    // todo: find out why the react component isn't re-rending after model.set ...
+    this.forceUpdate();
   }
 });
 
 var holidayEvents = [];
 var foodEvents = [{
   title: 'Cheez-its are tasty',
-  startTime: moment('2014-11-12'),
-  ends: moment('2014-11-13'),
-  description: 'Try cheez-it duoz. Two flavors are combined in one box.',
+  startTime: moment(),
+  ends: moment(),
+  content: 'Try cheez-it duoz. Two flavors are combined in one box.',
   id: '9qcw'
 },{
   title: 'Robeks Juice is crack cocaine',
-  startTime: moment('2014-11-12'),
-  ends: moment('2014-11-13'),
-  description: 'I drank one of those things and I thought I was Lording.',
+  startTime: moment(),
+  ends: moment(),
+  content: 'I drank one of those things and I thought I was Lording.',
   id: '8lq2'
 }];
 
 var fidmEvents = [{
   title: 'Amanda Bynes Reportedly Expelled From College After Cheating And Drug Allegations',
-  startTime: moment('2014-11-12'),
-  ends: moment('2014-11-13'),
-  description: 'Rachel Loritz, a classmate of Bynes’ at the Fashion Institute of Design and Merchandising, claimed that Bynes was known to cheat and show up high on marijuana. “Amanda often ditched classes ... but even when she showed up, she was clearly high, and not good at hiding it ... she almost always wore sunglasses and laughed out loud at inappropriate times,” Loritz told TMZ.',
+  startTime: moment(),
+  ends: moment(),
+  content: 'Rachel Loritz, a classmate of Bynes’ at the Fashion Institute of Design and Merchandising, claimed that Bynes was known to cheat and show up high on marijuana. “Amanda often ditched classes ... but even when she showed up, she was clearly high, and not good at hiding it ... she almost always wore sunglasses and laughed out loud at inappropriate times,” Loritz told TMZ.',
   id: 'sdt3'
 }];
 
 new Backbone.MultiCalendar({
   sources: [
+    {name: 'Holiday-Events', events: holidayEvents},
     {name: 'Admissions', googleCalendarId: 'fidmwmo%40gmail.com'},
     {name: 'food-events', events: foodEvents},
     {name: 'fidm-events', events: fidmEvents}
   ],
   calendarListTitle: 'Categories',
+
   // calendarListClassName: 'calendars',
 
   mountPoint: document.getElementById('calendarView')

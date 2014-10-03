@@ -89,7 +89,7 @@ Backbone.MultiCalendar = Backbone.Model.extend({
 
         sources.get(source).set('events', events.toJSON());
 
-        // consume the calendarId
+        // consume the calendarId so that this source is not fetched again
         source.set('googleCalendarId', null);
       });
     });
@@ -100,7 +100,7 @@ Backbone.MultiCalendar = Backbone.Model.extend({
   },
 
   getCalendars: function() {
-    return _.flatten(['all', this.get('sources').pluck('name')]);
+    return _.flatten(['All', this.get('sources').pluck('name')]);
   },
 
   _bindRoutes: function() {
@@ -120,6 +120,14 @@ Backbone.MultiCalendar = Backbone.Model.extend({
       self.date.apply(self, arguments);
     });
 
+    this.listenTo(router, 'route:month', function() {
+      self.month.apply(self, arguments);
+    });
+
+    this.listenTo(router, 'route:year', function() {
+      self.year.apply(self, arguments);
+    });
+
     this.listenTo(router, 'route:event', function() {
       self.event.apply(self, arguments);
     });
@@ -134,7 +142,7 @@ Backbone.MultiCalendar = Backbone.Model.extend({
   },
 
   getEventsByCalendar: function(calendar) {
-    if (calendar == 'all') {
+    if (calendar === 'All') {
       return this.getEvents();
     }
     else {
@@ -146,7 +154,7 @@ Backbone.MultiCalendar = Backbone.Model.extend({
     }
   },
 
-  getEvents: function() {
+  getEvents: function(options) {
     var sourceEvents = this.get('sources').map(function(source) {
       var sourceEvents = source.get('events');
 
@@ -159,13 +167,72 @@ Backbone.MultiCalendar = Backbone.Model.extend({
 
     var events = _.flatten(sourceEvents);
 
+    if (options) {
+      if (options.date) {
+        events = _.filter(events, function(item) {
+          var startTime = moment(item.startTime);
+
+          return startTime.isSame(options.date, 'day');
+        });
+        // debugger;
+      }
+      else if (options.month) {
+        events = _.filter(events, function(item) {
+          var startTime = moment(item.startTime);
+
+          return startTime.isSame(options.date, 'month');
+        });
+        // debugger;
+      }
+      else if (options.year) {
+        events = _.filter(events, function(item) {
+          var startTime = moment(item.startTime);
+
+          return startTime.isSame(options.date, 'year');
+        });
+        // debugger;
+      }
+    }
+
     events = new Backbone.CalendarEvents(events);
 
     return events || [];
   },
 
+  /*
+
+  'date/:date'                :   'date',         // e.g. date/2014-08-09
+  'month/:month'              :   'month',        // e.g. month/2013-08
+  'year/:year'                :   'year',         // e.g. year/2015
+
+  'calendar/:cat/date/:date'  :   'date',         // e.g. calendar/educators/date/2014-08-09
+  'calendar/:cat/month/:month':   'month',        // e.g. calendar/educators/month/2013-08
+  'calendar/:cat/year/:year'  :   'year',         // e.g. calendar/educators/year/2015
+
+  */
+
+  month: function(yearMonth, cat) {
+    date = moment(yearMonth).startOf('month').add(1, 'month');
+
+    this.set('narrowBy', 'month');
+
+    // this.date(date, cat);
+    this.dateView(date, cat);
+  },
+
+  year: function(year, cat) {
+    date = moment(year).startOf('year').add(1, 'year');
+
+    this.set('narrowBy', 'year');
+
+    // this.date(date, cat);
+    this.dateView(date, cat);
+  },
+
   date: function(date, id, cat) {
     date = moment(date) || moment()
+
+    this.set('narrowBy', 'date');
 
     if (id) {
       this.eventView(id, date);
@@ -225,11 +292,19 @@ Backbone.MultiCalendar = Backbone.Model.extend({
   dateView: function(date, cat) {
     var cat = this.cat;
 
+    if (date) {
+      this.set('date', date);
+    }
+
     var multiCalendarView = app.MultiCalendarView({
-      model: this,
       calendar: cat,
+      date: date,
+      model: this,
       router: this.get('router')
     });
+
+    // nope
+    // multiCalendarView.setState({date: date});
 
     React.renderComponent(multiCalendarView, document.getElementById('calendarView'));
   },

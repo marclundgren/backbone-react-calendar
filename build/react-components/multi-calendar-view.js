@@ -100,7 +100,7 @@ Backbone.MultiCalendar = Backbone.Model.extend({
   },
 
   _getCalendars: function() {
-    return _.flatten(['all', this.get('sources').pluck('name')]);
+    return _.flatten(['All', this.get('sources').pluck('name')]);
   },
 
   _bindRoutes: function() {
@@ -134,7 +134,7 @@ Backbone.MultiCalendar = Backbone.Model.extend({
   },
 
   getEventsByCalendar: function(calendar) {
-    if (calendar == 'all') {
+    if (calendar === 'All') {
       return this.getEvents();
     }
     else {

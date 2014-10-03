@@ -5,7 +5,15 @@
 var app = app || {};
 
 app.EventView = React.createBackboneClass({
-  calendar: function() {
+  getDefaultProps: function() {
+    return {
+      classNametoCalendar: 'event-view-to-calendar',
+      classNameContent: 'event-view-content',
+      classNameTitle: 'event-view-title'
+    };
+  },
+
+  toCalendar: function() {
     this.props.router.navigate('', {
       trigger: true
     });
@@ -14,15 +22,13 @@ app.EventView = React.createBackboneClass({
   render: function() {
     var model = this.getModel();
 
-    if (!model) {
-      debugger;
-    }
-
     return (
       React.DOM.div(null, 
-        React.DOM.div({onClick: this.calendar, className: "back"}, "< back"), 
-        React.DOM.h3(null, model.get('title')), 
-        React.DOM.div(null, model.get('description'))
+        React.DOM.div({onClick: this.toCalendar, className: this.props.classNametoCalendar}, "< back"), 
+
+        React.DOM.h3({className: this.props.classNameTitle}, model.get('title')), 
+
+        React.DOM.div({className: this.props.classNameContent}, model.get('content'))
       )
     );
   }
