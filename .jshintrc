@@ -6,7 +6,8 @@
   "strict": false,
   "globals": {
     "$": false,
-    "React": false
+    "React": false,
+    "Backbone": false
   },
   "globalstrict": false,
   "quotmark": false,

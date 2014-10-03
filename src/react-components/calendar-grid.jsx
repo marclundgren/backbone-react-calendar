@@ -7,7 +7,6 @@ app.CalendarGrid = React.createClass({
   getDefaultProps: function() {
     return {
       className: 'calendar-grid',
-      // date: moment(),
       headerNames: ['S', 'M', 'T', 'W', 'T', 'F', 'S']
     };
   },
@@ -19,11 +18,25 @@ app.CalendarGrid = React.createClass({
   },
 
   componentWillMount: function() {
-    console.log('this.props: ', this.props);
-    console.log('this.state: ', this.state);
-
-    // debugger;
     this.setState({collection: new Backbone.CalendarEvents(this.state.collection)});
+  },
+
+  render: function() {
+    var monthYear = this.props.date.format('MMYY'); // e.g. "0914" for Sept, 2014
+
+    var dates = this.getDaysOfMonth(monthYear);
+
+    return (
+      <div className={this.props.className}>
+        <app.CalendarGridHeader names={this.props.headerNames} />
+
+        <app.CalendarGridBody
+          events={this._getEventsOfMonth()}
+          dates={dates}
+          onGridSelect={this.props.onGridSelect}
+          weeks={this.getWeeks()} />
+      </div>
+    );
   },
 
   getWeeks: function() {
@@ -40,23 +53,6 @@ app.CalendarGrid = React.createClass({
     }
 
     return weeks;
-  },
-
-  render: function() {
-    var monthYear = this.props.date.format('MMYY'); // e.g. "0914" for Sept, 2014
-
-    var dates = this.getDaysOfMonth(monthYear);
-
-    return (
-      <div className={this.props.className}>
-        <app.CalendarGridHeader names={this.props.headerNames} />
-        <app.CalendarGridBody
-          events={this._getEventsOfMonth()}
-          dates={dates}
-          onGridSelect={this.props.onGridSelect}
-          weeks={this.getWeeks()} />
-      </div>
-    );
   },
 
   _getEventsOfMonth: function(yearMonth) {

@@ -44,7 +44,6 @@ app.CalendarView = React.createBackboneClass({
       sources = new Backbone.Sources(sources);
 
       this.props.sources = sources;
-      console.log('this.props.sources: ', this.props.sources);
     }
 
     // var googleCalendar = new Backbone.GoogleCalendar({

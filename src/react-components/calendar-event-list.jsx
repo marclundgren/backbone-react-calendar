@@ -48,7 +48,6 @@ app.CalendarEventList = React.createClass({
 
     onChange: function(e) {
       var sortValue = this.refs.sortValue.getDOMNode().value;
-      console.log('sortValue: ', sortValue);
 
       this.setState({sortValue: sortValue});
     },
