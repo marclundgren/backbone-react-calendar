@@ -13,7 +13,7 @@ app.CalendarView = React.createBackboneClass({
 
   getDefaultProps: function() {
     return {
-      classNameGrid:      'col-xs-12 col-sm-6  col-md-4 col-lg-6',
+      classNameGridContainer:      'col-xs-12 col-sm-6  col-md-4 col-lg-6',
       classNameDayEvents: 'col-xs-12 col-sm-6  col-md-4 col-lg-3',
       classNameEventList: 'col-xs-12 col-sm-12 col-md-4 col-lg-3',
       debounceDelay: 800,
@@ -155,33 +155,28 @@ app.CalendarView = React.createBackboneClass({
     var filters = new Backbone.Collection(filters);
 
     return (
-      <div className="container-fluid">
+      <div className="container-fluid calendar">
         <div className="row">
           <app.CalendarFilter ref="calendarFilter" filters={filters} sources={sources} filter={this.filter} />
         </div>
 
         <div className="row">
-          <div className={this.props.classNameGrid}>
-            <div className='calendar'>
-              <app.CalendarControls date={this.state.date} onPrev={this.prev} onNext={this.next} />
+          <div className={this.props.classNameGridContainer}>
+            <app.CalendarControls date={this.state.date} onPrev={this.prev} onNext={this.next} />
 
-              <app.CalendarGrid
-                calendarFilter={this.refs.calendarFilter}
-                onGridSelect={this.onGridSelect}
-                date={this.state.date}
-                ref="calendarGrid" />
-            </div>
+            <app.CalendarGrid
+              calendarFilter={this.refs.calendarFilter}
+              onGridSelect={this.onGridSelect}
+              date={this.state.date}
+              ref="calendarGrid" />
           </div>
 
-          <div className={this.props.classNameDayEvents}>
-            <app.CalendarDayEvents title={title} collection={this.state.activeDayEvents} ref="calendarDayEvents" />
-          </div>
+          <app.CalendarDayEvents className={this.props.classNameDayEvents} title={title} collection={this.state.activeDayEvents} ref="calendarDayEvents" />
 
-          <div className={this.props.classNameEventList}>
-            <app.CalendarEventList
-              collection={this.props.collection}
-              ref="calendarEventList" />
-          </div>
+          <app.CalendarEventList
+            className={this.props.classNameEventList}
+            collection={this.props.collection}
+            ref="calendarEventList" />
         </div>
       </div>
     );
