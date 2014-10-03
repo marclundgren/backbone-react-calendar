@@ -28,6 +28,8 @@ var EventPreviewView = React.createBackboneClass({
   onClick: function() {
     var model = this.getModel();
     var calendar = model.get('calendar');
+    console.log('calendar: ', calendar)
+    // debugger;
     var id = model.get('id');
 
     var path = 'calendar/' + calendar + '/event/' + id;
@@ -40,13 +42,15 @@ var EventPreviewView = React.createBackboneClass({
   render: function() {
     var model = this.getModel();
 
-    var starts = model.get('starts') || moment(model.get('gd$when')[0].startTime);
+    // var startTime = model.get('startTime') || moment(model.get('gd$when')[0].startTime);
+    var startTime = model.get('startTime');
 
-    var title = model.get('title') && model.get('title').$t || model.get('title');
+    // var title = model.get('title') && model.get('title').$t || model.get('title');
+    var title = model.get('title');
 
     return (
       React.DOM.div({onClick: this.onClick}, 
-        React.DOM.span({className: "starts"}, starts.format('MMMM DD, mm:ss a')), 
+        React.DOM.span({className: "startTime"}, moment(startTime).format('MMMM DD, mm:ss a')), 
         React.DOM.span(null, " : "), 
         React.DOM.span(null, title)
       )
@@ -93,20 +97,20 @@ app.Calendar = Backbone.Model.extend({
     this.set('sources', sources);
 
     this.listenTo(sources, 'change', function() {
-      console.log('WOOOW');
-
       var sources = self.get('sources');
-      // console.log('sources: ', sources);
 
-      // do something
-
-      self.get('categories').reset(sources.pluck('name'))
-      self.get('categories').push('all');
+      self._syncCategories();
 
       self.dateView();
     });
 
     this._fetchRemoteSources();
+  },
+
+  _syncCategories: function() {
+    var categories = this._getCategories();
+
+      this.set('categories', categories);
   },
 
   _initEvents: function() {
@@ -116,20 +120,6 @@ app.Calendar = Backbone.Model.extend({
 
     this.set('events', new Backbone.Collection(flattenedEvents));
   },
-
-  // _getCachedSources: function() {
-  //   var sources = this.get('sources');
-
-  //   if (!(sources instanceof Backbone.Collection)) {
-  //     sources = new Backbone.Collection(sources);
-  //   }
-
-  //   var sourcesCached = _.filter(sources, function (source) {
-  //     return _.isArray(source.get('events')); // an array of models
-  //   });
-
-  //   return sourcesCached;
-  // },
 
   _fetchRemoteSources: function() {
     var sources = this.get('sources');
@@ -143,19 +133,43 @@ app.Calendar = Backbone.Model.extend({
 
     sourcesRemote.each(function(source) {
       source.fetch().done(function(results) {
-        var events = new Backbone.CalendarEvents(results.feed.entry);
+        var entries = results.feed.entry.map(function(item) {
 
-        sources.get(source).set('events', events.toArray());
+          var sourceName = source.get('name');
+          // console.log('sourceName: ', sourceName);
+
+          // debugger;
+
+          return {
+            author:       item.author[0].name,
+            calendar:     source.get('name'),
+            content:      item.content.$t,
+            date:         item.gd$when[0].startTime,
+            endTime:      item.gd$when[0].endTime,
+            id:           item.gCal$uid.value,
+            link:         item.link[0].href,
+            location:     item.gd$where[0].valueString,
+            startTime:    item.gd$when[0].startTime,
+            title:        item.title.$t,
+            updated:      item.updated.$t
+          };
+        });
+
+        var events = new Backbone.CalendarEvents(entries);
+
+        // debugger;
+
+        sources.get(source).set('events', events.toJSON());
       });
     });
   },
 
   _initCategories: function() {
-    var categories = this.get('sources').pluck('name');
+    this._syncCategories();
+  },
 
-    categories.push('all');
-
-    this.set('categories', categories);
+  _getCategories: function() {
+    return _.flatten(['all', this.get('sources').pluck('name')]);
   },
 
   _bindRoutes: function() {
@@ -163,9 +177,9 @@ app.Calendar = Backbone.Model.extend({
 
     var router = this.get('router');
 
-    this.listenTo(router, 'route', function() {
-      self.today.apply(self, arguments);
-    });
+    // this.listenTo(router, 'route', function() {
+    //   self.today.apply(self, arguments);
+    // });
 
     this.listenTo(router, 'route:calendar', function() {
       self.calendar.apply(self, arguments);
@@ -187,7 +201,10 @@ app.Calendar = Backbone.Model.extend({
   },
 
   getEventById: function(id) {
-    return this.get('events').findWhere({id: id});
+    var events = this.getEvents();
+    console.log('events: ', events);
+
+    return events.findWhere({id: id});
   },
 
   getEventsByCalendar: function(calendar) {
@@ -204,10 +221,28 @@ app.Calendar = Backbone.Model.extend({
   },
 
   getEvents: function() {
-    return this.get('events') || [];
+    var sourceEvents = this.get('sources').map(function(source) {
+      var sourceEvents = source.get('events');
+
+      sourceEvents = sourceEvents.map(function(item) {
+        item.calendar = source.get('name');
+      });
+
+      return source.get('events');
+    });
+
+    var events = _.flatten(sourceEvents);
+
+    events = new Backbone.CalendarEvents(events);
+
+    return events || [];
   },
 
   date: function(date, id, cat) {
+    console.log('id: ', id);
+    if (!id) {
+      debugger;
+    }
     date = moment(date) || moment()
 
     if (id) {
@@ -219,28 +254,50 @@ app.Calendar = Backbone.Model.extend({
   },
 
   eventView: function(id, date) {
+    var self = this;
+
     var calendarEvent = this.getEventById(id);
 
-    if (calendarEvent) {
-      var eventView = EventView({
+    var eventView = EventView({
         model: calendarEvent,
         router: this.get('router')
       });
+
+    if (calendarEvent) {
 
       React.renderComponent(eventView, this.get('mountPoint'));
     }
     else {
       var sources = this.get('sources');
 
+      console.log('sources: ', sources);
+
       if (sources) {
-        sources.fetch();
+        // debugger;
 
-        sources.on('add', function() {
-          events = this.get('events');
+        // debugger;
 
-          calendarEvent = calendar.getEventById(id);
+        sources.invoke('fetch');
 
-          // <Event id={id} />
+        sources.once('change', function() {
+          // events = this.get('events');
+          // debugger;
+
+          calendarEvent = self.getEventById(id);
+
+          if (calendarEvent) {
+            React.renderComponent(
+              EventView({
+                model: calendarEvent,
+                router: this.get('router')
+              }),
+              self.get('mountPoint')
+            );
+          }
+          else {
+            debugger;
+            // no such event
+          }
         })
       }
     }
@@ -248,8 +305,6 @@ app.Calendar = Backbone.Model.extend({
 
   dateView: function(date, cat) {
     var cat = this.cat;
-
-    // console.log('dateView!');
 
     var calendarAppView = CalendarAppView({
       model: this,
@@ -309,7 +364,6 @@ var DayEventsView = React.createClass({displayName: 'DayEventsView',
 
 var AllEventsView = React.createBackboneClass({
   createEvent: function(item) {
-    console.log('item: ', item);
     return (
       EventPreviewView({router: this.props.router, model: item})
     );
@@ -367,7 +421,7 @@ var CalendarAppView = React.createBackboneClass({
     // console.log('model: ', model);
 
     var calendar = this.props.calendar;
-    console.log('calendar: ', calendar);
+    // console.log('calendar: ', calendar);
 
     var events = calendar ? model.getEventsByCalendar(calendar) : model.getEvents();
     // var events = model.getEvents();
@@ -392,13 +446,13 @@ var CalendarAppView = React.createBackboneClass({
 var holidayEvents = [];
 var foodEvents = [{
   title: 'Cheez-its are tasty',
-  starts: moment('2014-11-12'),
+  startTime: moment('2014-11-12'),
   ends: moment('2014-11-13'),
   description: 'Try cheez-it duoz. Two flavors are combined in one box.',
   id: '9qcw'
 },{
   title: 'Robeks Juice is crack cocaine',
-  starts: moment('2014-11-12'),
+  startTime: moment('2014-11-12'),
   ends: moment('2014-11-13'),
   description: 'I drank one of those things and I thought I was Lording.',
   id: '8lq2'
@@ -406,7 +460,7 @@ var foodEvents = [{
 
 var fidmEvents = [{
   title: 'Amanda Bynes Reportedly Expelled From College After Cheating And Drug Allegations',
-  starts: moment('2014-11-12'),
+  startTime: moment('2014-11-12'),
   ends: moment('2014-11-13'),
   description: 'Rachel Loritz, a classmate of Bynes’ at the Fashion Institute of Design and Merchandising, claimed that Bynes was known to cheat and show up high on marijuana. “Amanda often ditched classes ... but even when she showed up, she was clearly high, and not good at hiding it ... she almost always wore sunglasses and laughed out loud at inappropriate times,” Loritz told TMZ.',
   id: 'sdt3'

@@ -42,7 +42,6 @@ Backbone.Source = Backbone.Model.extend({
   },
 
   uri: function() {
-    // var uri = this.get('urlBase') + this.get('urnHead') + encodeURIComponent(this.get('id')) + this.get('urnTail');
     var uri = this.get('urlBase') + this.get('urnHead') + this.get('id') + this.get('urnTail');
 
     return app.Util.addParams(uri, this.get('params'));
