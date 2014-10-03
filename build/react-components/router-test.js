@@ -6,7 +6,7 @@ var app = app || {};
 
 var EventView = React.createBackboneClass({
   calendar: function() {
-    this.props.router.navigate('calendar', {
+    this.props.router.navigate('', {
       trigger: true
     });
   },
@@ -27,9 +27,8 @@ var EventView = React.createBackboneClass({
 var EventPreviewView = React.createBackboneClass({
   onClick: function() {
     var model = this.getModel();
+
     var calendar = model.get('calendar');
-    console.log('calendar: ', calendar)
-    // debugger;
     var id = model.get('id');
 
     var path = 'calendar/' + calendar + '/event/' + id;
@@ -82,7 +81,7 @@ app.Calendar = Backbone.Model.extend({
   initialize: function() {
     this._initSources();
     this._initEvents();
-    this._initCategories();
+    this._initCalendars();
     this._bindRoutes();
   },
 
@@ -99,18 +98,18 @@ app.Calendar = Backbone.Model.extend({
     this.listenTo(sources, 'change', function() {
       var sources = self.get('sources');
 
-      self._syncCategories();
+      self._syncCalendars();
 
       self.dateView();
     });
 
-    this._fetchRemoteSources();
+    // this.fetchGoogleCalendars();
   },
 
-  _syncCategories: function() {
-    var categories = this._getCategories();
+  _syncCalendars: function() {
+    var calendars = this._getCalendars();
 
-      this.set('categories', categories);
+      this.set('calendars', calendars);
   },
 
   _initEvents: function() {
@@ -121,25 +120,21 @@ app.Calendar = Backbone.Model.extend({
     this.set('events', new Backbone.Collection(flattenedEvents));
   },
 
-  _fetchRemoteSources: function() {
+  fetchGoogleCalendars: function() {
     var sources = this.get('sources');
 
     var sourcesRemote = sources.filter(function (source) {
-      return source.get('id') && _.isString(source.get('id'));
+      var id = source.get('googleCalendarId');
+
+      return id && _.isString(id);
     });
 
     sourcesRemote = new Backbone.Sources(sourcesRemote);
-    console.log('sourcesRemote: ', sourcesRemote);
 
     sourcesRemote.each(function(source) {
       source.fetch().done(function(results) {
         var entries = results.feed.entry.map(function(item) {
-
           var sourceName = source.get('name');
-          // console.log('sourceName: ', sourceName);
-
-          // debugger;
-
           return {
             author:       item.author[0].name,
             calendar:     source.get('name'),
@@ -157,18 +152,19 @@ app.Calendar = Backbone.Model.extend({
 
         var events = new Backbone.CalendarEvents(entries);
 
-        // debugger;
-
         sources.get(source).set('events', events.toJSON());
+
+        // consume the calendarId
+        source.set('googleCalendarId', null);
       });
     });
   },
 
-  _initCategories: function() {
-    this._syncCategories();
+  _initCalendars: function() {
+    this._syncCalendars();
   },
 
-  _getCategories: function() {
+  _getCalendars: function() {
     return _.flatten(['all', this.get('sources').pluck('name')]);
   },
 
@@ -176,10 +172,6 @@ app.Calendar = Backbone.Model.extend({
     var self = this;
 
     var router = this.get('router');
-
-    // this.listenTo(router, 'route', function() {
-    //   self.today.apply(self, arguments);
-    // });
 
     this.listenTo(router, 'route:calendar', function() {
       self.calendar.apply(self, arguments);
@@ -202,7 +194,6 @@ app.Calendar = Backbone.Model.extend({
 
   getEventById: function(id) {
     var events = this.getEvents();
-    console.log('events: ', events);
 
     return events.findWhere({id: id});
   },
@@ -239,16 +230,14 @@ app.Calendar = Backbone.Model.extend({
   },
 
   date: function(date, id, cat) {
-    console.log('id: ', id);
-    if (!id) {
-      debugger;
-    }
     date = moment(date) || moment()
 
     if (id) {
       this.eventView(id, date);
     }
     else {
+      this.fetchGoogleCalendars();
+
       this.dateView(date, cat);
     }
   },
@@ -257,48 +246,36 @@ app.Calendar = Backbone.Model.extend({
     var self = this;
 
     var calendarEvent = this.getEventById(id);
+    var router = this.get('router');
+    var mountPoint = this.get('mountPoint');
 
     var eventView = EventView({
         model: calendarEvent,
-        router: this.get('router')
+        router: router
       });
 
     if (calendarEvent) {
-
-      React.renderComponent(eventView, this.get('mountPoint'));
+      React.renderComponent(eventView, mountPoint);
     }
     else {
       var sources = this.get('sources');
 
-      console.log('sources: ', sources);
-
       if (sources) {
-        // debugger;
+        if (!sources.fetched) {
+          sources.fetched = true;
 
-        // debugger;
+          this.fetchGoogleCalendars();
 
-        sources.invoke('fetch');
+          sources.off('change');
 
-        sources.once('change', function() {
-          // events = this.get('events');
-          // debugger;
+          sources.on('change', function() {
+            calendarEvent = self.getEventById(id);
 
-          calendarEvent = self.getEventById(id);
-
-          if (calendarEvent) {
-            React.renderComponent(
-              EventView({
-                model: calendarEvent,
-                router: this.get('router')
-              }),
-              self.get('mountPoint')
-            );
-          }
-          else {
-            debugger;
-            // no such event
-          }
-        })
+            if (calendarEvent) {
+              React.renderComponent(eventView, mountPoint);
+            }
+          });
+        }
       }
     }
   },
@@ -316,7 +293,6 @@ app.Calendar = Backbone.Model.extend({
   },
 
   today: function(cat) {
-    // console.log('today...');
     this.date(moment(), null, cat);
   },
 
@@ -325,7 +301,6 @@ app.Calendar = Backbone.Model.extend({
   },
 
   calendar: function(cat, date) {
-    // console.log('calendar...');
     this.cat = cat
 
     if (date) {
@@ -338,9 +313,6 @@ app.Calendar = Backbone.Model.extend({
 
   event: function(cat, id) {
     this.date(cat, id);
-
-    // event has belongs to a calendar
-    // back will route to this event's cat
   }
 });
 
@@ -400,7 +372,7 @@ var CalendarListView = React.createClass({displayName: 'CalendarListView',
 
   render: function() {
     return (
-      React.DOM.div({className: "calendar-view-list"}, this.props.categories.map(this.createCalendar))
+      React.DOM.div({className: "calendar-view-list"}, this.props.calendars.map(this.createCalendar))
     );
   }
 });
@@ -418,22 +390,16 @@ var CalendarAppView = React.createBackboneClass({
 
   render: function() {
     var model = this.getModel();
-    // console.log('model: ', model);
 
     var calendar = this.props.calendar;
-    // console.log('calendar: ', calendar);
 
     var events = calendar ? model.getEventsByCalendar(calendar) : model.getEvents();
-    // var events = model.getEvents();
 
-    var names = model.get('categories');
-
-    console.log('events: ', events);
-    // // console.log('calendar: ', calendar);
+    var names = model.get('calendars');
 
     return (
       React.DOM.div({className: "calendars"}, 
-        CalendarListView({changeCalendar: this.changeCalendar, calendar: calendar, categories: names}), 
+        CalendarListView({changeCalendar: this.changeCalendar, calendar: calendar, calendars: names}), 
 
         GridView({date: model.get('date'), calendar: model.get('calendar')}), 
         DayEventsView({date: model.get('date'), calendar: model.get('calendar')}), 
@@ -467,14 +433,13 @@ var fidmEvents = [{
 }];
 
 new app.Calendar({
-  // categories: ['holidays', 'birthdays', 'important days', 'anniversary', 'food', 'fidm'],
   sources: [
-    {name: 'Admissions', id: 'fidmwmo%40gmail.com'},
+    {name: 'Admissions', googleCalendarId: 'fidmwmo%40gmail.com'},
     {name: 'food-events', events: foodEvents},
     {name: 'fidm-events', events: fidmEvents}
   ],
-  calendarListTitle: 'Categories',
-  // calendarListClassName: 'categories',
+  calendarListTitle: 'Calendars',
+  // calendarListClassName: 'calendars',
 
   mountPoint: document.getElementById('calendarView')
 });
