@@ -30,7 +30,7 @@ app.EventPreviewView = React.createBackboneClass({
 
     return (
       React.DOM.div({onClick: this.onClick}, 
-        React.DOM.span({className: "startTime"}, moment(startTime).format('MMMM DD, mm:ss a')), 
+        React.DOM.span({className: "startTime"}, moment(startTime).format('MMMM DD, hh:mm a')), 
         React.DOM.span(null, " : "), 
         React.DOM.span(null, title)
       )

@@ -30,7 +30,7 @@ app.EventPreviewView = React.createBackboneClass({
 
     return (
       <div onClick={this.onClick}>
-        <span className="startTime">{moment(startTime).format('MMMM DD, mm:ss a')}</span>
+        <span className="startTime">{moment(startTime).format('MMMM DD, hh:mm a')}</span>
         <span> : </span>
         <span>{title}</span>
       </div>

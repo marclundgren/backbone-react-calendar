@@ -217,7 +217,7 @@ Backbone.MultiCalendar = Backbone.Model.extend({
     this.set('narrowBy', 'month');
 
     // this.date(date, cat);
-    this.dateView(date, cat);
+    this.monthView(date, cat);
   },
 
   year: function(year, cat) {
@@ -226,7 +226,7 @@ Backbone.MultiCalendar = Backbone.Model.extend({
     this.set('narrowBy', 'year');
 
     // this.date(date, cat);
-    this.dateView(date, cat);
+    this.yearView(date, cat);
   },
 
   date: function(date, id, cat) {
@@ -303,8 +303,39 @@ Backbone.MultiCalendar = Backbone.Model.extend({
       router: this.get('router')
     });
 
-    // nope
-    // multiCalendarView.setState({date: date});
+    React.renderComponent(multiCalendarView, document.getElementById('calendarView'));
+  },
+
+  monthView: function(date, cat) {
+    var cat = this.cat;
+
+    if (date) {
+      this.set('date', date);
+    }
+
+    var multiCalendarView = app.MultiCalendarView({
+      calendar: cat,
+      month: date,
+      model: this,
+      router: this.get('router')
+    });
+
+    React.renderComponent(multiCalendarView, document.getElementById('calendarView'));
+  },
+
+  yearView: function(date, cat) {
+    var cat = this.cat;
+
+    if (date) {
+      this.set('date', date);
+    }
+
+    var multiCalendarView = app.MultiCalendarView({
+      calendar: cat,
+      year: date,
+      model: this,
+      router: this.get('router')
+    });
 
     React.renderComponent(multiCalendarView, document.getElementById('calendarView'));
   },

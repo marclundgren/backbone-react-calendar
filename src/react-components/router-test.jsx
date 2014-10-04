@@ -20,13 +20,13 @@ var EventsView = React.createBackboneClass({
   },
 
   render: function() {
-    var events;
+    var events = this.props.events || [];
 
-    if (this.props.events.length) {
-      events = this.props.events.map(this.createEvent);
+    if (events.length) {
+      events = events.map(this.createEvent);
     }
     else {
-      events = 'I could not find any events.'
+      events = 'I could not find any events.';
     }
 
     return (
@@ -129,9 +129,13 @@ app.MultiCalendarView = React.createBackboneClass({
       // activeDayEvents: new Backbone.Collection(),
       // collection: new Backbone.CalendarEvents(),
       // filters: new Backbone.Collection(this.props.sources),
-      date: moment()
+      // date: moment()
     };
   },
+
+  // componentWillMount: function() {
+
+  // },
 
   render: function() {
     var calendar = this.props.calendar;
@@ -159,10 +163,26 @@ app.MultiCalendarView = React.createBackboneClass({
     specific_title = 'Events';
     specific_subtitle = calendar || '';
 
+    if (this.props.date) {
+      return (
+        <div>date view</div>
+      );
+    }
+    else if (this.props.month) {
+      return (
+        <div>month view</div>
+      );
+    }
+    else if (this.props.year) {
+      return (
+        <div>year view</div>
+      );
+    }
+
     var narrowBy = model.get('narrowBy');
     // date, month, year, event
 
-    if (narrowBy) {
+    if (false && narrowBy) {
       if (narrowBy === 'date') {
         events = model.getEvents({date: date});
 
@@ -201,7 +221,7 @@ app.MultiCalendarView = React.createBackboneClass({
               ref="calendarGrid" />
           </div>
 
-          <EventsView events={specific_events} subtitle={specific_subtitle} title={specific_title} router={this.props.router} />
+          <EventsView events={specific_events || events} subtitle={specific_subtitle} title={specific_title} router={this.props.router} />
         </div>
 
       </div>
