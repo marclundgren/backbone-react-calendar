@@ -1,29 +1,31 @@
 // Models
 Backbone.CalendarEvent = Backbone.Model.extend({
   defaults: {
-    author:     '',
-    category:   '',
-    calendar: '',
-    content:    '',
-    date:       '',
-    endTime:    '',
-    id:         '',
-    link:       '',
-    startTime:  '',
-    title:      '',
-    updated:    '',
-    location:      '',
-    week:      '',
-    yearMonth: '',
+    author:       '',
+    category:     '',
+    calendar:     '',
+    content:      '',
+    date:         '',
+    month:        '',
+    year:         '',
+    endTime:      '',
+    id:           '',
+    link:         '',
+    startTime:    '',
+    title:        '',
+    updated:      '',
+    location:     '',
+    week:         '',
+    yearMonth:    '',
     yearMonthDay: ''
   },
 
   initialize: function() {
     var startMoment = this._getStartMoment();
 
-    this.set('week', startMoment.week());
-    this.set('yearMonth', startMoment.format('YYYY-MM'));
-    this.set('yearMonthDay', startMoment.format('YYYY-MM-DD'));
+    // this.set('week', startMoment.week());
+    // this.set('yearMonth', startMoment.format('YYYY-MM'));
+    // this.set('yearMonthDay', startMoment.format('YYYY-MM-DD'));
   },
 
   starts: function() {

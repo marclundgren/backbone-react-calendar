@@ -5,7 +5,7 @@
 // namespace
 var app = app || {};
 
-app.SelectedEvents = React.createClass({displayName: 'SelectedEvents',
+app.SelectedEvents = React.createClass({
   getDefaultProps: function() {
     return {
       className: 'col-xs-12 col-sm-6 col-md-6 col-lg-9'
@@ -64,15 +64,15 @@ app.SelectedEvents = React.createClass({displayName: 'SelectedEvents',
     // }
 
     return (
-      app.EventsView({events: events, title: title, subtitle: subtitle, router: this.props.router})
+      <app.EventsView events={events} title={title} subtitle={subtitle} router={this.props.router} />
     );
   },
 
   render: function() {
     return (
-      React.DOM.div({className: this.props.className}, 
-        this.selectedEventsView()
-      )
+      <div className={this.props.className}>
+        {this.selectedEventsView()}
+      </div>
     );
   }
 });
@@ -118,7 +118,7 @@ app.MultiCalendarView = React.createBackboneClass({
     }
 
     return (
-      app.EventsView({events: events, title: title, subtitle: subtitle, router: this.props.router})
+      <app.EventsView events={events} title={title} subtitle={subtitle} router={this.props.router} />
     );
   },
 
@@ -150,7 +150,7 @@ app.MultiCalendarView = React.createBackboneClass({
 
     console.log('events using chaining: ', events);
 
-    return (React.DOM.div(null, "Testing chaining events"));
+    return (<div>Testing chaining events</div>);
 
     var props = this.props;
 
@@ -159,33 +159,33 @@ app.MultiCalendarView = React.createBackboneClass({
     var selectedEventsView = this.selectedEventsView();
 
     return (
-      React.DOM.div({className: "container-fluid calendars"}, 
-        React.DOM.div({className: "row"}, 
-          app.CalendarListView({navigateToCalendar: this.navigateToCalendar, selected: calendar, calendars: model.getCalendars()})
-        ), 
+      <div className="container-fluid calendars">
+        <div className="row">
+          <app.CalendarListView navigateToCalendar={this.navigateToCalendar} selected={calendar} calendars={model.getCalendars()} />
+        </div>
 
-        React.DOM.div({className: "row"}, 
-          React.DOM.div({className: this.props.classNameGridContainer}, 
-            app.CalendarControls({
-              date: date, 
-              onPrev: this.prev, 
-              onNext: this.next}), 
+        <div className="row">
+          <div className={this.props.classNameGridContainer}>
+            <app.CalendarControls
+              date={date}
+              onPrev={this.prev}
+              onNext={this.next} />
 
-            app.CalendarGrid({
-              date: date, 
-              events: events, 
-              onGridSelect: this.onGridSelect, 
-              ref: "calendarGrid"})
-          ), 
+            <app.CalendarGrid
+              date={date}
+              events={events}
+              onGridSelect={this.onGridSelect}
+              ref="calendarGrid" />
+          </div>
 
-          app.SelectedEvents({
-            calendar: calendar, 
-            date: this.props.date, 
-            month: this.props.month, 
-            year: this.props.year, 
-            events: events})
-        )
-      )
+          <app.SelectedEvents
+            calendar={calendar}
+            date={this.props.date}
+            month={this.props.month}
+            year={this.props.year}
+            events={events} />
+        </div>
+      </div>
     );
       /*
           <div className='col-xs-12 col-sm-12 col-md-4 col-lg-3'>

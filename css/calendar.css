@@ -1,4 +1,13 @@
 @charset "UTF-8";
+.event-view-to-calendar {
+  cursor: pointer; }
+
+.event-preview-view {
+  display: inline-block;
+  cursor: pointer; }
+  .event-preview-view:hover {
+    font-weight: bolder; }
+
 .calendar-list {
   margin: 1em 0; }
   .calendar-list .calendar-view {

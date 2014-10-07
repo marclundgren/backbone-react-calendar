@@ -16,6 +16,7 @@ Backbone.Source = Backbone.Model.extend({
       futureevents: 'true',
       orderby: 'starttime',
       singleevents: 'true',
+      'max-results': '9999',
       sortorder: 'ascending'
     }
   },

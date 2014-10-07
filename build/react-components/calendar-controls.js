@@ -13,11 +13,15 @@ app.CalendarControls = React.createClass({displayName: 'CalendarControls',
   },
 
   next: function() {
-    this.props.onNext();
+    var date = this.props.date.clone();
+
+    this.props.onNext(date.startOf('month').add(1, 'month').format('YYYY-MM'));
   },
 
   prev: function() {
-    this.props.onPrev();
+    var date = this.props.date.clone();
+
+    this.props.onPrev(date.startOf('month').subtract(1, 'month').format('YYYY-MM'));
   },
 
   render: function() {

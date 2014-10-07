@@ -6,6 +6,12 @@
 var app = app || {};
 
 app.EventPreviewView = React.createBackboneClass({
+  getDefaultProps: function() {
+    return {
+      className: 'event-preview-view'
+    };
+  },
+
   onClick: function() {
     var model = this.getModel();
 
@@ -29,8 +35,8 @@ app.EventPreviewView = React.createBackboneClass({
     var title = model.get('title');
 
     return (
-      <div onClick={this.onClick}>
-        <span className="startTime">{moment(startTime).format('MMMM DD, hh:mm a')}</span>
+      <div className={this.props.className} onClick={this.onClick}>
+        <span className='startTime'>{moment(startTime).format('MMMM DD, hh:mm a')}</span>
         <span> : </span>
         <span>{title}</span>
       </div>
