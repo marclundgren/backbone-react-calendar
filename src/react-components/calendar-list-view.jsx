@@ -16,7 +16,7 @@ app.CalendarListView = React.createClass({
     var selected = item === this.props.selected;
 
     return (
-      <app.CalendarItemView selected={selected} navigateToCalendar={this.props.navigateToCalendar} name={item} />
+      <app.CalendarItemView selected={selected} changeCalendar={this.props.changeCalendar} name={item} />
     );
   },
 

@@ -22,6 +22,23 @@ $background-colour: #f5f5f5;
 $date-hover-color: #f5f5f5;
 $date-hover-background-color: #27e5e4;
 
+.select-all-events {
+
+  // color: #ccc;
+  cursor: pointer;
+  background-color: #dcdcdc;
+  border-radius: 10%;
+  border: 10px solid #dcdcdc;
+  display: inline-block;
+
+  &.selected {
+    border-color: #2789e4;
+    display: inline-block;
+    background-color: #2789e4;
+    color: #fff;
+  }
+}
+
 .event-view-to-calendar {
   cursor: pointer;
 }
@@ -85,6 +102,18 @@ $date-hover-background-color: #27e5e4;
   }
 }
 
+.calendar-grid.active .week-body .grid-cell .active-day {
+  background-color: $background-colour-active-day;
+  color: $date-active-color;
+  font-weight: bolder;
+
+  &.circle {
+    background-color: $background-colour-active-day;
+    border-radius: 50%;
+    color: $date-active-color-selected;
+  }
+}
+
 // todo: only style .calendar-grid-container
 .calendar, .calendar-grid-container {
   margin-bottom: 1em;
@@ -143,40 +172,8 @@ $date-hover-background-color: #27e5e4;
       color: $date-colour-inactive;
       cursor: pointer;
 
-      .circle {
-        background-color: $background-colour-active-day;
-        border-radius: 50%;
-        color: $date-active-color-selected;
-        // height: 100%;
-        // width: 100%;
-      }
-
       .active-month {
         color: $date-colour-body;
-
-        &.circle {
-          color: $date-active-color-selected;
-        }
-
-        &.active-week-zzzzz {
-          background-color: $background-colour-active-week;
-        }
-
-        &.active-day {
-          background-color: $background-colour-active-day;
-          color: $date-active-color;
-          font-weight: bolder;
-
-          &.circle {
-            color: $date-active-color-selected;
-          }
-        }
-
-        // &:hover {
-        //   color: $date-hover-color;
-        //   background-color: $date-hover-background-color;
-        //   border-radius: 50%;
-        // }
       }
 
       .event-indicator {
@@ -189,10 +186,6 @@ $date-hover-background-color: #27e5e4;
       }
     }
   }
-}
-
-.calendar, .selected-events-list, .eventListContainer {
-  // max-height: 580px;
 }
 
 /* Desktops and laptops ----------- */

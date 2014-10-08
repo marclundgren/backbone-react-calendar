@@ -8,6 +8,30 @@ var app = app || {};
 // test
 // http://localhost/Sites/Dev/react/react-calendar/test/#date/2014-10-07
 
+app.SelectAllEvents = React.createClass({displayName: 'SelectAllEvents',
+  getDefaultProps: function() {
+    return {
+      className: 'select-all-events',
+      title: 'All Events',
+      selected: false
+    };
+  },
+
+  render: function() {
+    var className = this.props.className;
+
+    if (this.props.selected) {
+      className += ' selected';
+    }
+
+    return (
+      React.DOM.div({className: className, onClick: this.props.select}, 
+        this.props.title
+      )
+    );
+  }
+});
+
 app.MultiCalendarView = React.createBackboneClass({
   getDefaultProps: function() {
     return {
@@ -16,42 +40,24 @@ app.MultiCalendarView = React.createBackboneClass({
   },
 
   selectedEventsView: function() {
-    var events;
     var model = this.getModel();
 
-    var date = this.props.date;
+    // var date = this.props.date || this.getModel().get('date');
+    var date = this.getModel().get('date');
+
+    if (!date){
+      return (React.DOM.div(null, "No Date."));
+    }
+
     var month = this.props.month;
     var year = this.props.year;
 
-    var title, subtitle;
+    var events = model.getEvents({date: date});
+    var title = 'Day Events';
+    var subtitle = date.format('MMMM DD, YYYY');
 
-    if (date) {
-      events = model.getEvents({date: date});
-      title = 'Day Events';
-      subtitle = date.format('MMMM DD, YYYY');
-    }
-    // else if (month) {
-    //   events = model.getEvents({month: month});
-    //   title = 'Month Events';
-    //   subtitle = month.format('MMMM, YYYY');
-    // }
-    // else if (year) {
-    //   events = model.getEvents({year: year});
-    //   title = 'Year Events';
-    //   subtitle = year.format('YYYY');
-    // }
-    else {
-      // debugger;
-      date = this.getModel().get('date');
-
-      events = model.getEvents({date: date});
-      title = 'Day Events';
-      subtitle = date.format('MMMM DD, YYYY');
-    }
-
-    console.log('events', events);
-
-    return (React.DOM.div(null));
+    // return (<div></div>);
+    // console.log('events: ', events);
 
     return (
       app.EventsView({events: events, title: title, subtitle: subtitle, router: this.props.router})
@@ -62,42 +68,44 @@ app.MultiCalendarView = React.createBackboneClass({
     console.log('MultiCalendarView render...');
     var eventFilter = {},
       model = this.getModel(),
-      events = model.getEvents(eventFilter),
-      props = this.props,
-      calendar = props.calendar,
-      // date = props.date || props.month || props.year || model.get('date'),
-      date = props.date,
+      calendar = model.get('calendar'),
+      date = model.get('date'),
       selectedEventsView = this.selectedEventsView();
 
-    if (props.calendar) {
-      eventFilter.name = props.calendar;
-    }
-    if (props.date) {
-      eventFilter.date = props.date;
+    if (calendar) {
+      eventFilter.name = calendar;
     }
 
+    if (date) {
+      eventFilter.date = date;
+    }
 
-    console.log('props.date: ', props.date);
-    console.log('model.get("date"): ', model.get("date"));
-    console.log('events using chaining: ', events, eventFilter);
+    var events = model.getEvents(eventFilter);
 
-    // events = new Backbone.CalendarEvents(events);
+    var modelDate = model.get('date');
 
-    // return (<div>Testing chaining events</div>);
+    var allEvents = !date;
 
+    var title;
+    var subtitle;
 
-    console.log('date.format("YYYY-MM-DD"): ', date.format("YYYY-MM-DD"));
-    // debugger;
-    if (!date.isValid()) {
-      return (
-        app.InvalidDate(null)
-      );
+    if (allEvents) {
+      title = 'All Events';
+      date = moment();
+      subtitle = ''
+    }
+    else {
+      subtitle = date.format('MMMM DD, YYYY');
+    }
+
+    if (calendar && calendar.toLowerCase() !== 'all') {
+      title = calendar;
     }
 
     return (
       React.DOM.div({className: "container-fluid calendars"}, 
         React.DOM.div({className: "row"}, 
-          app.CalendarListView({navigateToCalendar: this.navigateToCalendar, selected: calendar, calendars: model.getCalendars()})
+          app.CalendarListView({changeCalendar: this.changeCalendar, selected: calendar, calendars: model.getCalendars()})
         ), 
 
         React.DOM.div({className: "row"}, 
@@ -108,71 +116,81 @@ app.MultiCalendarView = React.createBackboneClass({
               onNext: this.next}), 
 
             app.CalendarGrid({
+              active: !allEvents, 
               date: date, 
-              events: events, 
+              events: model.getEvents({calendar: calendar}), 
               onGridSelect: this.onGridSelect, 
               ref: "calendarGrid"})
           ), 
 
-          app.SelectedEventsView({
-            calendar: calendar, 
-            router: model.get('router'), 
-            date: this.props.date, 
-            month: this.props.month, 
-            year: this.props.year, 
-            events: events})
+          React.DOM.div({className: "col-xs-12 col-sm-6 col-md-6 col-lg-9"}, 
+
+            app.SelectAllEvents({selected: allEvents, select: this.onSelectAll}), 
+
+            app.SelectedEventsView({
+              className: "selected-events-view", 
+              title: title, 
+              subtitle: subtitle, 
+              calendar: calendar, 
+              router: model.get('router'), 
+              date: date, 
+              month: this.props.month, 
+              year: this.props.year, 
+              events: events})
+          )
         )
       )
     );
-      /*
-          <div className='col-xs-12 col-sm-12 col-md-4 col-lg-3'>
-            <app.EventsView events={model.getEvents()} subtitle='All' router={this.props.router} />
-          </div>
-      */
+  },
+
+  onSelectAll: function() {
+    var model = this.getModel();
+
+    model.unset('date');
   },
 
   changeCalendar: function(calendar) {
-    console.log('calendar: ', calendar);
-    // var nav = 'calendar/'
-
-    // nav += calendar;
-
-    // this.getModel().set('narrowBy', calendar);
-
     // this.props.router.navigate(nav, {
     //   trigger: true
     // });
 
-    this.navigateToCalendar(calendar);
+    // this.navigateToCalendar(calendar);
+
+    // todo: make this work via removing all props.calendar and instead listening to the model's property for sourceFilter
+    if (calendar) {
+      var model = this.getModel();
+
+      model.set('calendar', calendar);
+    }
   },
 
   // aka category
-  navigateToCalendar: function(calendar) {
-    var path = 'calendar/' + calendar;
+  // navigateToCalendar: function(calendar) {
+  //   var path = 'calendar/' + calendar;
 
-    var props = this.props;
+  //   var props = this.props;
 
-    if (props.date) {
-      path += '/date/' + props.date.format('YYYY-MM-DD');
-    }
-    else if (props.month) {
-      path += '/month/' + props.month.format('YYYY-MM');
-    }
-    else if (props.year) {
-      path += '/year/' + props.year.format('YYYY');
-    }
+  //   if (props.date) {
+  //     path += '/date/' + props.date.format('YYYY-MM-DD');
+  //   }
+  //   // else if (props.month) {
+  //   //   path += '/month/' + props.month.format('YYYY-MM');
+  //   // }
+  //   // else if (props.year) {
+  //   //   path += '/year/' + props.year.format('YYYY');
+  //   // }
 
-    this.navigate(path);
-  },
+  //   this.navigate(path);
+  // },
 
-  navigateToMonth: function(month) {
-    this.navigate('month/' + month);
-  },
+  // navigateToMonth: function(month) {
+  //   this.navigate('month/' + month);
+  // },
 
-  navigateToDay: function(day) {
-    debugger;
-    this.navigate('date/' + day);
-  },
+  // navigateToDay: function(day) {
+  //   // debugger;
+  //   this.navigate('date/' + day);
+  // },
 
   next: function(date) {
     // this.navigateToMonth(date);
@@ -189,17 +207,6 @@ app.MultiCalendarView = React.createBackboneClass({
     model.set('date', date);
   },
 
-  // navigate: function(fragment) {
-  //   var model = this.getModel();
-
-  //   model.get('router').navigate(fragment);
-
-  //   // var router = this.getModel().get('router');
-  //   // router.navigate(fragment, {
-  //   //   trigger: true
-  //   // });
-  // },
-
   changeDate: function(date) {
     var model = this.getModel();
 
@@ -207,13 +214,8 @@ app.MultiCalendarView = React.createBackboneClass({
   },
 
   onGridSelect: function(cell) {
-    // if (this.refs.calendarDayEvents) { // todo, is this needed?
-    //   this.refs.calendarDayEvents.setState({collection: cell.props.events});
-    // }
     var model = this.getModel();
 
     model.set('date', cell.props.date);
-
-    // this.navigateToDay(cell.props.date);
   }
 });

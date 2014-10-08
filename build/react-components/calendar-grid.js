@@ -6,21 +6,22 @@ var app = app || {};
 app.CalendarGrid = React.createClass({displayName: 'CalendarGrid',
   getDefaultProps: function() {
     return {
-      date: moment(),
+      active: true,
       className: 'calendar-grid',
+      events: new Backbone.CalendarEvents(),
       headerNames: ['S', 'M', 'T', 'W', 'T', 'F', 'S']
     };
   },
 
-  getInitialState: function() {
-    return {
-      collection: []
-    };
-  },
+  // getInitialState: function() {
+  //   return {
+  //     collection: []
+  //   };
+  // },
 
-  componentWillMount: function() {
-    this.setState({collection: new Backbone.CalendarEvents(this.state.collection)});
-  },
+  // componentWillMount: function() {
+  //   this.setState({collection: new Backbone.CalendarEvents(this.state.collection)});
+  // },
 
   render: function() {
     if (!this.props.date.isValid()) {
@@ -31,12 +32,20 @@ app.CalendarGrid = React.createClass({displayName: 'CalendarGrid',
 
     var dates = this.getDaysOfMonth(monthYear);
 
+    var className = this.props.className;
+
+    if (this.props.active) {
+      className += ' active';
+    }
+
+    var events = this._getEventsOfMonth();
+
     return (
-      React.DOM.div({className: this.props.className}, 
+      React.DOM.div({className: className}, 
         app.CalendarGridHeader({names: this.props.headerNames}), 
 
         app.CalendarGridBody({
-          events: this._getEventsOfMonth(), 
+          events: events, 
           dates: dates, 
           onGridSelect: this.props.onGridSelect, 
           weeks: this.getWeeks()})
@@ -60,18 +69,8 @@ app.CalendarGrid = React.createClass({displayName: 'CalendarGrid',
     return weeks;
   },
 
-  _getEventsOfMonth: function(yearMonth) {
-    var googleEvents = this.state.collection;
-
-    if (googleEvents.length && !(googleEvents instanceof Backbone.CalendarEvents)) {
-      googleEvents = new Backbone.CalendarEvents(googleEvents);
-    }
-
-    // todo cleanup
-
-    var eventsOfMonth = googleEvents.length && googleEvents.where({yearMonth: yearMonth}) || [];
-
-    return eventsOfMonth;
+  _getEventsOfMonth: function(month) {
+    return this.props.events.where({month: month});
   },
 
   /**
@@ -81,17 +80,13 @@ app.CalendarGrid = React.createClass({displayName: 'CalendarGrid',
   getDaysOfMonth: function() {
     var days = [];
 
+    if (!this.props.date.isValid()) {
+      return [];
+    }
+
     var yearMonth = app.Util.yearMonth(this.props.date);
 
     var events = this._getEventsOfMonth(yearMonth);
-
-    if (!this.props.date.isValid()) {
-      console.log('invalid date');
-
-      debugger;
-
-      return [];
-    }
 
     var iterator = this.props.date.clone().startOf('month');
 
@@ -170,6 +165,8 @@ app.CalendarGrid = React.createClass({displayName: 'CalendarGrid',
 
       iterator.add(1, 'day');
     }
+
+    // debugger;
 
     return days;
   }

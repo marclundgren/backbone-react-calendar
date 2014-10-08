@@ -8,17 +8,21 @@ var app = app || {};
 app.SelectedEventsView = React.createClass({displayName: 'SelectedEventsView',
   getDefaultProps: function() {
     return {
-      className: 'col-xs-12 col-sm-6 col-md-6 col-lg-9'
+      className: 'col-xs-12 col-sm-6 col-md-6 col-lg-9 selected-events-view',
+      title: 'Events',
+      subtitle: ''
     };
   },
 
-  selectedEventsView: function() {
+  view: function() {
     var events;
 
     var date = this.props.date;
     var month = this.props.month;
     var year = this.props.year;
     var events = this.props.events;
+
+    // console.log('SelectedEventsView this.props: ', this.props);
 
     // debugger;
 
@@ -31,27 +35,26 @@ app.SelectedEventsView = React.createClass({displayName: 'SelectedEventsView',
     //   year: this.props.year
     // });
 
-    if (date) {
-      title = 'Day Events';
-      subtitle = date;
-    }
-    else if (month) {
-      title = 'Month Events';
-      subtitle = month;
-    }
-    else if (year) {
-      title = 'Year Events';
-      subtitle = year;
-    }
-    else {
-      title = 'Year Events';
-      subtitle = calendar;
-    }
-
     // if (date) {
     //   title = 'Day Events';
-    //   subtitle = date.format('MMMM DD, YYYY');
+    //   subtitle = date;
     // }
+    // else if (month) {
+    //   title = 'Month Events';
+    //   subtitle = month;
+    // }
+    // else if (year) {
+    //   title = 'Year Events';
+    //   subtitle = year;
+    // }
+    // else {
+    //   title = 'Year Events';
+    //   subtitle = calendar;
+    // }
+
+    if (date) {
+      // subtitle = date.format('MMMM DD, YYYY');
+    }
     // else if (month) {
     //   title = 'Month Events';
     //   subtitle = month.format('MMMM, YYYY');
@@ -66,14 +69,16 @@ app.SelectedEventsView = React.createClass({displayName: 'SelectedEventsView',
     // }
 
     return (
-      app.EventsView({events: events, title: title, subtitle: subtitle, router: this.props.router})
+      app.EventsView({events: events, title: this.props.title, subtitle: this.props.subtitle, router: this.props.router})
     );
   },
 
   render: function() {
+    var view = this.view();
+
     return (
       React.DOM.div({className: this.props.className}, 
-        this.selectedEventsView()
+        view
       )
     );
   }

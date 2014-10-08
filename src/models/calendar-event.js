@@ -7,14 +7,12 @@ Backbone.CalendarEvent = Backbone.Model.extend({
     content:      '',
     date:         '',
     endTime:      '',
-    endMoment:    moment(), // alternatively, i could create a duration method and and endTime method...since i dont need to search against them. yeah do that...
     month:        '',
     year:         '',
     endTime:      '',
     id:           '',
     link:         '',
     startTime:    '',
-    startMoment:  moment(),
     title:        '',
     updated:      '',
     location:     '',
@@ -24,11 +22,39 @@ Backbone.CalendarEvent = Backbone.Model.extend({
   },
 
   initialize: function() {
-    var startMoment = this._getStartMoment();
-
     // this.set('week', startMoment.week());
     // this.set('yearMonth', startMoment.format('YYYY-MM'));
     // this.set('yearMonthDay', startMoment.format('YYYY-MM-DD'));
+  },
+
+  startMoment: function() {
+    var startMoment = this.get('startMoment');
+
+    if (!startMoment || !moment.isMoment(startMoment)) {
+      startMoment = moment(this.get('startTime'));
+
+      // this.set('startMoment', startMoment);
+
+      // the proceeding code results in the following runtime error
+
+      // Uncaught Error: Invariant Violation: forceUpdate(...): Cannot force an update while unmounting component or during an existing state transition (such as within `render`).
+
+      this.set('startMoment', startMoment, {silent: true});
+    }
+
+    return startMoment;
+  },
+
+  endMoment: function() {
+    var endMoment = this.get('endMoment');
+
+    if (!endMoment || !moment.isMoment(endMoment)) {
+      endMoment = moment(this.get('endTime'));
+
+      this.set('endMoment', endMoment);
+    }
+
+    return endMoment;
   },
 
   ends: function() {
@@ -43,17 +69,9 @@ Backbone.CalendarEvent = Backbone.Model.extend({
     return startMoment.format('YYYY MMMM DD hh:mm a');
   },
 
-  _getEndMoment: function() {
-    return moment(this.get('endTime'));
-  },
-
-  _getStartMoment: function() {
-    return moment(this.get('startTime'));
-  },
-
   duration: function() {
-    var startMoment = this._getStartMoment();
-    var endMoment = this._getEndMoment();
+    var startMoment = this.startMoment();
+    var endMoment = this.endMoment();
 
     var unit = 'hours';
 

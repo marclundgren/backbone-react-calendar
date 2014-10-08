@@ -29,6 +29,9 @@ app.EventsView = React.createBackboneClass({
 
   render: function() {
     var events = this.props.events || [];
+    // console.log('EventsView this.props: ', this.props);
+
+
 
     if (events.length) {
       events = events.map(this.createEvent);

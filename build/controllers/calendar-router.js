@@ -1,7 +1,8 @@
 Backbone.CalendarRouter = Backbone.Router.extend({
   routes: {
     ''                          :   'today',
-    'calendar'                  :   'calendar',        // e.g. calendar
+    'all'                       :   'all',          // e.g. all
+    'calendar'                  :   'calendar',     // e.g. calendar
     'today'                     :   'today',        // e.g. today
     'date/:date'                :   'date',         // e.g. date/2014-08-09
     'month/:month'              :   'month',        // e.g. month/2013-08

@@ -14,7 +14,7 @@ app.CalendarItemView = React.createClass({
   },
 
   onClick: function() {
-    this.props.navigateToCalendar(this.props.name);
+    this.props.changeCalendar(this.props.name);
   },
 
   render: function() {

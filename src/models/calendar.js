@@ -49,7 +49,7 @@ Backbone.Calendar = Backbone.Model.extend({
           author:       item.author[0].name,
           calendarName: source.get('name'),
           content:      item.content.$t,
-          date:         item.gd$when[0].startTime,
+          // date:         item.gd$when[0].startTime,
           endTime:      item.gd$when[0].endTime,
           id:           item.id.$t,
           link:         item.link[0].href,
@@ -70,7 +70,6 @@ Backbone.Calendar = Backbone.Model.extend({
 
   fetchSources: function(callback) {
     var self = this;
-    console.log('does this run?');
 
     var complete = this.get('sources').map(this.addSource, this);
 

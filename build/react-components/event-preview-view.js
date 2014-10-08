@@ -29,19 +29,20 @@ app.EventPreviewView = React.createBackboneClass({
     var model = this.getModel();
 
     // var startTime = model.get('startTime') || moment(model.get('gd$when')[0].startTime);
-    var startTime = model.get('startTime');
+    // var startTime = model.get('startTime');
+    var startMoment = model.startMoment();
 
     // var title = model.get('title') && model.get('title').$t || model.get('title');
     var title = model.get('title');
 
-    if (!moment.isMoment(startTime)) {
+    if (!moment.isMoment(startMoment)) {
       // debugger;
       return app.InvalidDate(null)
     }
 
     return (
       React.DOM.div({className: this.props.className, onClick: this.onClick}, 
-        React.DOM.span({className: "startTime"}, moment(startTime).format('MMMM DD, hh:mm a')), 
+        React.DOM.span({className: "startTime"}, startMoment.format('MMMM DD, hh:mm a')), 
         React.DOM.span(null, " : "), 
         React.DOM.span(null, title)
       )

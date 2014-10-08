@@ -9,7 +9,7 @@ app.CalendarGridBody = React.createClass({
   getDefaultProps: function() {
     return {
       dates: [],
-      weeks: new Backbone.Collection([])
+      weeks: new Backbone.Collection()
     };
   },
 

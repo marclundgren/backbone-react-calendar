@@ -7,6 +7,8 @@ var app = app || {};
 
 app.CalendarGridBodyRow = React.createClass({displayName: 'CalendarGridBodyRow',
   createCell: function(item) {
+    var moment = item.get('moment');
+
     return (
       app.CalendarGridBodyCell({
         activeDay: item.get('activeDay'), 

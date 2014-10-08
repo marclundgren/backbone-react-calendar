@@ -1,4 +1,16 @@
 @charset "UTF-8";
+.select-all-events {
+  cursor: pointer;
+  background-color: #dcdcdc;
+  border-radius: 10%;
+  border: 10px solid #dcdcdc;
+  display: inline-block; }
+  .select-all-events.selected {
+    border-color: #2789e4;
+    display: inline-block;
+    background-color: #2789e4;
+    color: #fff; }
+
 .event-view-to-calendar {
   cursor: pointer; }
 
@@ -43,6 +55,15 @@
   .calendar-filter .active {
     color: #333333; }
 
+.calendar-grid.active .week-body .grid-cell .active-day {
+  background-color: #2789e4;
+  color: #000000;
+  font-weight: bolder; }
+  .calendar-grid.active .week-body .grid-cell .active-day.circle {
+    background-color: #2789e4;
+    border-radius: 50%;
+    color: #fff; }
+
 .calendar, .calendar-grid-container {
   margin-bottom: 1em;
   max-width: 630px;
@@ -80,22 +101,8 @@
     .calendar .week-body .grid-cell, .calendar-grid-container .week-body .grid-cell {
       color: #dcdcdc;
       cursor: pointer; }
-      .calendar .week-body .grid-cell .circle, .calendar-grid-container .week-body .grid-cell .circle {
-        background-color: #2789e4;
-        border-radius: 50%;
-        color: #fff; }
       .calendar .week-body .grid-cell .active-month, .calendar-grid-container .week-body .grid-cell .active-month {
         color: #3f3f3f; }
-        .calendar .week-body .grid-cell .active-month.circle, .calendar-grid-container .week-body .grid-cell .active-month.circle {
-          color: #fff; }
-        .calendar .week-body .grid-cell .active-month.active-week-zzzzz, .calendar-grid-container .week-body .grid-cell .active-month.active-week-zzzzz {
-          background-color: #dcdcdc; }
-        .calendar .week-body .grid-cell .active-month.active-day, .calendar-grid-container .week-body .grid-cell .active-month.active-day {
-          background-color: #2789e4;
-          color: #000000;
-          font-weight: bolder; }
-          .calendar .week-body .grid-cell .active-month.active-day.circle, .calendar-grid-container .week-body .grid-cell .active-month.active-day.circle {
-            color: #fff; }
       .calendar .week-body .grid-cell .event-indicator, .calendar-grid-container .week-body .grid-cell .event-indicator {
         font-size: 2em;
         top: 75%; }
