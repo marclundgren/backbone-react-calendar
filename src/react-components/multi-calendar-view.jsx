@@ -56,16 +56,12 @@ app.MultiCalendarView = React.createBackboneClass({
     var title = 'Day Events';
     var subtitle = date.format('MMMM DD, YYYY');
 
-    // return (<div></div>);
-    // console.log('events: ', events);
-
     return (
       <app.EventsView events={events} title={title} subtitle={subtitle} router={this.props.router} />
     );
   },
 
   render: function() {
-    console.log('MultiCalendarView render...');
     var eventFilter = {},
       model = this.getModel(),
       calendar = model.get('calendar'),
