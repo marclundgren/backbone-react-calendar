@@ -4,40 +4,26 @@ var app = app || {};
 Backbone.Calendar = Backbone.Model.extend({
   defaults: {
     params: {},
-    entries: [],
-    sources: new Backbone.Sources()
+    sources: new Backbone.Sources(),
+    entries: new Backbone.CalendarEvents()
   },
 
-  _getLocalSources: function() {
-    return _.filter(this.get('sources'), function(item) {
-      return _.isArray(item.events);
-    });
-  },
+  initialize: function() {
+    var sources = this.get('sources');
 
-  _getRemoteSources: function() {
-    return _.filter(this.get('sources'), function(item) {
-      return !!(item.url || item.id || item.params);
-    });
-  },
+    if (!(sources instanceof Backbone.Sources)) {
+      sources = new Backbone.Sources(sources);
 
-  addLocalEventsAsEntries: function() {
-    var sourcesLocal = this._getLocalSources();
+      this.set('sources', sources);
+    }
 
     var entries = this.get('entries');
 
     if (!(entries instanceof Backbone.CalendarEvents)) {
       entries = new Backbone.CalendarEvents(entries);
+
+      this.set('entries', entries);
     }
-
-    entries.add(sourcesLocal);
-
-    this.set('entries', entries);
-  },
-
-  initialize: function() {
-    this.addLocalEventsAsEntries();
-
-    // this.fetchRemoteEvents();
 
     /*
 
@@ -65,7 +51,7 @@ Backbone.Calendar = Backbone.Model.extend({
           content:      item.content.$t,
           date:         item.gd$when[0].startTime,
           endTime:      item.gd$when[0].endTime,
-          id           item.id.$t,
+          id:           item.id.$t,
           link:         item.link[0].href,
           location:     item.gd$where[0].valueString,
           startTime:    item.gd$when[0].startTime,
@@ -84,10 +70,9 @@ Backbone.Calendar = Backbone.Model.extend({
 
   fetchSources: function(callback) {
     var self = this;
+    console.log('does this run?');
 
-    var sources = this._getRemoteSources();
-
-    var complete = sources.map(this.addSource, this);
+    var complete = this.get('sources').map(this.addSource, this);
 
     var deferred = $.Deferred(function(defer) {
       $.when.apply($, complete).done(function() {
@@ -100,5 +85,13 @@ Backbone.Calendar = Backbone.Model.extend({
     });
 
     return deferred;
+  },
+
+  extendURLOptions: function(obj) {
+    if (obj.urlOptions) {
+      var options = _.extend(obj.urlOptions || {}, this.get('urlOptions'));
+
+      this.set('urlOptions', options);
+    }
   }
 });

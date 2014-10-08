@@ -88,13 +88,5 @@ Backbone.Calendar = Backbone.Model.extend({
     });
 
     return deferred;
-  },
-
-  extendURLOptions: function(obj) {
-    if (obj.urlOptions) {
-      var options = _.extend(obj.urlOptions || {}, this.get('urlOptions'));
-
-      this.set('urlOptions', options);
-    }
   }
 });
