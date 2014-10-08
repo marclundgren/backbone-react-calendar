@@ -2,7 +2,8 @@ Backbone.Source = Backbone.Model.extend({
   defaults: {
     cache: true,
     dataType: 'jsonp',
-    id: '',
+    events: [],
+    googleCalendarId: '',
     name: '',
     timeout: 0,
     urlBase: 'http://www.google.com',
@@ -42,7 +43,7 @@ Backbone.Source = Backbone.Model.extend({
   },
 
   uri: function() {
-    var uri = this.get('urlBase') + this.get('urnHead') + this.get('id') + this.get('urnTail');
+    var uri = this.get('urlBase') + this.get('urnHead') + this.get('googleCalendarId') + this.get('urnTail');
 
     return app.Util.addParams(uri, this.get('params'));
   }
