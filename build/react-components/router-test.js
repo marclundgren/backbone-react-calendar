@@ -7,6 +7,12 @@ var app = app || {};
 
 var holidayEvents = [];
 var foodEvents = [{
+  title: 'Eat food tomorrow',
+  startTime: moment().add(1, 'day'),
+  ends: moment().add(1, 'day'),
+  content: 'Eat food.',
+  id: 'u80f'
+},{
   title: 'Cheez-its are tasty',
   startTime: moment(),
   ends: moment(),
@@ -28,18 +34,19 @@ var fidmEvents = [{
   id: 'sdt3'
 }];
 
-new Backbone.MultiCalendar({
+window.multicalendar = new Backbone.MultiCalendar({
   sources: [
     {name: 'Admissions', googleCalendarId: 'fidmwmo%40gmail.com'},
     {name: 'Holiday-Events', events: holidayEvents},
     {name: 'food-events', events: foodEvents},
     {name: 'fidm-events', events: fidmEvents}
   ],
-  calendarListTitle: 'Categories',
 
-  params: {
+  // calendarListTitle: 'Categories',
 
-  },
+  // params: {
+
+  // },
 
   // calendarListClassName: 'calendars',
 

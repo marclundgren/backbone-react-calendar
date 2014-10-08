@@ -6,7 +6,10 @@
   "strict": false,
   "globals": {
     "$": false,
+    "_": false,
     "React": false,
+    "moment": false,
+    "console": false,
     "Backbone": false
   },
   "globalstrict": false,

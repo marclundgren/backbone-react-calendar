@@ -14,6 +14,12 @@ app.EventsView = React.createBackboneClass({
   },
 
   createEvent: function(item) {
+    if (!this.props.router) {
+      return (React.DOM.div(null, "No router."));
+    }
+
+    // debugger;
+
     return (
       React.DOM.div(null, 
         app.EventPreviewView({router: this.props.router, model: item})

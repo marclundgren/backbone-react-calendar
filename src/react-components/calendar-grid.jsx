@@ -6,6 +6,7 @@ var app = app || {};
 app.CalendarGrid = React.createClass({
   getDefaultProps: function() {
     return {
+      date: moment(),
       className: 'calendar-grid',
       headerNames: ['S', 'M', 'T', 'W', 'T', 'F', 'S']
     };
@@ -22,6 +23,10 @@ app.CalendarGrid = React.createClass({
   },
 
   render: function() {
+    if (!this.props.date.isValid()) {
+      return <app.InvalidDate />
+    }
+
     var monthYear = this.props.date.format('MMYY'); // e.g. "0914" for Sept, 2014
 
     var dates = this.getDaysOfMonth(monthYear);
@@ -79,6 +84,14 @@ app.CalendarGrid = React.createClass({
     var yearMonth = app.Util.yearMonth(this.props.date);
 
     var events = this._getEventsOfMonth(yearMonth);
+
+    if (!this.props.date.isValid()) {
+      console.log('invalid date');
+
+      debugger;
+
+      return [];
+    }
 
     var iterator = this.props.date.clone().startOf('month');
 
