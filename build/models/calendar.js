@@ -1,7 +1,3 @@
-/**
- * @jsx React.DOM
- */
-
 // app namespace
 var app = app || {};
 
@@ -74,6 +70,7 @@ Backbone.Calendar = Backbone.Model.extend({
 
   fetchSources: function(callback) {
     var self = this;
+    console.log('does this run?');
 
     var complete = this.get('sources').map(this.addSource, this);
 
@@ -88,5 +85,13 @@ Backbone.Calendar = Backbone.Model.extend({
     });
 
     return deferred;
+  },
+
+  extendURLOptions: function(obj) {
+    if (obj.urlOptions) {
+      var options = _.extend(obj.urlOptions || {}, this.get('urlOptions'));
+
+      this.set('urlOptions', options);
+    }
   }
 });
