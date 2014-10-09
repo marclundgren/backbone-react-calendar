@@ -21,28 +21,24 @@ Backbone.CalendarEvent = Backbone.Model.extend({
     yearMonthDay: ''
   },
 
-  initialize: function() {
-    // this.set('week', startMoment.week());
-    // this.set('yearMonth', startMoment.format('YYYY-MM'));
-    // this.set('yearMonthDay', startMoment.format('YYYY-MM-DD'));
-  },
-
   startMoment: function() {
     var startMoment = this.get('startMoment');
 
     if (!startMoment || !moment.isMoment(startMoment)) {
       startMoment = moment(this.get('startTime'));
 
-      // this.set('startMoment', startMoment);
-
-      // the proceeding code results in the following runtime error
-
-      // Uncaught Error: Invariant Violation: forceUpdate(...): Cannot force an update while unmounting component or during an existing state transition (such as within `render`).
-
       this.set('startMoment', startMoment, {silent: true});
     }
 
     return startMoment;
+  },
+
+  month: function() {
+    return this.startMoment().format('YYYY-MM');
+  },
+
+  week: function() {
+    return this.startMoment().week();
   },
 
   endMoment: function() {

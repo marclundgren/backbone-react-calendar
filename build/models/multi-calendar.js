@@ -7,8 +7,7 @@ var app = app || {};
 
 Backbone.MultiCalendar = Backbone.Model.extend({
   defaults: {
-    calendar: 'All', // todo: rename this to "source-filter"
-    date: moment(),
+    calendar: 'all', // todo: rename this to "source-filter"
     sources: new Backbone.Sources(),
     router: new Backbone.CalendarRouter()
   },
@@ -34,7 +33,7 @@ Backbone.MultiCalendar = Backbone.Model.extend({
       self._syncCalendars();
     });
 
-    // this.fetchGoogleCalendars();
+    this.fetchGoogleCalendars();
   },
 
   _syncCalendars: function() {
@@ -65,34 +64,27 @@ Backbone.MultiCalendar = Backbone.Model.extend({
     sourcesRemote.each(function(source) {
       source.fetch().done(function(results) {
         var entries = results.feed.entry.map(function(item) {
-          var startMoment = moment(item.gd$when[0].startTime);
-
           return {
             author:       item.author[0].name,
             calendar:     source.get('name'),
             content:      item.content.$t,
-            date:         startMoment.format('YYYY-MM-DD'),
-            endMoment:    moment(item.gd$when[0].endTime),
             endTime:      item.gd$when[0].endTime,
             id:           item.gCal$uid.value,
             link:         item.link[0].href,
             location:     item.gd$where[0].valueString,
-            month:        startMoment.format('YYYY-MM'),
-            startMoment:  startMoment,
             startTime:    item.gd$when[0].startTime,
             title:        item.title.$t,
-            updated:      item.updated.$t,
-            week:         startMoment.week(),
-            year:         startMoment.format('YYYY')
+            updated:      item.updated.$t
           };
         });
 
         var events = new Backbone.CalendarEvents(entries);
 
-        sources.get(source).set('events', events.toJSON());
+        source.unset('googleCalendarId', {silent: true});
 
         // consume the calendarId so that this source is not fetched again
-        source.unset('googleCalendarId', {silent: true});
+        sources.get(source).set('events', events.toJSON());
+        // sources.get(source).set('events', events.toJSON());
       });
     });
   },
@@ -100,7 +92,6 @@ Backbone.MultiCalendar = Backbone.Model.extend({
   _initCalendars: function() {
     this._syncCalendars();
   },
-
 
   getCalendars: function() {
     return _.flatten(['All', this.get('sources').pluck('name')]);
@@ -111,8 +102,12 @@ Backbone.MultiCalendar = Backbone.Model.extend({
 
     var router = this.get('router');
 
+    this.listenTo(router, 'route:all', function() {
+      self.all.apply(self, arguments);
+    });
+
     this.listenTo(router, 'route:calendar', function() {
-      self.calendar.apply(self, arguments);
+      self.calendardate.apply(self, arguments);
     });
 
     this.listenTo(router, 'route:today', function() {
@@ -169,46 +164,48 @@ Backbone.MultiCalendar = Backbone.Model.extend({
     var calendarEvents;
 
     if (_.keys(options).length) {
+      var calendar = options.calendar;
+
+      var filterByCalendar = calendar && calendar.toLowerCase() !== 'all';
+
       calendarEvents = this.get('sources').chain()
         // filter by calendar aka cateogry
-        .filter(function(model) {
-          var name = options.name;
+        .filter(function(sourceModel) {
+          if (filterByCalendar) {
+            var predicate = (sourceModel.get('name') === calendar);
 
-          if (name && name.toLowerCase() !== 'all') {
-            return (model.get('name') === name);
+            return predicate;
           }
           else {
             return true;
           }
         })
         // return events as a collection
-        .map(function(model) {
-          return model.get('events');
+
+        .map(function(sourceModel) {
+          var events = sourceModel.get('events');
+
+          return events;
         })
-        // flatten events
-        .flatten()
-        // fitler by time e.g. date
-        .filter(function(item) {
+        .value();
 
-          // WOW, this sucks...but how can it be avoided with .chain?
-          item = new Backbone.CalendarEvent(item);
+        var flattenedEvents = _.flatten(calendarEvents);
 
-          var startMoment = item.startMoment();
+        var flattenedEventsCollection = new Backbone.CalendarEvents(flattenedEvents);
+
+        var filteredEvents = flattenedEventsCollection.filter(function(eventItem) {
+          // fitler by time e.g. date
+          var startMoment = eventItem.startMoment();
 
           if (options.date) {
             return startMoment.isSame(options.date, 'day');
           }
-          else if (options.month) {
-            return startMoment.isSame(options.month, 'month');
-          }
-          else if (options.year) {
-            return startMoment.isSame(options.year, 'year');
-          }
           else {
             return true;
           }
-        })
-        .value();
+        });
+
+        calendarEvents = filteredEvents;
     }
     else {
       calendarEvents = calendarEvents = this.get('sources').chain()
@@ -219,6 +216,8 @@ Backbone.MultiCalendar = Backbone.Model.extend({
         .flatten()
         // flat events
         .value();
+
+      console.log('return all events...');
     }
 
     return new Backbone.CalendarEvents(calendarEvents);
@@ -246,18 +245,17 @@ Backbone.MultiCalendar = Backbone.Model.extend({
     }
 
     this.dateView(cal);
-
-    this.fetchGoogleCalendars();
   },
 
   date: function(date) {
-    this.calendardate('All', date);
+    this.calendardate('all', date);
   },
 
   eventView: function(id) {
     var self = this;
 
     var calendarEvent = this.getEventById(id);
+
     var router = this.get('router');
     var mountPoint = this.get('mountPoint');
 
@@ -300,10 +298,6 @@ Backbone.MultiCalendar = Backbone.Model.extend({
   },
 
   dateView: function(cal) {
-    if (false && !moment.isMoment(date)) {
-      date = moment(date);
-    }
-
     var multiCalendarView = app.MultiCalendarView({
       calendar: cal,
       model: this,
@@ -323,7 +317,9 @@ Backbone.MultiCalendar = Backbone.Model.extend({
   },
 
   today: function(cal) {
-    this.calendar.apply(this, arguments);
+    this.set('date', moment(), {silent: true});
+
+    this.calendardate.apply(this, arguments);
   },
 
   event: function(cal, id) {

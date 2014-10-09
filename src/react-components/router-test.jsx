@@ -43,12 +43,8 @@ window.multicalendar = new Backbone.MultiCalendar({
   ],
 
   // calendarListTitle: 'Categories',
-
-  // params: {
-
-  // },
-
-  // calendarListClassName: 'calendars',
+  // calendarListClassName: 'calendars',z
+  // params: {},
 
   mountPoint: document.getElementById('calendarView')
 });

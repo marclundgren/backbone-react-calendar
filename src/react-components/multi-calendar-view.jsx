@@ -5,37 +5,11 @@
 // namespace
 var app = app || {};
 
-// test
-// http://localhost/Sites/Dev/react/react-calendar/test/#date/2014-10-07
-
-app.SelectAllEvents = React.createClass({
-  getDefaultProps: function() {
-    return {
-      className: 'select-all-events',
-      title: 'All Events',
-      selected: false
-    };
-  },
-
-  render: function() {
-    var className = this.props.className;
-
-    if (this.props.selected) {
-      className += ' selected';
-    }
-
-    return (
-      <div className={className} onClick={this.props.select}>
-        {this.props.title}
-      </div>
-    );
-  }
-});
-
 app.MultiCalendarView = React.createBackboneClass({
   getDefaultProps: function() {
     return {
-      classNameGridContainer: 'col-xs-12 col-sm-6 col-md-4 col-lg-3 calendar-grid-container'
+      classNameGridContainer: 'col-xs-12 col-sm-6 col-md-4 col-lg-3 calendar-grid-container',
+      selectEventsContainer: 'col-xs-12 col-sm-6 col-md-6 col-lg-9 select-events-container'
     };
   },
 
@@ -46,11 +20,10 @@ app.MultiCalendarView = React.createBackboneClass({
     var date = this.getModel().get('date');
 
     if (!date){
-      return (<div>No Date.</div>);
+      return (
+        <div>No Date.</div>
+      );
     }
-
-    var month = this.props.month;
-    var year = this.props.year;
 
     var events = model.getEvents({date: date});
     var title = 'Day Events';
@@ -69,7 +42,7 @@ app.MultiCalendarView = React.createBackboneClass({
       selectedEventsView = this.selectedEventsView();
 
     if (calendar) {
-      eventFilter.name = calendar;
+      eventFilter.calendar = calendar;
     }
 
     if (date) {
@@ -98,6 +71,12 @@ app.MultiCalendarView = React.createBackboneClass({
       title = calendar;
     }
 
+    var calendarEvents = model.getEvents({calendar: calendar});
+
+    if (calendar && calendar == 'food-events' && calendarEvents.length == 47) {
+      debugger;
+    }
+
     return (
       <div className="container-fluid calendars">
         <div className="row">
@@ -114,25 +93,22 @@ app.MultiCalendarView = React.createBackboneClass({
             <app.CalendarGrid
               active={!allEvents}
               date={date}
-              events={model.getEvents({calendar: calendar})}
+              events={calendarEvents}
               onGridSelect={this.onGridSelect}
               ref="calendarGrid" />
           </div>
 
-          <div className='col-xs-12 col-sm-6 col-md-6 col-lg-9'>
-
+          <div className={this.props.selectEventsContainer}>
             <app.SelectAllEvents selected={allEvents} select={this.onSelectAll} />
 
             <app.SelectedEventsView
-              className='selected-events-view'
-              title={title}
-              subtitle={subtitle}
               calendar={calendar}
-              router={model.get('router')}
+              className='selected-events-view'
               date={date}
-              month={this.props.month}
-              year={this.props.year}
-              events={events} />
+              events={events}
+              router={model.get('router')}
+              subtitle={subtitle}
+              title={title} />
           </div>
         </div>
       </div>

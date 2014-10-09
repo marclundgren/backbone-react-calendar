@@ -13,16 +13,6 @@ app.CalendarGrid = React.createClass({
     };
   },
 
-  // getInitialState: function() {
-  //   return {
-  //     collection: []
-  //   };
-  // },
-
-  // componentWillMount: function() {
-  //   this.setState({collection: new Backbone.CalendarEvents(this.state.collection)});
-  // },
-
   render: function() {
     if (!this.props.date.isValid()) {
       return <app.InvalidDate />
@@ -70,7 +60,10 @@ app.CalendarGrid = React.createClass({
   },
 
   _getEventsOfMonth: function(month) {
-    return this.props.events.where({month: month});
+    // return this.props.events.where({month: month});
+    return this.props.events.filter(function(item) {
+      return (item.month() === month);
+    });
   },
 
   /**
@@ -81,7 +74,7 @@ app.CalendarGrid = React.createClass({
     var days = [];
 
     if (!this.props.date.isValid()) {
-      return [];
+      return days;
     }
 
     var yearMonth = app.Util.yearMonth(this.props.date);
@@ -108,23 +101,20 @@ app.CalendarGrid = React.createClass({
 
     var month = iterator.month();
 
+    var collectionEvents = new Backbone.Collection(events);
+
     while (month === iterator.month()) {
       var iteratorDate = iterator.date();
 
-      var collectionEvents = new Backbone.Collection(events);
-
-      // IF i change the DATE attr, i could collectionEvents.where({date: iteratorDate})
       var dateEvents = collectionEvents.filter(function(item) {
-        return moment(item.get('date')).date() === iteratorDate;
+        return item.startMoment().isSame(iterator, 'day');
       });
 
-      // var now = moment();
       var date = this.props.date;
 
       var activeWeek = date.week() === iterator.week();
 
       var activeDay = date.dayOfYear() === iterator.dayOfYear();
-      // var activeDay = now.dayOfYear() === iterator.dayOfYear();
 
       if (activeWeek) {
         date.className += ' active-week';
