@@ -34,11 +34,9 @@ app.CalendarGrid = React.createClass({
       <div className={className}>
         <app.CalendarGridHeader names={this.props.headerNames} />
 
-        <app.CalendarGridBody
-          events={events}
-          dates={dates}
-          onGridSelect={this.props.onGridSelect}
-          weeks={this.getWeeks()} />
+        <app.CalendarGridBody events={events} dates={dates} onGridSelect={this.props.onGridSelect} weeks={this.getWeeks()} />
+
+        {this.props.children}
       </div>
     );
   },
@@ -60,7 +58,6 @@ app.CalendarGrid = React.createClass({
   },
 
   _getEventsOfMonth: function(month) {
-    // return this.props.events.where({month: month});
     return this.props.events.filter(function(item) {
       return (item.month() === month);
     });
@@ -155,8 +152,6 @@ app.CalendarGrid = React.createClass({
 
       iterator.add(1, 'day');
     }
-
-    // debugger;
 
     return days;
   }

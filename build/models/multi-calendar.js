@@ -80,11 +80,10 @@ Backbone.MultiCalendar = Backbone.Model.extend({
 
         var events = new Backbone.CalendarEvents(entries);
 
+        // consume the calendarId so that this source is not fetched again
         source.unset('googleCalendarId', {silent: true});
 
-        // consume the calendarId so that this source is not fetched again
         sources.get(source).set('events', events.toJSON());
-        // sources.get(source).set('events', events.toJSON());
       });
     });
   },
@@ -350,7 +349,15 @@ Backbone.MultiCalendar = Backbone.Model.extend({
   navigateToDay: function(day) {
     this.set('date', day);
 
-    this.navigate('date/' + day.format('YYYY-MM-DD'));
+    var calendar = this.get('calendar');
+
+    if (calendar) {
+      this.navigateToCalendar(calendar);
+    }
+    else {
+      this.navigate('date/' + day.format('YYYY-MM-DD'));
+    }
+
   },
 
   // todo: move the logic here to add a month

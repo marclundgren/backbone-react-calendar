@@ -28,11 +28,8 @@ app.EventPreviewView = React.createBackboneClass({
   render: function() {
     var model = this.getModel();
 
-    // var startTime = model.get('startTime') || moment(model.get('gd$when')[0].startTime);
-    // var startTime = model.get('startTime');
     var startMoment = model.startMoment();
 
-    // var title = model.get('title') && model.get('title').$t || model.get('title');
     var title = model.get('title');
 
     if (!moment.isMoment(startMoment)) {

@@ -15,7 +15,7 @@ Backbone.CalendarEvent = Backbone.Model.extend({
     startTime:    '',
     title:        '',
     updated:      '',
-    location:     '',
+    location:     'No location specificied.',
     week:         '',
     yearMonth:    '',
     yearMonthDay: ''
@@ -54,13 +54,13 @@ Backbone.CalendarEvent = Backbone.Model.extend({
   },
 
   ends: function() {
-    var endMoment = this._getEndMoment();
+    var endMoment = this.endMoment();
 
     return endMoment.format('YYYY MMMM DD hh:mm a');
   },
 
   starts: function() {
-    var startMoment = this._getStartMoment();
+    var startMoment = this.startMoment();
 
     return startMoment.format('YYYY MMMM DD hh:mm a');
   },
