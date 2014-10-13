@@ -23,7 +23,8 @@
     "tests"
   ],
   "dependencies": {
-    "jquery": "~2.1.1",
+    "es5-shim": "~4.0.3",
+    "jquery": "~1.9.0",
     "underscore": "~1.7.0",
     "backbone": "~1.1.2"
   }

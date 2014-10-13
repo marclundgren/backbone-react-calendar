@@ -16,14 +16,30 @@ var foodEvents = [{
   title: 'Cheez-its are tasty',
   startTime: moment().toDate(),
   endTime: moment().toDate(),
+  location: 'Madrid, Spain',
   content: 'Try cheez-it duoz. Two flavors are combined in one box.',
   id: '9qcw'
 },{
   title: 'Robeks Juice is crack cocaine',
-  startTime: moment().toDate(),
-  endTime: moment().toDate(),
+  startTime: moment().add(1, 'hour').toDate(),
+  endTime: moment().add(2, 'hours').toDate(),
+  location: 'Barcelona, Italy',
   content: 'I drank one of those things and I thought I was Lording.',
   id: '8lq2'
+},{
+  title: 'Brownie lollipop sweet roll powder croissant croissant',
+  startTime: moment().subtract(3, 'hour').toDate(),
+  endTime: moment().subtract(2, 'hours').toDate(),
+  location: 'Rome, Italy',
+  content: 'Caramels dragée bonbon toffee pie. Fruitcake toffee icing marzipan gummies marzipan cookie. Powder gummies cupcake soufflé danish cupcake gingerbread jelly-o.',
+  id: '8a0i'
+},{
+  title: 'Cookie powder cupcake jelly beans candy canes',
+  startTime: moment().hour(8).minute(0).toDate(),
+  endTime: moment().hour(10).minute(0).toDate(),
+  location: 'Paris, France',
+  content: 'Powder chocolate cake marzipan muffin. Dragée fruitcake lollipop sugar plum tootsie roll. Cheesecake icing sweet roll brownie applicake jelly.',
+  id: '93wt'
 }];
 
 var fidmEvents = [{

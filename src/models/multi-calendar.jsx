@@ -216,7 +216,7 @@ Backbone.MultiCalendar = Backbone.Model.extend({
         // flat events
         .value();
 
-      console.log('return all events...');
+      // console.log('return all events...');
     }
 
     return new Backbone.CalendarEvents(calendarEvents);

@@ -8,12 +8,11 @@ var app = app || {};
 app.MultiCalendarView = React.createBackboneClass({
   getDefaultProps: function() {
     return {
-      classNameGridContainer: 'col-xs-12 col-sm-6 col-md-4 col-lg-3 calendar-grid-container',
-      // selectEventsContainer: 'col-xs-12 col-sm-6 col-md-6 col-lg-9 select-events-container'
+      classNameGridContainer: 'col-xs-12 col-sm-6 col-md-4 col-lg-3 calendar-grid-container'
     };
   },
 
-  showEvent: function(id) {
+  eventLink: function(id) {
     var model = this.getModel();
 
     var calendar = model.get('calendar');
@@ -93,6 +92,9 @@ app.MultiCalendarView = React.createBackboneClass({
         selectedEventsTitle += ' in ' + calendar;
     }
 
+    // events
+    // console.log('events: ', events);
+
     return (
       <div className="container-fluid calendars">
         <div className="row">
@@ -118,9 +120,10 @@ app.MultiCalendarView = React.createBackboneClass({
           </div>
 
           <app.CalendarEventList
-            click={this.showEvent}
+            eventLink={this.eventLink}
+            date={model.get('date')}
             events={events}
-            date={model.get('date')} />
+            calendar={calendar} />
         </div>
       </div>
     );

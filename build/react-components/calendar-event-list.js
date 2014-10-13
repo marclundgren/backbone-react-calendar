@@ -8,56 +8,106 @@ var app = app || {};
 app.CalendarEventItem = React.createClass({displayName: 'CalendarEventItem',
   getDefaultProps: function() {
     return {
-      click: function() {},
+      eventLink: function() {},
       date: null,
       duration: '',
       id: '',
-      subtitle: 'Lorem ipsum Ut id commodo cillum sit fugiat adipisicing laboris dolore do pariatur exercitation.',
+      sortKey: '',
+      subtitle: '',
       location: '',
+      startMoment: moment(),
       starts: '',
       title: ''
     };
   },
 
   onClick: function() {
-    this.props.click(this.props.id);
+    this.props.eventLink(this.props.id);
   },
 
   render: function() {
-    return (
-      React.DOM.div({className: "event event-fixed-height-temp-className", onClick: this.onClick}, 
-        React.DOM.div({className: "event-content"}, 
-          React.DOM.h3({className: "title"}, this.props.title), 
-          React.DOM.div({className: "subtitle"}, 
-            this.props.subtitle
-          )
-        ), 
-        React.DOM.i({className: "glyphicon glyphicon-chevron-right"})
-      )
-    );
-  },
+    var sortKey = this.props.sortKey;
 
-  __render: function() {
-    return (
-      React.DOM.div({className: "event", onClick: this.onClick}, 
-        React.DOM.div({className: "event-content"}, 
-          React.DOM.h5({className: "title"}, 
-            this.props.title
+    if (sortKey === 'date') {
+      return (
+        React.DOM.div({className: "event event-fixed-height-temp-className", onClick: this.onClick}, 
+          React.DOM.div({className: "sortKey"}, 
+            this.props.startMoment.format('hh:mm a')
           ), 
-          React.DOM.div({className: "when"}, 
-            React.DOM.div({className: "starts"}, 
-              "Starts: ", this.props.starts
-            ), 
-            React.DOM.div({className: "duration"}, 
-              "Duration: ", this.props.duration
+          React.DOM.div({className: "event-content"}, 
+
+            React.DOM.h4({className: "title"}, this.props.title), 
+
+            React.DOM.div({className: "subtitle"}, 
+              this.props.location
             )
           ), 
-          React.DOM.div({className: "location"}, 
-            "Location: ", this.props.location
+          React.DOM.div({className: "arrow"}, 
+            React.DOM.i({className: "glyphicon glyphicon-chevron-right"})
           )
         )
-      )
-    );
+      );
+    }
+    else if (sortKey === 'location') {
+      return (
+        React.DOM.div({className: "event event-fixed-height-temp-className", onClick: this.onClick}, 
+          React.DOM.div({className: "sortKey"}, 
+            this.props.location
+          ), 
+          React.DOM.div({className: "event-content"}, 
+
+            React.DOM.h4({className: "title"}, this.props.title), 
+
+            React.DOM.div({className: "subtitle"}, 
+              this.props.startMoment.format('hh:mm a')
+            )
+          ), 
+          React.DOM.div({className: "arrow"}, 
+            React.DOM.i({className: "glyphicon glyphicon-chevron-right"})
+          )
+        )
+      );
+    }
+    else if (sortKey === 'title') {
+      return (
+        React.DOM.div({className: "event event-fixed-height-temp-className", onClick: this.onClick}, 
+          React.DOM.div({className: "event-content no-sortKey"}, 
+            React.DOM.h4({className: "title"}, this.props.title), 
+
+            React.DOM.div({className: "subtitle-primary"}, 
+              this.props.location
+            ), 
+
+            React.DOM.div({className: "subtitle-secondary"}, 
+              this.props.startMoment.format('hh:mm a')
+            )
+          ), 
+          React.DOM.div({className: "arrow"}, 
+            React.DOM.i({className: "glyphicon glyphicon-chevron-right"})
+          )
+        )
+      );
+    }
+    else {
+      return (
+        React.DOM.div({className: "event event-fixed-height-temp-className", onClick: this.onClick}, 
+          React.DOM.div({className: "sortKey"}, 
+            this.props.startMoment.format('hh:mm a')
+          ), 
+          React.DOM.div({className: "event-content"}, 
+
+            React.DOM.h4({className: "title"}, this.props.title), 
+
+            React.DOM.div({className: "subtitle"}, 
+              this.props.location
+            )
+          ), 
+          React.DOM.div({className: "arrow"}, 
+            React.DOM.i({className: "glyphicon glyphicon-chevron-right"})
+          )
+        )
+      );
+    }
   }
 });
 
@@ -65,6 +115,7 @@ app.CalendarEventItem = React.createClass({displayName: 'CalendarEventItem',
 app.CalendarEventList = React.createClass({displayName: 'CalendarEventList',
     getDefaultProps: function() {
       return {
+        containerClassName: 'col-xs-12 col-sm-6 col-md-6 col-lg-9 event-list-container',
         className: 'calendar-event-list',
         events: [],
         title: 'All Events'
@@ -80,18 +131,30 @@ app.CalendarEventList = React.createClass({displayName: 'CalendarEventList',
     },
 
     title: function() {
-      var title = this.props.date ? this.props.date.format('MMMM DD') : 'placeholder';
+      var title;
+      if (this.props.date) {
+        title = this.props.date.format('MMMM DD');
+      }
+      else if(this.props.calendar) {
+        title = this.props.calendar;
+      }
+      else {
+        title = this.props.title;
+      }
 
       return title;
     },
 
     createEntry: function (entry) {
+      // console.log('entry: ', entry);
       return (
         app.CalendarEventItem({
-          click: this.props.click, 
           duration: entry.duration(), 
-          location: entry.get('location'), 
+          eventLink: this.props.eventLink, 
           id: entry.get('id'), 
+          sortKey: this.state.sortValue, 
+          location: entry.get('location'), 
+          startMoment: entry.startMoment(), 
           starts: entry.starts(), 
           title: entry.get('title')})
       );
@@ -104,26 +167,19 @@ app.CalendarEventList = React.createClass({displayName: 'CalendarEventList',
     },
 
     render: function () {
-      var events = this.props.events;
-      console.log('events: ', events);
-
       var sortValue = this.state.sortValue;
 
-      // events = new Backbone.CalendarEvents(events);
+      var eventsSorted = this.props.events.sortBy(sortValue);
+      // console.log('eventsSorted: ', eventsSorted.length);
 
-      var eventsSorted = events.sortBy(this.state.sortValue);
+      var noEvents = '';
 
-      var eventsView;
-
-      if (eventsSorted.length) {
-        eventsView = eventsSorted.map(this.createEntry);
-      }
-      else {
-        eventsView = 'I could not find any events.';
+      if (eventsSorted.length === 0) {
+         noEvents = 'I could not find any events.';
       }
 
       return (
-        React.DOM.div({className: "col-xs-12 col-sm-6 col-md-6 col-lg-9 event-list-container"}, 
+        React.DOM.div({className: this.props.containerClassName}, 
           React.DOM.div({className: "event-list-header"}, 
             React.DOM.h3({className: "events-title"}, this.title()), 
 
@@ -134,7 +190,9 @@ app.CalendarEventList = React.createClass({displayName: 'CalendarEventList',
             )
           ), 
 
-          React.DOM.div({className: this.props.className}, eventsView)
+          React.DOM.div({className: this.props.className}, eventsSorted.map(this.createEntry)), 
+
+          React.DOM.div({className: "no-events"}, noEvents)
         )
       );
     }

@@ -5,6 +5,8 @@
 // namespace
 var app = app || {};
 
+// todo: remove this class
+
 app.EventPreviewView = React.createBackboneClass({
   getDefaultProps: function() {
     return {
@@ -19,6 +21,8 @@ app.EventPreviewView = React.createBackboneClass({
     var id = model.get('id');
 
     var path = 'calendar/' + calendar + '/event/' + id;
+
+    // console.log('onClick...');
 
     this.props.router.navigate(path, {
       trigger: true
