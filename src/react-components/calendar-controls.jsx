@@ -29,9 +29,13 @@ app.CalendarControls = React.createClass({
   render: function() {
     return (
       <nav className='calendar-controls'>
-        <div className='arrow arrow-previous' onClick={this.prev}></div>
+        <div className='control-previous' onClick={this.prev}>
+          <div className='arrow'></div>
+        </div>
         <h3 className='title'>{this.props.date.format('MMMM YYYY')}</h3>
-        <div className='arrow arrow-next' onClick={this.next}></div>
+        <div className='control-next' onClick={this.next}>
+          <div className='arrow'></div>
+        </div>
       </nav>
     );
   }

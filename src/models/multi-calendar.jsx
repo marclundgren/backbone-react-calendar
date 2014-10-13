@@ -7,15 +7,16 @@ var app = app || {};
 
 Backbone.MultiCalendar = Backbone.Model.extend({
   defaults: {
-    calendar: 'all', // todo: rename this to "source-filter"
+    calendar: '', // todo: rename this to "source-filter"
+    calendarEvents: new Backbone.CalendarEvents(),
     sources: new Backbone.Sources(),
-    router: new Backbone.CalendarRouter()
+    router: new Backbone.CalendarRouter(),
+    title: 'Multi Calendar'
   },
 
   initialize: function() {
     this._initSources();
     this._initEvents();
-    this._initCalendars();
     this._bindRoutes();
   },
 
@@ -27,27 +28,35 @@ Backbone.MultiCalendar = Backbone.Model.extend({
       sources = new Backbone.Sources(sources);
     }
 
-    this.set('sources', sources);
+    sources.each(function(source) {
+      var name = source.get('name');
 
-    this.listenTo(sources, 'change', function() {
-      self._syncCalendars();
+      var calendarEvents = source.get('events');
+
+      if (calendarEvents) {
+        calendarEvents.map(function(calendarEvent) {
+          calendarEvent.calendar = name;
+        });
+        source.set('events', calendarEvents);
+      }
     });
+
+    this.set('sources', sources);
 
     this.fetchGoogleCalendars();
   },
 
-  _syncCalendars: function() {
-    var calendars = this.getCalendars();
-
-    this.set('calendars', calendars);
-  },
-
   _initEvents: function() {
     var events = this.get('sources').pluck('events');
+    console.log('events: ', events);
 
     var flattenedEvents = _.flatten(events);
 
     this.set('events', new Backbone.Collection(flattenedEvents));
+  },
+
+  getCalendars: function() {
+    return this.get('sources').pluck('name');
   },
 
   fetchGoogleCalendars: function() {
@@ -86,14 +95,6 @@ Backbone.MultiCalendar = Backbone.Model.extend({
         sources.get(source).set('events', events.toJSON());
       });
     });
-  },
-
-  _initCalendars: function() {
-    this._syncCalendars();
-  },
-
-  getCalendars: function() {
-    return _.flatten(['All', this.get('sources').pluck('name')]);
   },
 
   _bindRoutes: function() {
@@ -143,7 +144,7 @@ Backbone.MultiCalendar = Backbone.Model.extend({
     });
 
     this.on('change:calendar', function(model, calendar) {
-      self.navigateToCalendar(calendar || 'all');
+      self.navigateToCalendar(calendar || '');
     });
 
     this.get('sources').bind('change', function() {
@@ -165,15 +166,11 @@ Backbone.MultiCalendar = Backbone.Model.extend({
     if (_.keys(options).length) {
       var calendar = options.calendar;
 
-      var filterByCalendar = calendar && calendar.toLowerCase() !== 'all';
-
       calendarEvents = this.get('sources').chain()
         // filter by calendar aka cateogry
         .filter(function(sourceModel) {
-          if (filterByCalendar) {
-            var predicate = (sourceModel.get('name') === calendar);
-
-            return predicate;
+          if (calendar) {
+            return (sourceModel.get('name') === calendar);
           }
           else {
             return true;
@@ -182,9 +179,7 @@ Backbone.MultiCalendar = Backbone.Model.extend({
         // return events as a collection
 
         .map(function(sourceModel) {
-          var events = sourceModel.get('events');
-
-          return events;
+          return sourceModel.get('events');
         })
         .value();
 
@@ -326,7 +321,7 @@ Backbone.MultiCalendar = Backbone.Model.extend({
   },
 
   navigateToAllEvents: function() {
-    this.navigate('all');
+    this.navigate('');
   },
 
   // aka category

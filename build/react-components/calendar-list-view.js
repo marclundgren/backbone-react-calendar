@@ -8,6 +8,7 @@ var app = app || {};
 app.CalendarListView = React.createClass({displayName: 'CalendarListView',
   getDefaultProps: function() {
     return {
+      active: false,
       className: 'col-md-12 calendar-list'
     }
   },
@@ -21,9 +22,15 @@ app.CalendarListView = React.createClass({displayName: 'CalendarListView',
   },
 
   render: function() {
+    var className = this.props.className;
+
+    if (this.props.active) {
+      className += ' active';
+    }
+
     return (
-      React.DOM.div({className: this.props.className}, 
-        this.props.calendars.map(this.createCalendar)
+      React.DOM.div({className: className}, 
+        "Calendars: ", this.props.calendars.map(this.createCalendar)
       )
     );
   }

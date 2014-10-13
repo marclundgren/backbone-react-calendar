@@ -1,25 +1,36 @@
 @charset "UTF-8";
+.control-previous, .control-next {
+  position: absolute;
+  margin: 0 12px; }
+
+.control-previous {
+  left: 0; }
+
+.control-next {
+  right: 0; }
+
+.multi-calendar-view {
+  margin: 2em 0; }
+
+.multi-calendar-title {
+  text-align: center; }
+
 .calendar-event-list .title {
   margin-top: 0;
-  overflow-x: hidden;
+  overflow: hidden;
   text-overflow: ellipsis;
-  white-space: nowrap;
-  width: 95%; }
+  white-space: nowrap; }
 .calendar-event-list .event {
   cursor: pointer;
   border-bottom: 1px solid;
   padding: 1em 0; }
   .calendar-event-list .event > div {
     display: inline-block; }
-  .calendar-event-list .event .key {
-    width: 20%; }
-  .calendar-event-list .event .event-content {
-    vertical-align: middle;
-    width: 75%; }
-    .calendar-event-list .event .event-content.no-key {
-      width: 95%; }
   .calendar-event-list .event .arrow {
-    width: 5%; }
+    position: absolute;
+    top: 50%;
+    font-size: 20px;
+    margin-top: -10px; }
   .calendar-event-list .event.event-fixed-height-temp-className {
     position: relative; }
   .calendar-event-list .event .icon-container {
@@ -33,7 +44,12 @@
   .calendar-event-list .event:hover {
     background-color: #f5f5f5; }
 
-.select-all-events {
+.calendar-list.active .calendar-view .selected {
+  background-color: #2789e4;
+  color: #fff;
+  padding: 0 1em; }
+
+.select-all-events, .event-view-to-calendar {
   background-color: #dcdcdc;
   border: 10px solid #dcdcdc;
   cursor: pointer;
@@ -44,14 +60,11 @@
   text-overflow: ellipsis;
   white-space: nowrap;
   width: 100%; }
-  .select-all-events.selected {
+  .select-all-events.selected, .event-view-to-calendar.selected {
     border-color: #2789e4;
     display: inline-block;
     background-color: #2789e4;
     color: #fff; }
-
-.event-view-to-calendar {
-  cursor: pointer; }
 
 .event-preview-view {
   display: inline-block;
@@ -66,8 +79,7 @@
     display: inline-block;
     color: #ccc;
     padding: 0 1em;
-    text-align: center;
-    width: 160px; }
+    text-align: center; }
     .calendar-list .calendar-view .selected {
       font-weight: bold;
       color: #000; }
@@ -184,11 +196,12 @@
 
 .calendar-controls {
   position: relative;
-  text-align: center;
-  width: 100%; }
-  .calendar-controls div {
+  text-align: center; }
+  .calendar-controls > * {
     cursor: pointer;
     display: inline-block;
+    font-size: 17px;
+    padding: 1em;
     text-align: center; }
   .calendar-controls .current-month {
     background: #ffc0cb;
@@ -204,14 +217,14 @@
     font-size: 0;
     height: 0;
     line-height: 0;
-    margin: 0 12px;
-    position: absolute;
+    /* margin: 0 12px; */
+    /* position: absolute; */
     width: 0; }
-  .calendar-controls .arrow-next {
+  .calendar-controls .control-next .arrow {
     right: 0;
     border-left-color: black;
     border-left-width: 12px; }
-  .calendar-controls .arrow-previous {
+  .calendar-controls .control-previous .arrow {
     left: 0;
     border-right-color: black;
     border-right-width: 12px; }

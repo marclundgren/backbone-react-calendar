@@ -58,9 +58,36 @@ window.multicalendar = new Backbone.MultiCalendar({
     {name: 'fidm-events', events: fidmEvents}
   ],
 
+  // router: app.myRouter(),
+
+  title: 'FIDM Events Calendar',
+
   // calendarListTitle: 'Categories',
-  // calendarListClassName: 'calendars',z
+  // calendarListClassName: 'calendars',
   // params: {},
 
   mountPoint: document.getElementById('calendarView')
 });
+
+
+
+if (typeof console) {
+  console.log('' +
+    '       __________________' + '\n' +
+    '      /\\  ______________ \\' + '\n' +
+    '     /::\\ \\ZZZZZZZZZZZZ/\\ \\' + '\n' +
+    '    /:/\\.\\ \\        /:/\\:\\ \\' + '\n' +
+    '   /:/Z/\\:\\ \\      /:/Z/\\:\\ \\' + '\n' +
+    '  /:/Z/__\\:\\ \\____/:/Z/  \\:\\ \\' + '\n' +
+    ' /:/Z/____\\:\\ \\___\\/Z/    \\:\\ \\' + '\n' +
+    ' \\:\\ \\ZZZZZ\\:\\ \\ZZ/\\ \\     \\:\\ \\' + '\n' +
+    '  \\:\\ \\     \\:\\ \\ \\:\\ \\     \\:\\ \\' + '\n' +
+    '   \\:\\ \\     \\:\\ \\_\\;\\_\\_____\\;\\ \\' + '\n' +
+    '    \\:\\ \\     \\:\\_________________\\' + '\n' +
+    '     \\:\\ \\    /:/ZZZZZZZZZZZZZZZZZ/' + '\n' +
+    '      \\:\\ \\  /:/Z/    \\:\\ \\  /:/Z/' + '\n' +
+    '       \\:\\ \\/:/Z/      \\:\\ \\/:/Z/' + '\n' +
+    '        \\:\\/:/Z/________\\;\\/:/Z/' + '\n' +
+    '         \\::/Z/____________\\/Z/' + '\n' +
+    '          \\/ZZZZZZZZZZZZZZZZZ/');
+}

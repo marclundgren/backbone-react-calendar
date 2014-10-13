@@ -9,7 +9,8 @@ app.EventView = React.createBackboneClass({
     return {
       classNametoCalendar: 'event-view-to-calendar',
       classNameContent: 'event-view-content',
-      classNameTitle: 'event-view-title'
+      classNameTitle: 'event-view-title',
+      title: 'Show Calendar'
     };
   },
 
@@ -23,12 +24,18 @@ app.EventView = React.createBackboneClass({
     var model = this.getModel();
 
     return (
-      <div>
-        <div onClick={this.toCalendar} className={this.props.classNametoCalendar}>&lt; back</div>
+      <div className="container">
+        <div className="row">
+          <div className="col-xs-12 col-sm-12 col-sm-12" onClick={this.toCalendar} className={this.props.classNametoCalendar}>
+            {this.props.title}
+          </div>
 
-        <h3 className={this.props.classNameTitle}>{model.get('title')}</h3>
+          <div className="col-xs-12 col-sm-12 col-sm-12">
+            <h3 className={this.props.classNameTitle}>{model.get('title')}</h3>
 
-        <div className={this.props.classNameContent}>{model.get('content')}</div>
+            <div className={this.props.classNameContent}>{model.get('content')}</div>
+          </div>
+        </div>
       </div>
     );
   }
