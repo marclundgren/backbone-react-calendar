@@ -48,7 +48,6 @@ Backbone.MultiCalendar = Backbone.Model.extend({
 
   _initEvents: function() {
     var events = this.get('sources').pluck('events');
-    console.log('events: ', events);
 
     var flattenedEvents = _.flatten(events);
 

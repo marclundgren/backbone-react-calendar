@@ -26,6 +26,5 @@
   },
   "_source": "git://github.com/usepropeller/react.backbone.git",
   "_target": "~0.5.0",
-  "_originalSource": "react.backbone",
-  "_direct": true
+  "_originalSource": "react.backbone"
 }
