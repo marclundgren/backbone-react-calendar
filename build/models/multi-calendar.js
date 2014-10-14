@@ -208,10 +208,7 @@ Backbone.MultiCalendar = Backbone.Model.extend({
           return model.get('events');
         })
         .flatten()
-        // flat events
         .value();
-
-      // console.log('return all events...');
     }
 
     return new Backbone.CalendarEvents(calendarEvents);
@@ -352,17 +349,6 @@ Backbone.MultiCalendar = Backbone.Model.extend({
     else {
       this.navigate('date/' + day.format('YYYY-MM-DD'));
     }
-
-  },
-
-  // todo: move the logic here to add a month
-  next: function(date) {
-    this.set('date', date);
-  },
-
-  // todo: move the logic here to subtract a month
-  prev: function(date) {
-    this.set('date', date);
   },
 
   navigate: function(fragment) {

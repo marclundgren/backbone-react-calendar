@@ -23,7 +23,6 @@ app.CalendarControls = React.createClass({
     var date = this.props.date.clone();
 
     this.props.onPrev(date.startOf('month').subtract(1, 'month'));
-    // this.props.onPrev(date.startOf('month').subtract(1, 'month').format('YYYY-MM'));
   },
 
   render: function() {
