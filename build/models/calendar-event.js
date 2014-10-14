@@ -41,13 +41,19 @@ Backbone.CalendarEvent = Backbone.Model.extend({
     return this.startMoment().week();
   },
 
+  _initEndMoment: function() {
+    var endMoment = moment(this.get('endTime'));
+
+    this.set('endMoment', endMoment, {silent: true});
+
+    return endMoment;
+  },
+
   endMoment: function() {
     var endMoment = this.get('endMoment');
 
     if (!endMoment || !moment.isMoment(endMoment)) {
-      endMoment = moment(this.get('endTime'));
-
-      this.set('endMoment', endMoment);
+      endMoment = this._initEndMoment();
     }
 
     return endMoment;

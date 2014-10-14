@@ -18,8 +18,6 @@ app.EventsView = React.createBackboneClass({
       return (React.DOM.div(null, "No router."));
     }
 
-    // debugger;
-
     return (
       React.DOM.div(null, 
         app.EventPreviewView({router: this.props.router, model: item})
@@ -29,9 +27,6 @@ app.EventsView = React.createBackboneClass({
 
   render: function() {
     var events = this.props.events || [];
-    // console.log('EventsView this.props: ', this.props);
-
-
 
     if (events.length) {
       events = events.map(this.createEvent);

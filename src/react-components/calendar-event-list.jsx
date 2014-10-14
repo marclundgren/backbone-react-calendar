@@ -25,7 +25,7 @@ app.CalendarEventItemByTitle = React.createClass({
         <div className="col-xs-10">
           <div className="row">
 
-            <div className="col-xs-12 col-sm-3 col-lg-3">
+            <div className="col-xs-12 col-sm-12 col-lg-12">
               <h4 className="titlez">
                 {this.props.title}
               </h4>
@@ -222,6 +222,10 @@ app.CalendarEventList = React.createClass({
 
       if (this.props.date) {
         title = this.props.date.format('MMMM DD');
+
+        if(this.props.calendar) {
+          title = this.props.calendar + ' - ' + title;
+        }
       }
       else if(this.props.calendar) {
         title = this.props.calendar;
@@ -257,11 +261,15 @@ app.CalendarEventList = React.createClass({
 
     selectSort: function() {
       return (
-        <select className="form-control" ref="sortValue" value={this.state.sortValue} name="sortvalue" onChange={this.onChange}>
-          <option value="startTime">Date</option>
-          <option value="title">Title</option>
-          <option value="location">Location</option>
-        </select>
+        <div className="sort">
+          <h5>Sort by</h5>
+
+          <select className="form-control" ref="sortValue" value={this.state.sortValue} name="sortvalue" onChange={this.onChange}>
+            <option value="startTime">Date</option>
+            <option value="title">Title</option>
+            <option value="location">Location</option>
+          </select>
+        </div>
       );
     },
 

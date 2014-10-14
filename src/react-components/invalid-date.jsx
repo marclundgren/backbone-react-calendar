@@ -13,7 +13,6 @@ app.InvalidDate = React.createClass({
   },
 
   render: function() {
-    // debugger;
     return (<div>{this.props.message}</div>);
   }
 });

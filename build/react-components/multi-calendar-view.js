@@ -32,12 +32,6 @@ app.MultiCalendarView = React.createBackboneClass({
     };
   },
 
-  getCalendarByEventId: function() {
-    var model = this.getModel();
-
-
-  },
-
   eventLink: function(calendar, id) {
     var model = this.getModel();
 
@@ -124,6 +118,14 @@ app.MultiCalendarView = React.createBackboneClass({
             eventLink: this.eventLink, 
             events: events, 
             sortable: allEvents})
+        ), 
+
+        React.DOM.h2(null, "Issues"), 
+        React.DOM.ul(null, 
+          React.DOM.li(null, "Event Detail View: [bug] direct links may contain raw HTML fragments."), 
+          React.DOM.li(null, "Event Detail View: [presentation] The desktop view is not optimized."), 
+          React.DOM.li(null, "Grid Calendar View: [performance] changing dates has a noticable delay."), 
+          React.DOM.li(null, "Grid Calendar View: [bug] A user is unable to change the month quickly until the next month has rendered.")
         )
       )
     );
@@ -147,7 +149,6 @@ app.MultiCalendarView = React.createBackboneClass({
     var model = this.getModel();
 
     model.set('date', date);
-
   },
 
   prev: function(date) {

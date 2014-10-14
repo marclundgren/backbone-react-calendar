@@ -35,7 +35,6 @@ app.EventPreviewView = React.createBackboneClass({
     var title = model.get('title');
 
     if (!moment.isMoment(startMoment)) {
-      // debugger;
       return <app.InvalidDate />
     }
 

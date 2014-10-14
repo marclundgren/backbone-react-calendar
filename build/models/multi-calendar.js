@@ -9,6 +9,7 @@ Backbone.MultiCalendar = Backbone.Model.extend({
   defaults: {
     calendar: '', // todo: rename this to "source-filter"
     calendarEvents: new Backbone.CalendarEvents(),
+    dangerouslySetInnerHTML: false,
     sources: new Backbone.Sources(),
     router: new Backbone.CalendarRouter(),
     title: 'Multi Calendar'
@@ -252,6 +253,7 @@ Backbone.MultiCalendar = Backbone.Model.extend({
     if (calendarEvent) {
       React.renderComponent(
         app.EventView({
+          dangerouslySetInnerHTML: this.get('dangerouslySetInnerHTML'),
           model: calendarEvent,
           router: router
         }),
@@ -275,6 +277,7 @@ Backbone.MultiCalendar = Backbone.Model.extend({
             if (calendarEvent) {
               React.renderComponent(
                 app.EventView({
+                  dangerouslySetInnerHTML: this.get('dangerouslySetInnerHTML'),
                   model: calendarEvent,
                   router: router
                 }),

@@ -9,10 +9,8 @@
 .control-next {
   right: 0; }
 
-.multi-calendar-view {
-  margin: 2em 0; }
-
 .multi-calendar-title {
+  cursor: pointer;
   text-align: center; }
 
 .calendar-event-list .title {

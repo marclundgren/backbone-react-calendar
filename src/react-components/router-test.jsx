@@ -53,22 +53,28 @@ var fidmEvents = [{
 window.multicalendar = new Backbone.MultiCalendar({
   sources: [
     {name: 'Admissions', googleCalendarId: 'fidmwmo%40gmail.com'},
-    {name: 'Holiday-Events', events: holidayEvents},
-    {name: 'food-events', events: foodEvents},
-    {name: 'fidm-events', events: fidmEvents}
+    {name: 'On-Campus', googleCalendarId: '5mtlu2lndo671s83a87eojp7ks%40group.calendar.google.com'},
+    {name: 'College-Fairs', googleCalendarId: 'h5db9jueqak0mq8teomdjie7jc%40group.calendar.google.com'},
+    {name: 'For-Educators', googleCalendarId: 'qtr7ue6scgnc0noa9eb34ku220%40group.calendar.google.com'},
+    {name: 'Empty-List', events: holidayEvents},
+    {name: 'Food-events', events: foodEvents},
+    {name: 'TMZ-FIDM-events', events: fidmEvents}
   ],
 
-  // router: app.myRouter(),
+  // router: new myRouter(), // override the router
 
   title: 'FIDM Events Calendar',
 
+  dangerouslySetInnerHTML: true, // event content contains raw HTML
+
   // calendarListTitle: 'Categories',
   // calendarListClassName: 'calendars',
-  // params: {},
+  // params: {}, // todo
 
   mountPoint: document.getElementById('calendarView')
 });
 
+console.log('dangerouslySetInnerHTML: true');
 
 
 if (typeof console) {

@@ -25,7 +25,7 @@ app.CalendarEventItemByTitle = React.createClass({displayName: 'CalendarEventIte
         React.DOM.div({className: "col-xs-10"}, 
           React.DOM.div({className: "row"}, 
 
-            React.DOM.div({className: "col-xs-12 col-sm-3 col-lg-3"}, 
+            React.DOM.div({className: "col-xs-12 col-sm-12 col-lg-12"}, 
               React.DOM.h4({className: "titlez"}, 
                 this.props.title
               )
@@ -222,6 +222,10 @@ app.CalendarEventList = React.createClass({displayName: 'CalendarEventList',
 
       if (this.props.date) {
         title = this.props.date.format('MMMM DD');
+
+        if(this.props.calendar) {
+          title = this.props.calendar + ' - ' + title;
+        }
       }
       else if(this.props.calendar) {
         title = this.props.calendar;
@@ -257,10 +261,14 @@ app.CalendarEventList = React.createClass({displayName: 'CalendarEventList',
 
     selectSort: function() {
       return (
-        React.DOM.select({className: "form-control", ref: "sortValue", value: this.state.sortValue, name: "sortvalue", onChange: this.onChange}, 
-          React.DOM.option({value: "startTime"}, "Date"), 
-          React.DOM.option({value: "title"}, "Title"), 
-          React.DOM.option({value: "location"}, "Location")
+        React.DOM.div({className: "sort"}, 
+          React.DOM.h5(null, "Sort by"), 
+
+          React.DOM.select({className: "form-control", ref: "sortValue", value: this.state.sortValue, name: "sortvalue", onChange: this.onChange}, 
+            React.DOM.option({value: "startTime"}, "Date"), 
+            React.DOM.option({value: "title"}, "Title"), 
+            React.DOM.option({value: "location"}, "Location")
+          )
         )
       );
     },

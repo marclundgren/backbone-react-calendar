@@ -88,7 +88,6 @@ var data = [{
 var app = app || {};
 
 // Define your sources
-// var sources = new Backbone.Sources([
 var sources = [
   // {name: 'No Such Calendar', id: 'marclundgren2.0@gmail.com', params: params},
   // {name: 'Server-side events', events: data},
@@ -96,7 +95,6 @@ var sources = [
   {name: 'On campus', id: '5mtlu2lndo671s83a87eojp7ks%40group.calendar.google.com', params: params},
   {name: 'College Fairs', id: 'h5db9jueqak0mq8teomdjie7jc%40group.calendar.google.com', params: params},
   {name: 'For Educators', id: 'qtr7ue6scgnc0noa9eb34ku220%40group.calendar.google.com', params: params}
-// ]);
 ];
 
 sources = new Backbone.Sources(sources);
