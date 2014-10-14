@@ -5,6 +5,20 @@
 // namespace
 var app = app || {};
 
+app.CalendarItemOptionView = React.createClass({displayName: 'CalendarItemOptionView',
+  getDefaultProps: function() {
+    return {
+      selected: false
+    };
+  },
+
+  render: function() {
+    return (
+      React.DOM.option({value: this.props.name, selected: this.props.selected}, this.props.name)
+    );
+  }
+});
+
 app.CalendarItemView = React.createClass({displayName: 'CalendarItemView',
   getDefaultProps: function() {
     return {
@@ -18,11 +32,15 @@ app.CalendarItemView = React.createClass({displayName: 'CalendarItemView',
   },
 
   render: function() {
-    var classNameSelected = this.props.selected ? 'selected' : '';
+    var className = this.props.className;
+
+    if (this.props.selected) {
+      className += ' selected';
+    }
 
     return (
-      React.DOM.div({className: this.props.className, onClick: this.onClick}, 
-        React.DOM.div({className: classNameSelected}, this.props.name)
+      React.DOM.div({className: className, onClick: this.onClick}, 
+        React.DOM.div(null, this.props.name)
       )
     );
   }

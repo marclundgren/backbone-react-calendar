@@ -111,6 +111,7 @@ app.MultiCalendarView = React.createBackboneClass({
 
               <app.CalendarListView
                 active={allEvents}
+                defaultValue={calendar}
                 calendars={model.getCalendars()}
                 changeCalendar={this.changeCalendar}
                 selected={calendar} />
@@ -129,12 +130,16 @@ app.MultiCalendarView = React.createBackboneClass({
   },
 
   changeCalendar: function(calendar) {
+    var model = this.getModel();
+
     if (calendar) {
-      var model = this.getModel();
 
       model.set('calendar', calendar);
 
       model.unset('date');
+    }
+    else {
+      model.unset('calendar');
     }
   },
 

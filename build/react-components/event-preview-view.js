@@ -22,8 +22,6 @@ app.EventPreviewView = React.createBackboneClass({
 
     var path = 'calendar/' + calendar + '/event/' + id;
 
-    // console.log('onClick...');
-
     this.props.router.navigate(path, {
       trigger: true
     });

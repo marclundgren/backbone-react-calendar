@@ -257,7 +257,7 @@ app.CalendarEventList = React.createClass({
 
     selectSort: function() {
       return (
-        <select ref="sortValue" value={this.state.sortValue} name="sortvalue" onChange={this.onChange}>
+        <select className="form-control" ref="sortValue" value={this.state.sortValue} name="sortvalue" onChange={this.onChange}>
           <option value="startTime">Date</option>
           <option value="title">Title</option>
           <option value="location">Location</option>
@@ -270,7 +270,7 @@ app.CalendarEventList = React.createClass({
 
       var sortElement, sortValue;
 
-      if (sortable) {
+      if (sortable && this.props.events.length) {
         sortElement = this.selectSort();
 
         sortValue = this.state.sortValue;
