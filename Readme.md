@@ -3,9 +3,11 @@
 
 Backbone Calendar Component
 
-## To install
+## To Develop
 
 ```
+sudo npm install -g bower sass
+
 bower install
 ```
 
