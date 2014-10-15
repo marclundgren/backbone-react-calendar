@@ -43,21 +43,14 @@ app.CalendarListView = React.createClass({displayName: 'CalendarListView',
       className += ' active';
     }
 
+    window.logTime();
+
     return (
       React.DOM.div(null, 
         React.DOM.h4(null, "Filter by"), 
         React.DOM.select({defaultValue: this.props.defaultValue, ref: "select", className: "form-control", onChange: this.onChange}, 
           React.DOM.option({value: ""}, "All"), 
           this.props.calendars.map(this.createCalendarOption)
-        )
-      )
-    )
-
-    return (
-      React.DOM.div({className: className}, 
-        "Calendars:", 
-        React.DOM.div(null, 
-          this.props.calendars.map(this.createCalendar)
         )
       )
     );

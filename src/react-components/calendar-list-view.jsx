@@ -43,6 +43,8 @@ app.CalendarListView = React.createClass({
       className += ' active';
     }
 
+    window.logTime();
+
     return (
       <div>
         <h4>Filter by</h4>
@@ -50,15 +52,6 @@ app.CalendarListView = React.createClass({
           <option value="">All</option>
           {this.props.calendars.map(this.createCalendarOption)}
         </select>
-      </div>
-    )
-
-    return (
-      <div className={className}>
-        Calendars:
-        <div>
-          {this.props.calendars.map(this.createCalendar)}
-        </div>
       </div>
     );
   }

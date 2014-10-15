@@ -44,7 +44,19 @@ app.MultiCalendarView = React.createBackboneClass({
     });
   },
 
+  _logTime: function() {
+    return;
+    var now = moment();
+
+    var diff = now.diff(window._t);
+
+    console.log('diff: ', diff);
+    alert(diff);
+  },
+
   render: function() {
+    window.now();
+
     var eventFilter = {},
       model = this.getModel(),
       calendar = model.get('calendar'),
@@ -80,6 +92,10 @@ app.MultiCalendarView = React.createBackboneClass({
       title = calendar;
     }
 
+    // alert('sanity');
+
+    // todo: make use of transferPropsTo
+
     return (
       React.DOM.div({className: "container multi-calendar-view"}, 
 
@@ -95,13 +111,16 @@ app.MultiCalendarView = React.createBackboneClass({
               onPrev: this.prev, 
               onNext: this.next}), 
 
+            React.DOM.div(null, 
+              date.format('YYYY-MM-DD')
+            ), 
+
             app.CalendarGrid({
               active: !allEvents, 
               date: date, 
               events: model.getEvents({calendar: calendar}), 
               onGridSelect: this.onGridSelect, 
               ref: "calendarGrid"}, 
-
 
               app.CalendarListView({
                 active: allEvents, 
@@ -148,11 +167,17 @@ app.MultiCalendarView = React.createBackboneClass({
   next: function(date) {
     var model = this.getModel();
 
+    window._t = moment();
+    console.log('window._t: ', window._t);
+
     model.set('date', date);
   },
 
   prev: function(date) {
     var model = this.getModel();
+
+    window._t = moment();
+    console.log('window._t: ', window._t);
 
     model.set('date', date);
   },
@@ -173,12 +198,15 @@ app.MultiCalendarView = React.createBackboneClass({
   changeDate: function(date) {
     var model = this.getModel();
 
+    console.log('changeDate');
+
+    window._t = moment();
+    console.log('window._t: ', window._t);
+
     model.set('date', date);
   },
 
   onGridSelect: function(cell) {
-    var model = this.getModel();
-
-    model.set('date', cell.props.date);
+    this.changeDate(cell.props.date);
   }
 });

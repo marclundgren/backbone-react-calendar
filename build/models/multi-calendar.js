@@ -135,6 +135,9 @@ Backbone.MultiCalendar = Backbone.Model.extend({
     });
 
     this.on('change:date', function(model, date) {
+      // window._t = moment();
+      // console.log('window._t: ', window._t);
+
       if (date) {
         self.navigateToDay(date);
       }
@@ -297,6 +300,8 @@ Backbone.MultiCalendar = Backbone.Model.extend({
       router: this.get('router')
     });
 
+    console.log('dateView!');
+
     React.renderComponent(multiCalendarView, document.getElementById('calendarView'));
   },
 
@@ -305,6 +310,9 @@ Backbone.MultiCalendar = Backbone.Model.extend({
       model: this,
       router: this.get('router')
     });
+
+    // window._t = moment();
+    // console.log('window._t: ', window._t);
 
     React.renderComponent(multiCalendarView, document.getElementById('calendarView'));
   },

@@ -50,7 +50,23 @@ var fidmEvents = [{
   id: 'sdt3'
 }];
 
-window.multicalendar = new Backbone.MultiCalendar({
+var _now = moment();
+
+// debugger;
+
+window.now = function() {
+  _now = moment();
+};
+
+window.logTime = function() {
+  var diff = moment().diff(_now);
+  console.log('diff: ', diff);
+  // alert('diff: ' + diff);
+
+  _now = moment();
+};
+
+var multicalendar = new Backbone.MultiCalendar({
   sources: [
     {name: 'Admissions', googleCalendarId: 'fidmwmo%40gmail.com'},
     {name: 'On-Campus', googleCalendarId: '5mtlu2lndo671s83a87eojp7ks%40group.calendar.google.com'},
