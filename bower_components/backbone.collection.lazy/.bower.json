@@ -1,0 +1,27 @@
+{
+  "name": "backbone.collection.lazy",
+  "main": "built/backbone.collection.lazy.js",
+  "description": "Backbone collection using Lazy.js instead of underscore.",
+  "dependencies": {
+    "lazy.js": "~0.3.1",
+    "backbone": "~1.1.0"
+  },
+  "devDependencies": {
+    "requirejs": "*",
+    "requirejs-text": "*",
+    "underscore": "*",
+    "jquery": "*",
+    "qunit": "*",
+    "lodash": "~2.4.1"
+  },
+  "homepage": "https://github.com/simonfan/backbone.collection.lazy",
+  "_release": "476ead7cc6",
+  "_resolution": {
+    "type": "branch",
+    "branch": "master",
+    "commit": "476ead7cc65e2e8c142e0c9b9295d65bb3e712ff"
+  },
+  "_source": "git://github.com/simonfan/backbone.collection.lazy.git",
+  "_target": "*",
+  "_originalSource": "backbone.collection.lazy"
+}

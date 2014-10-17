@@ -23,6 +23,8 @@ Backbone.Source = Backbone.Model.extend({
   },
 
   sync: function(method, model, options) {
+    // Lazy(obj).extend({ ... })
+
     options = _.extend(options, {
       cache: this.get('cache'),
       dataType: this.get('dataType'),

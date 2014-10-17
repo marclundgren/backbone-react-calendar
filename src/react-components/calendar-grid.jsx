@@ -14,13 +14,14 @@ app.CalendarGrid = React.createClass({
   },
 
   render: function() {
+
     if (!this.props.date.isValid()) {
       return <app.InvalidDate />
     }
 
     var monthYear = this.props.date.format('MMYY'); // e.g. "0914" for Sept, 2014
 
-    var dates = this.getDaysOfMonth(monthYear);
+    var dates = this.getDaysOfMonth(monthYear); // ~250ms -> ~180ms
 
     var className = this.props.className;
 
@@ -28,33 +29,17 @@ app.CalendarGrid = React.createClass({
       className += ' active';
     }
 
-    var events = this._getEventsOfMonth();
+    var events = this._getEventsOfMonth(); // ~1ms
 
     return (
       <div className={className}>
         <app.CalendarGridHeader names={this.props.headerNames} />
 
-        <app.CalendarGridBody events={events} dates={dates} onGridSelect={this.props.onGridSelect} weeks={this.getWeeks()} />
+        <app.CalendarGridBody events={events} dates={dates} onGridSelect={this.props.onGridSelect} weekLength={this.props.headerNames.length} />
 
         {this.props.children}
       </div>
     );
-  },
-
-  getWeeks: function() {
-    var weeks = [];
-
-    var daysOfMonth = this.getDaysOfMonth();
-
-    var weeksInMonth = (daysOfMonth.length / this.props.headerNames.length);
-
-    var daysOfMonthCollection = new Backbone.Collection(daysOfMonth);
-
-    for (var index = 0; index < weeksInMonth; index++) {
-      weeks[index] = daysOfMonthCollection.where({week: index + 1});
-    }
-
-    return weeks;
   },
 
   _getEventsOfMonth: function(month) {
@@ -76,7 +61,7 @@ app.CalendarGrid = React.createClass({
 
     var yearMonth = app.Util.yearMonth(this.props.date);
 
-    var events = this._getEventsOfMonth(yearMonth);
+    var events = this._getEventsOfMonth(yearMonth); // ~23
 
     var iterator = this.props.date.clone().startOf('month');
 
@@ -100,11 +85,13 @@ app.CalendarGrid = React.createClass({
 
     var collectionEvents = new Backbone.Collection(events);
 
+    var m = moment();
+
     while (month === iterator.month()) {
       var iteratorDate = iterator.date();
 
-      var dateEvents = collectionEvents.filter(function(item) {
-        return item.startMoment().isSame(iterator, 'day');
+      var dateEvents = collectionEvents.where({
+        fullDate: iterator.format('YYYY-MM-DD')
       });
 
       var date = this.props.date;

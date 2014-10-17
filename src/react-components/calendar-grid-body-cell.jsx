@@ -36,18 +36,10 @@ app.CalendarGridBodyCell = React.createClass({
     if (this.props.activeMonth) {
       className += ' active-month';
 
-      // if (this.props.activeWeek) {
-      //   className += ' active-week';
-      // }
-
       if (this.props.activeDay) {
         className += ' circle active-day';
       }
     }
-
-    // if (this.state.selected) {
-    //   className += ' selected';
-    // }
 
     return (
       <div className='grid-cell' onClick={this.onClick}>

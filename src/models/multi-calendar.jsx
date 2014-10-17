@@ -12,7 +12,8 @@ Backbone.MultiCalendar = Backbone.Model.extend({
     dangerouslySetInnerHTML: false,
     sources: new Backbone.Sources(),
     router: new Backbone.CalendarRouter(),
-    title: 'Multi Calendar'
+    title: 'Multi Calendar',
+    view: app.MultiCalendarView
   },
 
   initialize: function() {
@@ -37,6 +38,9 @@ Backbone.MultiCalendar = Backbone.Model.extend({
       if (calendarEvents) {
         calendarEvents.map(function(calendarEvent) {
           calendarEvent.calendar = name;
+          if (!calendarEvent.id) {
+            calendarEvent.id = app.Util.uniqueId();
+          }
         });
         source.set('events', calendarEvents);
       }
@@ -50,6 +54,10 @@ Backbone.MultiCalendar = Backbone.Model.extend({
   _initEvents: function() {
     var events = this.get('sources').pluck('events');
 
+    /*
+      Lazy([1, [2, 3], [4, [5]]]).flatten() // sequence: [1, 2, 3, 4, 5]
+      Lazy([1, Lazy([2, 3])]).flatten()     // sequence: [1, 2, 3]
+    */
     var flattenedEvents = _.flatten(events);
 
     this.set('events', new Backbone.Collection(flattenedEvents));
@@ -65,7 +73,7 @@ Backbone.MultiCalendar = Backbone.Model.extend({
     var sourcesRemote = sources.filter(function (source) {
       var id = source.get('googleCalendarId');
 
-      return id && _.isString(id);
+      return id && app.Util.isString(id);
     });
 
     sourcesRemote = new Backbone.Sources(sourcesRemote);
@@ -135,9 +143,6 @@ Backbone.MultiCalendar = Backbone.Model.extend({
     });
 
     this.on('change:date', function(model, date) {
-      // window._t = moment();
-      // console.log('window._t: ', window._t);
-
       if (date) {
         self.navigateToDay(date);
       }
@@ -166,8 +171,13 @@ Backbone.MultiCalendar = Backbone.Model.extend({
   getEvents: function(options) {
     var calendarEvents;
 
+    // Lazy({ hello: "hola", goodbye: "hasta luego" }).keys() // sequence: ["hello", "goodbye"]
+
     if (_.keys(options).length) {
       var calendar = options.calendar;
+
+      // var result = _.chain(array).map(square).map(inc).filter(isEven).take(5).value();
+      // var result = Lazy(array).map(square).map(inc).filter(isEven).take(5);
 
       calendarEvents = this.get('sources').chain()
         // filter by calendar aka cateogry
@@ -185,6 +195,11 @@ Backbone.MultiCalendar = Backbone.Model.extend({
           return sourceModel.get('events');
         })
         .value();
+
+        /*
+          Lazy([1, [2, 3], [4, [5]]]).flatten() // sequence: [1, 2, 3, 4, 5]
+          Lazy([1, Lazy([2, 3])]).flatten()     // sequence: [1, 2, 3]
+        */
 
         var flattenedEvents = _.flatten(calendarEvents);
 
@@ -214,7 +229,9 @@ Backbone.MultiCalendar = Backbone.Model.extend({
         .value();
     }
 
-    return new Backbone.CalendarEvents(calendarEvents);
+    var collection = new Backbone.CalendarEvents(calendarEvents);
+
+    return collection;
   },
 
   month: function(yearMonth, cal) {
@@ -242,7 +259,9 @@ Backbone.MultiCalendar = Backbone.Model.extend({
   },
 
   date: function(date) {
-    this.calendardate('all', date);
+    this.unset('calendar', {silent: true});
+
+    this.calendardate('', date);
   },
 
   eventView: function(id) {
@@ -294,25 +313,20 @@ Backbone.MultiCalendar = Backbone.Model.extend({
   },
 
   dateView: function(cal) {
-    var multiCalendarView = app.MultiCalendarView({
+    var multiCalendarView = this.get('view')({
       calendar: cal,
       model: this,
       router: this.get('router')
     });
 
-    console.log('dateView!');
-
     React.renderComponent(multiCalendarView, document.getElementById('calendarView'));
   },
 
   all: function() {
-    var multiCalendarView = app.MultiCalendarView({
+    var multiCalendarView = this.get('view')({
       model: this,
       router: this.get('router')
     });
-
-    // window._t = moment();
-    // console.log('window._t: ', window._t);
 
     React.renderComponent(multiCalendarView, document.getElementById('calendarView'));
   },

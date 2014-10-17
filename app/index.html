@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <title>Backbone Multi Calendar Demo</title>
+
+  <meta content="text/html;charset=utf-8" http-equiv="Content-Type">
+  <meta content="utf-8" http-equiv="encoding">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+  <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.2.0/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="../css/calendar.css" />
+  </head>
+  <body>
+  <div id="calendarView"></div>
+
+  <!-- Dependencies -->
+
+  <!-- React requires es5 modules -->
+  <script type="text/javascript">
+    function parseScript(resource) {
+    var el=document.createElement('script');
+    el.src=resource;
+    el.type='text/javascript';
+    document.getElementsByTagName('head')[0].appendChild(el);
+     }
+
+    var requireShim = !(Array.prototype.every && Array.prototype.filter && Array.prototype.forEach && Array.prototype.indexOf && Array.prototype.lastIndexOf && Array.prototype.map && Array.prototype.some && Array.prototype.reduce && Array.prototype.reduceRight && Array.isArray && Date.now && Date.prototype.toJSON && Function.prototype.bind && Number.prototype.toFixed && Object.keys && String.prototype.split && String.prototype.trim && String.prototype.replace && Date.parse && Date.prototype.toISOString && parseInt);
+
+    var requireSham = !(Object.create && Object.getPrototypeOf && Object.getOwnPropertyNames && Object.isFrozen && Object.isExtensible && Object.getOwnPropertyDescriptor && Object.defineProperty && Object.defineProperties && Object.seal && Object.freeze && Object.preventExtensions);
+
+    if (requireShim) {
+      parseScript('../bower_components/es5-shim/es5-shim.js');
+    }
+
+    if (requireSham) {
+      parseScript('../bower_components/es5-shim/es5-sham.js');
+    }
+  </script>
+
+  <script src="../bower_components/jquery/jquery.js"></script>
+
+  <script src="../bower_components/lodash/dist/lodash.underscore.min.js"></script>
+  <script src="../bower_components/backbone/backbone.js"></script>
+
+  <script src="../bower_components/react/react.js"></script>
+  <script src="../bower_components/react.backbone/react.backbone.js"></script>
+  <script src="../bower_components/moment/min/moment-with-locales.min.js"></script>
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/showdown/0.3.1/showdown.min.js"></script>
+
+  <!-- Utility -->
+  <script src="../build/util/util.js"></script>
+
+  <!-- Backbone -->
+  <script src="../build/models/calendar-event.js"></script>
+  <script src="../build/collections/calendar-events.js"></script>
+  <script src="../build/models/source.js"></script>
+  <script src="../build/collections/sources.js"></script>
+  <script src="../build/controllers/calendar-router.js"></script>
+
+  <!-- React Views -->
+  <script src="../build/react-components/calendar-event-list.js"></script>
+  <script src="../build/react-components/invalid-date.js"></script>
+  <script src="../build/react-components/calendar-controls.js"></script>
+  <script src="../build/react-components/calendar-source-options.js"></script>
+  <script src="../build/react-components/event-indicator.js"></script>
+  <script src="../build/react-components/calendar-grid-body-cell.js"></script>
+  <script src="../build/react-components/calendar-grid-body-row.js"></script>
+  <script src="../build/react-components/calendar-grid-body.js"></script>
+  <script src="../build/react-components/calendar-grid-header-cell.js"></script>
+  <script src="../build/react-components/calendar-grid-header-row.js"></script>
+  <script src="../build/react-components/calendar-grid-header.js"></script>
+  <script src="../build/react-components/calendar-grid.js"></script>
+  <script src="../build/react-components/event-view.js"></script>
+  <script src="../build/react-components/calendar-item-view.js"></script>
+  <script src="../build/react-components/calendar-list-view.js"></script>
+  <script src="../build/react-components/select-all-events.js"></script>
+  <script src="../build/react-components/selected-events-view.js"></script>
+  <script src="../build/react-components/multi-calendar-view.js"></script>
+
+  <!-- Backbone Singleton Model -->
+  <script src="../build/models/multi-calendar.js"></script>
+
+  <!-- Fast Click -->
+  <script src="//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.3/fastclick.min.js"></script>
+  <script>
+    $(function() {
+        FastClick.attach(document.body);
+    });
+  </script>
+
+  <!-- App -->
+  <script src="app.js"></script>
+  </body>
+</html>

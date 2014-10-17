@@ -6,6 +6,7 @@ Backbone.CalendarEvent = Backbone.Model.extend({
     calendar:     '',
     content:      '',
     date:         '',
+    fullDate:     '',
     endTime:      '',
     month:        '',
     year:         '',
@@ -19,6 +20,12 @@ Backbone.CalendarEvent = Backbone.Model.extend({
     week:         '',
     yearMonth:    '',
     yearMonthDay: ''
+  },
+
+  initialize: function() {
+    if (!this.get('fullDate')) {
+      this.set('fullDate', this.startMoment().format('YYYY-MM-DD'));
+    }
   },
 
   startMoment: function() {

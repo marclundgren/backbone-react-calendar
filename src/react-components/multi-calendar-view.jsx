@@ -15,6 +15,8 @@ app.MultiCalendarTitle = React.createClass({
   },
 
   render: function() {
+
+
     return (
       <div className={this.props.className} onClick={this.props.today}>
         <h1>
@@ -44,19 +46,7 @@ app.MultiCalendarView = React.createBackboneClass({
     });
   },
 
-  _logTime: function() {
-    return;
-    var now = moment();
-
-    var diff = now.diff(window._t);
-
-    console.log('diff: ', diff);
-    alert(diff);
-  },
-
   render: function() {
-    window.now();
-
     var eventFilter = {},
       model = this.getModel(),
       calendar = model.get('calendar'),
@@ -92,13 +82,16 @@ app.MultiCalendarView = React.createBackboneClass({
       title = calendar;
     }
 
-    // alert('sanity');
-
     // todo: make use of transferPropsTo
+
+    if (calendar == 'all') {
+      calendar = '';
+    }
+
+    var gridEvents = model.getEvents({calendar: calendar});
 
     return (
       <div className="container multi-calendar-view">
-
         <app.MultiCalendarTitle
           className={this.props.classNameTitle}
           today={this.today}
@@ -111,14 +104,10 @@ app.MultiCalendarView = React.createBackboneClass({
               onPrev={this.prev}
               onNext={this.next} />
 
-            <div>
-              {date.format('YYYY-MM-DD')}
-            </div>
-
             <app.CalendarGrid
               active={!allEvents}
               date={date}
-              events={model.getEvents({calendar: calendar})}
+              events={gridEvents}
               onGridSelect={this.onGridSelect}
               ref="calendarGrid">
 
@@ -143,8 +132,6 @@ app.MultiCalendarView = React.createBackboneClass({
         <ul>
           <li>Event Detail View: [bug] direct links may contain raw HTML fragments.</li>
           <li>Event Detail View: [presentation] The desktop view is not optimized.</li>
-          <li>Grid Calendar View: [performance] changing dates has a noticable delay.</li>
-          <li>Grid Calendar View: [bug] A user is unable to change the month quickly until the next month has rendered.</li>
         </ul>
       </div>
     );
@@ -167,17 +154,11 @@ app.MultiCalendarView = React.createBackboneClass({
   next: function(date) {
     var model = this.getModel();
 
-    window._t = moment();
-    console.log('window._t: ', window._t);
-
     model.set('date', date);
   },
 
   prev: function(date) {
     var model = this.getModel();
-
-    window._t = moment();
-    console.log('window._t: ', window._t);
 
     model.set('date', date);
   },
@@ -197,11 +178,6 @@ app.MultiCalendarView = React.createBackboneClass({
 
   changeDate: function(date) {
     var model = this.getModel();
-
-    console.log('changeDate');
-
-    window._t = moment();
-    console.log('window._t: ', window._t);
 
     model.set('date', date);
   },

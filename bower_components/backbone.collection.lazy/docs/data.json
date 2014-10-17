@@ -1,0 +1,46 @@
+{
+    "project": {
+        "name": "backbone.collection.lazy",
+        "version": "0.0.0"
+    },
+    "files": {
+        "src/index.js": {
+            "name": "src/index.js",
+            "modules": {
+                "BackboneCollectionLazy": 1
+            },
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        }
+    },
+    "modules": {
+        "BackboneCollectionLazy": {
+            "name": "BackboneCollectionLazy",
+            "submodules": {},
+            "classes": {},
+            "fors": {},
+            "namespaces": {},
+            "tag": "module",
+            "file": "src/index.js",
+            "line": 5,
+            "description": "AMD and CJS module."
+        }
+    },
+    "classes": {},
+    "classitems": [
+        {
+            "file": "src/index.js",
+            "line": 21,
+            "description": "Lazy MUST be defined in amdconfig shim!",
+            "class": "",
+            "module": "BackboneCollectionLazy"
+        }
+    ],
+    "warnings": [
+        {
+            "message": "Missing item type\nLazy MUST be defined in amdconfig shim!",
+            "line": " src/index.js:21"
+        }
+    ]
+}

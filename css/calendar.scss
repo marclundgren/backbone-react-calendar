@@ -83,11 +83,6 @@ $date-hover-background-color: #27e5e4;
   }
 }
 
-// .active .calendar-list .calendar-view.selected {
-//   background-color: #ccc;
-//   color: #f5f5f5;
-// }
-
 .calendar-list.active .calendar-view .selected {
   background-color: $background-colour-active-day;
   color: $date-active-color-selected;
@@ -137,7 +132,6 @@ $date-hover-background-color: #27e5e4;
   margin: 1em 0;
 
   display: block;
-  // height: 100px;
   overflow-y: hidden;
   overflow: auto;
   -webkit-overflow-scrolling: touch;
@@ -150,16 +144,6 @@ $date-hover-background-color: #27e5e4;
     color: #ccc;
     padding: 1em;
     text-align: center;
-
-    // &.selected {
-    //   background-color: #2789e4;
-    //   border-radius: 10px;
-    // }
-
-    // .selected {
-    //   font-weight: bold;
-    //   color: #000;
-    // }
   }
 }
 
@@ -207,9 +191,7 @@ $date-hover-background-color: #27e5e4;
   }
 }
 
-// todo: only style .calendar-grid-container
-.calendar, .calendar-grid-container {
-  // margin-bottom: 1em;
+.calendar-grid-container {
   max-width: $max-width;
   min-width: $min-width;
 
@@ -353,8 +335,7 @@ $date-hover-background-color: #27e5e4;
 
   .title {
     -webkit-font-smoothing: antialiased;
-    display: inline-block;
-    font-size: 17px;
+    cursor: inherit;
     margin: 0;
   }
 
@@ -364,8 +345,6 @@ $date-hover-background-color: #27e5e4;
     font-size: 0;
     height: 0;
     line-height: 0;
-    /* margin: 0 12px; */
-    /* position: absolute; */
     width: 0;
   }
 

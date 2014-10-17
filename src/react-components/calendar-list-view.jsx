@@ -43,8 +43,6 @@ app.CalendarListView = React.createClass({
       className += ' active';
     }
 
-    window.logTime();
-
     return (
       <div>
         <h4>Filter by</h4>

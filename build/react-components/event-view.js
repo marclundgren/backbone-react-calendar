@@ -28,13 +28,11 @@ app.EventView = React.createBackboneClass({
     var content = model.get('content');
 
     if (this.props.dangerouslySetInnerHTML) {
-      console.log('danger');
       var rawMarkup = this.props.converter.makeHtml(content);
 
       return React.DOM.span({dangerouslySetInnerHTML: {__html: rawMarkup}})
     }
     else {
-      console.log('safe');
       return React.DOM.span(null, content);
     }
   },

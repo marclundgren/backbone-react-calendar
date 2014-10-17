@@ -21,6 +21,10 @@ app.CalendarGridBodyRow = React.createClass({
     );
   },
 
+  componentWillUpdate: function() {
+    // this.m = moment();
+  },
+
   render: function() {
     return (
       <div className='row'>

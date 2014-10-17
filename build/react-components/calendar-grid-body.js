@@ -8,8 +8,11 @@ var app = app || {};
 app.CalendarGridBody = React.createClass({displayName: 'CalendarGridBody',
   getDefaultProps: function() {
     return {
+      events: [],
       dates: [],
-      weeks: new Backbone.Collection()
+      weekLength: 7,
+
+      onGridSelect: function() {}
     };
   },
 
@@ -19,10 +22,28 @@ app.CalendarGridBody = React.createClass({displayName: 'CalendarGridBody',
     );
   },
 
+  weeks: function() {
+    var weeks = [];
+
+    var dates = this.props.dates;
+
+    var weeksInMonth = (dates.length / this.props.weekLength);
+
+    var daysOfMonthCollection = new Backbone.Collection(dates);
+
+    for (var index = 0; index < weeksInMonth; index++) {
+      weeks[index] = daysOfMonthCollection.where({week: index + 1});
+    }
+
+    return weeks;
+  },
+
   render: function() {
+    var weeks = this.weeks(); // ~2ms
+
     return (
       React.DOM.div({className: "week-body"}, 
-        this.props.weeks.map(this.createWeek)
+        weeks.map(this.createWeek)
       )
     );
   }
