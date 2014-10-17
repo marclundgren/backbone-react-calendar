@@ -15,8 +15,6 @@ app.MultiCalendarTitle = React.createClass({displayName: 'MultiCalendarTitle',
   },
 
   render: function() {
-
-
     return (
       React.DOM.div({className: this.props.className, onClick: this.props.today}, 
         React.DOM.h1(null, 
@@ -126,12 +124,6 @@ app.MultiCalendarView = React.createBackboneClass({
             eventLink: this.eventLink, 
             events: events, 
             sortable: allEvents})
-        ), 
-
-        React.DOM.h2(null, "Issues"), 
-        React.DOM.ul(null, 
-          React.DOM.li(null, "Event Detail View: [bug] direct links may contain raw HTML fragments."), 
-          React.DOM.li(null, "Event Detail View: [presentation] The desktop view is not optimized.")
         )
       )
     );

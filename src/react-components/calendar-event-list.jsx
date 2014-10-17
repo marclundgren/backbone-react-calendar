@@ -207,6 +207,7 @@ app.CalendarEventList = React.createClass({
         containerClassName: 'col-xs-12 col-sm-6 col-md-6 col-lg-9 event-list-container',
         events: [],
         sortable: false,
+        sortTitle: 'Sort by',
         title: 'All Events'
       };
     },
@@ -243,10 +244,10 @@ app.CalendarEventList = React.createClass({
           calendar={this.props.calendar}
           duration={entry.duration()}
           eventLink={this.props.eventLink}
-          model={entry}
           id={entry.get('id')}
-          sortKey={this.state.sortValue}
           location={entry.get('location')}
+          model={entry}
+          sortKey={this.state.sortValue}
           startMoment={entry.startMoment()}
           starts={entry.starts()}
           title={entry.get('title')} />
@@ -254,15 +255,15 @@ app.CalendarEventList = React.createClass({
     },
 
     onChange: function(e) {
-      var sortValue = this.refs.sortValue.getDOMNode().value;
+      var val = this.refs.sortValue.getDOMNode().value;
 
-      this.setState({sortValue: sortValue});
+      this.setState({sortValue: val});
     },
 
     selectSort: function() {
       return (
         <div className="sort">
-          <h5>Sort by</h5>
+          <h5>{this.props.sortTitle}</h5>
 
           <select className="form-control" ref="sortValue" value={this.state.sortValue} name="sortvalue" onChange={this.onChange}>
             <option value="startTime">Date</option>

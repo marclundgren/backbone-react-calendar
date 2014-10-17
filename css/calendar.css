@@ -125,22 +125,22 @@
     border-radius: 50%;
     color: #fff; }
 
-.calendar, .calendar-grid-container {
+.calendar-grid-container {
   max-width: 630px;
   min-width: 290px; }
-  .calendar .row, .calendar-grid-container .row {
+  .calendar-grid-container .row {
     margin: 0; }
-  .calendar .grid-cell, .calendar-grid-container .grid-cell {
+  .calendar-grid-container .grid-cell {
     display: inline-block;
     float: left;
     font-weight: 500;
     min-height: 1px;
     padding: 0;
     width: 14.28571%; }
-    .calendar .grid-cell > div, .calendar-grid-container .grid-cell > div {
+    .calendar-grid-container .grid-cell > div {
       position: relative;
       padding: 50% 0; }
-      .calendar .grid-cell > div > div, .calendar-grid-container .grid-cell > div > div {
+      .calendar-grid-container .grid-cell > div > div {
         -ms-transform: translate(-50%, -50%);
         -webkit-transform: translate(-50%, -50%);
         left: 50%;
@@ -150,23 +150,23 @@
         top: 50%;
         transform: translate(-50%, -50%);
         width: 50%; }
-  .calendar .week-header .title, .calendar-grid-container .week-header .title {
+  .calendar-grid-container .week-header .title {
     text-align: center; }
-  .calendar .week-header .grid-cell > div > div, .calendar-grid-container .week-header .grid-cell > div > div {
+  .calendar-grid-container .week-header .grid-cell > div > div {
     color: #b4b4b4;
     padding: 10% 0;
     height: auto; }
-  .calendar .week-body, .calendar-grid-container .week-body {
+  .calendar-grid-container .week-body {
     background-color: #f5f5f5; }
-    .calendar .week-body .grid-cell, .calendar-grid-container .week-body .grid-cell {
+    .calendar-grid-container .week-body .grid-cell {
       color: #dcdcdc;
       cursor: pointer; }
-      .calendar .week-body .grid-cell .active-month, .calendar-grid-container .week-body .grid-cell .active-month {
+      .calendar-grid-container .week-body .grid-cell .active-month {
         color: #3f3f3f; }
-      .calendar .week-body .grid-cell .event-indicator, .calendar-grid-container .week-body .grid-cell .event-indicator {
+      .calendar-grid-container .week-body .grid-cell .event-indicator {
         font-size: 2em;
         top: 75%; }
-        .calendar .week-body .grid-cell .event-indicator.has-events:after, .calendar-grid-container .week-body .grid-cell .event-indicator.has-events:after {
+        .calendar-grid-container .week-body .grid-cell .event-indicator.has-events:after {
           content: "·"; }
 
 /* Desktops and laptops ----------- */
@@ -217,8 +217,7 @@
     width: 40%; }
   .calendar-controls .title {
     -webkit-font-smoothing: antialiased;
-    display: inline-block;
-    font-size: 17px;
+    cursor: inherit;
     margin: 0; }
   .calendar-controls .arrow {
     border: 8px solid transparent;
@@ -226,8 +225,6 @@
     font-size: 0;
     height: 0;
     line-height: 0;
-    /* margin: 0 12px; */
-    /* position: absolute; */
     width: 0; }
   .calendar-controls .control-next .arrow {
     right: 0;

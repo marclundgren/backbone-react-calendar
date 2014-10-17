@@ -207,6 +207,7 @@ app.CalendarEventList = React.createClass({displayName: 'CalendarEventList',
         containerClassName: 'col-xs-12 col-sm-6 col-md-6 col-lg-9 event-list-container',
         events: [],
         sortable: false,
+        sortTitle: 'Sort by',
         title: 'All Events'
       };
     },
@@ -243,10 +244,10 @@ app.CalendarEventList = React.createClass({displayName: 'CalendarEventList',
           calendar: this.props.calendar, 
           duration: entry.duration(), 
           eventLink: this.props.eventLink, 
-          model: entry, 
           id: entry.get('id'), 
-          sortKey: this.state.sortValue, 
           location: entry.get('location'), 
+          model: entry, 
+          sortKey: this.state.sortValue, 
           startMoment: entry.startMoment(), 
           starts: entry.starts(), 
           title: entry.get('title')})
@@ -254,15 +255,15 @@ app.CalendarEventList = React.createClass({displayName: 'CalendarEventList',
     },
 
     onChange: function(e) {
-      var sortValue = this.refs.sortValue.getDOMNode().value;
+      var val = this.refs.sortValue.getDOMNode().value;
 
-      this.setState({sortValue: sortValue});
+      this.setState({sortValue: val});
     },
 
     selectSort: function() {
       return (
         React.DOM.div({className: "sort"}, 
-          React.DOM.h5(null, "Sort by"), 
+          React.DOM.h5(null, this.props.sortTitle), 
 
           React.DOM.select({className: "form-control", ref: "sortValue", value: this.state.sortValue, name: "sortvalue", onChange: this.onChange}, 
             React.DOM.option({value: "startTime"}, "Date"), 

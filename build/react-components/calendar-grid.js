@@ -14,11 +14,6 @@ app.CalendarGrid = React.createClass({displayName: 'CalendarGrid',
   },
 
   render: function() {
-
-    if (!this.props.date.isValid()) {
-      return app.InvalidDate(null)
-    }
-
     var monthYear = this.props.date.format('MMYY'); // e.g. "0914" for Sept, 2014
 
     var dates = this.getDaysOfMonth(monthYear); // ~250ms -> ~180ms

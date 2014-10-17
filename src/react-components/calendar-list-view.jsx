@@ -9,24 +9,17 @@ app.CalendarListView = React.createClass({
   getDefaultProps: function() {
     return {
       active: false,
+      calendars: [],
       className: 'col-md-12 calendar-list',
       defaultValue: ''
     }
   },
 
-  createCalendar: function(item) {
-    var selected = item === this.props.selected;
-
-    return (
-      <app.CalendarItemView selected={selected} changeCalendar={this.props.changeCalendar} name={item} />
-    );
-  },
-
   createCalendarOption: function(item) {
-    var selected = item === this.props.selected;
-
     return (
-      <app.CalendarItemOptionView selected={selected} name={item} />
+      <app.CalendarItemOptionView
+        name={item}
+        selected={this.props.selected} />
     );
   },
 
