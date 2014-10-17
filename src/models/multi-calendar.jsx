@@ -257,7 +257,8 @@ Backbone.MultiCalendar = Backbone.Model.extend({
         app.EventView({
           dangerouslySetInnerHTML: this.get('dangerouslySetInnerHTML'),
           model: calendarEvent,
-          router: router
+          today: this.today
+          // router: router
         }),
         mountPoint
       );
@@ -317,7 +318,7 @@ Backbone.MultiCalendar = Backbone.Model.extend({
     this.calendardate.apply(this, arguments);
   },
 
-  event: function(cal, id) {
+  event: function(id) {
     this.eventView(id);
   },
 

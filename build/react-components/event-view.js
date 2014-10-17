@@ -12,15 +12,17 @@ app.EventView = React.createBackboneClass({
       classNameContent: 'event-view-content',
       classNameTitle: 'event-view-title',
       dangerouslySetInnerHTML: false,
-      title: 'Show Calendar'
+      title: 'Show Calendar',
+
+      today: function() {}
     };
   },
 
-  toCalendar: function() {
-    this.props.router.navigate('', {
-      trigger: true
-    });
-  },
+  // toCalendar: function() {
+  //   this.props.router.navigate('', {
+  //     trigger: true
+  //   });
+  // },
 
   content: function() {
     var model = this.getModel();
@@ -45,7 +47,7 @@ app.EventView = React.createBackboneClass({
     return (
       React.DOM.div({className: "container"}, 
         React.DOM.div({className: "row"}, 
-          React.DOM.div({className: "col-xs-12 col-sm-12 col-sm-12", onClick: this.toCalendar, className: this.props.classNametoCalendar}, 
+          React.DOM.div({className: "col-xs-12 col-sm-12 col-sm-12", onClick: this.props.today, className: this.props.classNametoCalendar}, 
             this.props.title
           ), 
 

@@ -12,7 +12,7 @@ Backbone.CalendarRouter = Backbone.Router.extend({
     // 'calendar/:cat/date/:date'  :   'calendardate', // e.g. calendar/educators/date/2014-08-09
     // 'calendar/:cat/month/:month':   'month',        // e.g. calendar/educators/month/2013-08
     // 'calendar/:cat/year/:year'  :   'year',         // e.g. calendar/educators/year/2015
-    // 'calendar/:cat/event/:event':   'event'         // e.g. calendar/educators/event/3w5sxer4q3'
+    'event/:event':   'event'         // e.g. calendar/educators/event/3w5sxer4q3'
   },
 
   navigate: function() {
