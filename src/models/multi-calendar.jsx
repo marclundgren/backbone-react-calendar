@@ -114,28 +114,12 @@ Backbone.MultiCalendar = Backbone.Model.extend({
       self.all.apply(self, arguments);
     });
 
-    this.listenTo(router, 'route:calendar', function() {
-      self.calendardate.apply(self, arguments);
-    });
-
     this.listenTo(router, 'route:today', function() {
       self.today.apply(self, arguments);
     });
 
-    this.listenTo(router, 'route:calendardate', function() {
-      self.calendardate.apply(self, arguments);
-    });
-
     this.listenTo(router, 'route:date', function() {
       self.date.apply(self, arguments);
-    });
-
-    this.listenTo(router, 'route:month', function() {
-      self.month.apply(self, arguments);
-    });
-
-    this.listenTo(router, 'route:year', function() {
-      self.year.apply(self, arguments);
     });
 
     this.listenTo(router, 'route:event', function() {
@@ -149,10 +133,6 @@ Backbone.MultiCalendar = Backbone.Model.extend({
       else {
         self.navigateToAllEvents();
       }
-    });
-
-    this.on('change:calendar', function(model, calendar) {
-      self.navigateToCalendar(calendar || '');
     });
 
     this.get('sources').bind('change', function() {
@@ -345,34 +325,17 @@ Backbone.MultiCalendar = Backbone.Model.extend({
     this.navigate('');
   },
 
-  // aka category
-  navigateToCalendar: function(calendar) {
-    var path = 'calendar/' + calendar;
-
-    var date = this.get('date');
-
-    if (date) {
-      path += '/date/' + date.format('YYYY-MM-DD');
-    }
-
-    this.navigate(path);
-  },
-
-  navigateToMonth: function(month) {
-    this.navigate('month/' + month);
-  },
-
   navigateToDay: function(day) {
     this.set('date', day);
 
-    var calendar = this.get('calendar');
+    // var calendar = this.get('calendar');
 
-    if (calendar) {
-      this.navigateToCalendar(calendar);
-    }
-    else {
+    // if (calendar) {
+      // this.navigateToCalendar(calendar);
+    // }
+    // else {
       this.navigate('date/' + day.format('YYYY-MM-DD'));
-    }
+    // }
   },
 
   navigate: function(fragment) {
