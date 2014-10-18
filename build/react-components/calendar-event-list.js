@@ -16,7 +16,7 @@ app.CalendarEventItemByTitle = React.createClass({displayName: 'CalendarEventIte
   },
 
   onClick: function() {
-    this.props.eventLink(this.props.calendar, this.props.id);
+    this.props.eventLink(this.props.id);
   },
 
   render: function() {
@@ -60,7 +60,7 @@ app.CalendarEventItemByDate = React.createClass({displayName: 'CalendarEventItem
   },
 
   onClick: function() {
-    this.props.eventLink(this.props.calendar, this.props.id);
+    this.props.eventLink(this.props.id);
   },
 
   render: function() {
@@ -103,7 +103,7 @@ app.CalendarEventItemByLocation = React.createClass({displayName: 'CalendarEvent
   },
 
   onClick: function() {
-    this.props.eventLink(this.props.calendar, this.props.id);
+    this.props.eventLink(this.props.id);
   },
 
   render: function() {
@@ -138,7 +138,6 @@ app.CalendarEventItemByLocation = React.createClass({displayName: 'CalendarEvent
 app.CalendarEventItem = React.createBackboneClass({
   getDefaultProps: function() {
     return {
-      eventLink: function() {},
       date: null,
       duration: '',
       id: '',
@@ -147,14 +146,16 @@ app.CalendarEventItem = React.createBackboneClass({
       location: '',
       startMoment: moment(),
       starts: '',
-      title: ''
+      title: '',
+
+      eventLink: function() {}
     };
   },
 
   // todo, bind a single onClick to be used by each of these items
 
   // onClick: function() {
-  //   this.props.eventLink(this.props.calendar, this.props.id);
+  //   this.props.eventLink(this.props.id);
   // },
 
   render: function() {

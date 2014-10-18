@@ -3,17 +3,6 @@ var app = app || {};
 
 app.Util = {
   addParams: function(url, params) {
-
-    /*
-    var colorCodes = {
-      red: "#f00",
-      green: "#0f0",
-      blue: "#00f"
-    };
-
-    Lazy(colorCodes).pairs() // sequence: [["red", "#f00"], ["green", "#0f0"], ["blue", "#00f"]]
-    */
-
     var paramsJoined = _.pairs(params).map(function(param) {
       return param.join('=');
     }).join('&');
@@ -34,9 +23,6 @@ app.Util = {
   },
 
   serialize: function(obj) {
-
-    // Lazy([1, 2, 3]).map(Lazy.identity) // instanceof Lazy.ArrayLikeSequence
-
     var urlParams = _.map(obj, function (val, key) {
       var value = this.isObject(val) ? JSON.stringify(val) : String(val);
       return (String(key) + '=' + value);

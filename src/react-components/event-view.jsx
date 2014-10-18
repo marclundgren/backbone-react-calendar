@@ -18,11 +18,11 @@ app.EventView = React.createBackboneClass({
     };
   },
 
-  // toCalendar: function() {
-  //   this.props.router.navigate('', {
-  //     trigger: true
-  //   });
-  // },
+  toCalendar: function() {
+    this.props.router.navigate('', {
+      trigger: true
+    });
+  },
 
   content: function() {
     var model = this.getModel();
@@ -47,7 +47,7 @@ app.EventView = React.createBackboneClass({
     return (
       <div className="container">
         <div className="row">
-          <div className="col-xs-12 col-sm-12 col-sm-12" onClick={this.props.today} className={this.props.classNametoCalendar}>
+          <div className="col-xs-12 col-sm-12 col-sm-12" onClick={this.toCalendar} className={this.props.classNametoCalendar}>
             {this.props.title}
           </div>
 

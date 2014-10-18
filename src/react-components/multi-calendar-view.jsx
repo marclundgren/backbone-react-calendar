@@ -10,6 +10,7 @@ app.MultiCalendarTitle = React.createClass({
     return {
       className: 'multi-calendar-title',
       title: 'Multi Calendar',
+
       today: function() {}
     };
   },
@@ -32,12 +33,12 @@ app.MultiCalendarView = React.createBackboneClass({
     };
   },
 
-  eventLink: function(calendar, id) {
+  eventLink: function(id) {
     var model = this.getModel();
 
     var router = model.get('router');
 
-    var path = 'calendar/' + calendar + '/event/' + id;
+    var path = '/event/' + id;
 
     router.navigate(path, {
       trigger: true

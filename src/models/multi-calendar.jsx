@@ -54,10 +54,6 @@ Backbone.MultiCalendar = Backbone.Model.extend({
   _initEvents: function() {
     var events = this.get('sources').pluck('events');
 
-    /*
-      Lazy([1, [2, 3], [4, [5]]]).flatten() // sequence: [1, 2, 3, 4, 5]
-      Lazy([1, Lazy([2, 3])]).flatten()     // sequence: [1, 2, 3]
-    */
     var flattenedEvents = _.flatten(events);
 
     this.set('events', new Backbone.Collection(flattenedEvents));
@@ -151,13 +147,8 @@ Backbone.MultiCalendar = Backbone.Model.extend({
   getEvents: function(options) {
     var calendarEvents;
 
-    // Lazy({ hello: "hola", goodbye: "hasta luego" }).keys() // sequence: ["hello", "goodbye"]
-
     if (_.keys(options).length) {
       var calendar = options.calendar;
-
-      // var result = _.chain(array).map(square).map(inc).filter(isEven).take(5).value();
-      // var result = Lazy(array).map(square).map(inc).filter(isEven).take(5);
 
       calendarEvents = this.get('sources').chain()
         // filter by calendar aka cateogry
@@ -170,16 +161,10 @@ Backbone.MultiCalendar = Backbone.Model.extend({
           }
         })
         // return events as a collection
-
         .map(function(sourceModel) {
           return sourceModel.get('events');
         })
         .value();
-
-        /*
-          Lazy([1, [2, 3], [4, [5]]]).flatten() // sequence: [1, 2, 3, 4, 5]
-          Lazy([1, Lazy([2, 3])]).flatten()     // sequence: [1, 2, 3]
-        */
 
         var flattenedEvents = _.flatten(calendarEvents);
 
@@ -257,8 +242,7 @@ Backbone.MultiCalendar = Backbone.Model.extend({
         app.EventView({
           dangerouslySetInnerHTML: this.get('dangerouslySetInnerHTML'),
           model: calendarEvent,
-          today: this.today
-          // router: router
+          router: router
         }),
         mountPoint
       );
@@ -280,7 +264,7 @@ Backbone.MultiCalendar = Backbone.Model.extend({
             if (calendarEvent) {
               React.renderComponent(
                 app.EventView({
-                  dangerouslySetInnerHTML: this.get('dangerouslySetInnerHTML'),
+                  dangerouslySetInnerHTML: self.get('dangerouslySetInnerHTML'),
                   model: calendarEvent,
                   router: router
                 }),
@@ -329,14 +313,7 @@ Backbone.MultiCalendar = Backbone.Model.extend({
   navigateToDay: function(day) {
     this.set('date', day);
 
-    // var calendar = this.get('calendar');
-
-    // if (calendar) {
-      // this.navigateToCalendar(calendar);
-    // }
-    // else {
-      this.navigate('date/' + day.format('YYYY-MM-DD'));
-    // }
+    this.navigate('date/' + day.format('YYYY-MM-DD'));
   },
 
   navigate: function(fragment) {
