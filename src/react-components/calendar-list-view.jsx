@@ -11,7 +11,7 @@ app.CalendarListView = React.createClass({
       active: false,
       calendars: [],
       className: 'col-md-12 calendar-list',
-      defaultValue: ''
+      value: ''
     }
   },
 
@@ -36,10 +36,13 @@ app.CalendarListView = React.createClass({
       className += ' active';
     }
 
+    // this.props.value
+    console.log('this.props.value: ', this.props.value);
+
     return (
       <div>
         <h4>Filter by</h4>
-        <select defaultValue={this.props.defaultValue} ref="select" className="form-control" onChange={this.onChange}>
+        <select value={this.props.value} ref="select" className="form-control" onChange={this.onChange}>
           <option value="">All</option>
           {this.props.calendars.map(this.createCalendarOption)}
         </select>

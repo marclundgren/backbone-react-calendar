@@ -112,10 +112,10 @@ app.MultiCalendarView = React.createBackboneClass({
 
               <app.CalendarListView
                 active={allEvents}
-                defaultValue={calendar}
                 calendars={model.getCalendars()}
                 changeCalendar={this.changeCalendar}
-                selected={calendar} />
+                selected={calendar}
+                value={calendar} />
             </app.CalendarGrid>
           </div>
 
