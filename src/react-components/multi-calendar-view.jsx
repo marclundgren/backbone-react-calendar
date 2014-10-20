@@ -114,8 +114,7 @@ app.MultiCalendarView = React.createBackboneClass({
                 active={allEvents}
                 calendars={model.getCalendars()}
                 changeCalendar={this.changeCalendar}
-                selected={calendar}
-                value={calendar} />
+                selected={calendar} />
             </app.CalendarGrid>
           </div>
 

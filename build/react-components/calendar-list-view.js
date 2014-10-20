@@ -11,15 +11,13 @@ app.CalendarListView = React.createClass({displayName: 'CalendarListView',
       active: false,
       calendars: [],
       className: 'col-md-12 calendar-list',
-      value: ''
+      selected: ''
     }
   },
 
   createCalendarOption: function(item) {
     return (
-      app.CalendarItemOptionView({
-        name: item, 
-        selected: this.props.selected})
+      React.DOM.option({value: item}, item)
     );
   },
 
@@ -36,13 +34,10 @@ app.CalendarListView = React.createClass({displayName: 'CalendarListView',
       className += ' active';
     }
 
-    // this.props.value
-    console.log('this.props.value: ', this.props.value);
-
     return (
       React.DOM.div(null, 
         React.DOM.h4(null, "Filter by"), 
-        React.DOM.select({value: this.props.value, ref: "select", className: "form-control", onChange: this.onChange}, 
+        React.DOM.select({className: "form-control", value: this.props.selected, ref: "select", onChange: this.onChange}, 
           React.DOM.option({value: ""}, "All"), 
           this.props.calendars.map(this.createCalendarOption)
         )

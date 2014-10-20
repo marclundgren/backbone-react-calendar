@@ -11,15 +11,13 @@ app.CalendarListView = React.createClass({
       active: false,
       calendars: [],
       className: 'col-md-12 calendar-list',
-      value: ''
+      selected: ''
     }
   },
 
   createCalendarOption: function(item) {
     return (
-      <app.CalendarItemOptionView
-        name={item}
-        selected={this.props.selected} />
+      <option value={item}>{item}</option>
     );
   },
 
@@ -36,13 +34,10 @@ app.CalendarListView = React.createClass({
       className += ' active';
     }
 
-    // this.props.value
-    console.log('this.props.value: ', this.props.value);
-
     return (
       <div>
         <h4>Filter by</h4>
-        <select value={this.props.value} ref="select" className="form-control" onChange={this.onChange}>
+        <select className="form-control" value={this.props.selected} ref="select" onChange={this.onChange}>
           <option value="">All</option>
           {this.props.calendars.map(this.createCalendarOption)}
         </select>
