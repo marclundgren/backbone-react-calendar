@@ -11,6 +11,7 @@ Backbone.MultiCalendar = Backbone.Model.extend({
     calendarEvents: new Backbone.CalendarEvents(),
     dangerouslySetInnerHTML: false,
     sources: new Backbone.Sources(),
+    mountPoint: document.body,
     router: new Backbone.CalendarRouter(),
     title: 'Multi Calendar',
     view: app.MultiCalendarView
@@ -19,7 +20,16 @@ Backbone.MultiCalendar = Backbone.Model.extend({
   initialize: function() {
     this._initSources();
     this._initEvents();
+    this._initFastClick();
     this._bindRoutes();
+  },
+
+  _initFastClick: function() {
+    var self = this;
+
+    $(function() {
+        FastClick.attach(self.get('mountPoint'));
+    });
   },
 
   _initSources: function() {
