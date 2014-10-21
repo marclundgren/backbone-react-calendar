@@ -41,7 +41,6 @@ $(document).on('ready', function() {
     // calendarListTitle: 'Categories',
     // calendarListClassName: 'calendars',
     // params: {}, // todo,
-
     // view: app.MultiCalendarView,
 
     mountPoint: document.getElementById('calendarView')
