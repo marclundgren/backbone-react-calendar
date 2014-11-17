@@ -1,0 +1,22 @@
+{
+  "name": "BRRB",
+  "version": "0.0.1",
+  "authors": [
+    "Marc Lundgren <marclundgren2.0@gmail.com>"
+  ],
+  "description": "Backbone React Require Boilerplate",
+  "main": "index.html",
+  "keywords": [
+    "backbone",
+    "react",
+    "require"
+  ],
+  "license": "MIT",
+  "dependencies": {
+    "fastclick": "latest",
+    "showdown": "latest",
+    "moment": "latest",
+    "react": "~0.11.2",
+    "react.backbone": "~0.5.0"
+  }
+}
