@@ -6,7 +6,7 @@ define(['reactbackbone', 'showdown'],
     var EventView = React.createBackboneClass({
       getDefaultProps: function() {
         return {
-          containerClassName: 'container event-view',
+          containerClassName: 'container-fluid event-view',
           contentClassName: 'event-view-content',
           converter: new Showdown.converter(),
           dangerouslySetInnerHTML: false,
