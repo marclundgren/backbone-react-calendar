@@ -6,9 +6,9 @@ define(['react'],
     var CalendarEventItemByLocationView = React.createClass({displayName: 'CalendarEventItemByLocationView',
       getDefaultProps: function() {
         return {
-          className: 'row event event-by-location',
+          className: 'row-fluid event event-by-location',
           columnClassName: 'col-xs-10 col-sm-10 col-md-11 col-lg-11',
-          rowClassName: 'row',
+          rowClassName: 'row-fluid',
           locationClassName: 'col-xs-12 col-sm-4 col-lg-3 location',
           contentClassName: 'col-xs-12 col-sm-8 col-lg-9 content',
           arrowClassName: 'col-xs-2 col-sm-2 col-md-1 col-lg-1 arrow',

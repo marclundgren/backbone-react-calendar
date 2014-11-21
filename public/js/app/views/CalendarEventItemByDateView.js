@@ -6,9 +6,9 @@ define(['react'],
     var CalendarEventItemByDateView = React.createClass({displayName: 'CalendarEventItemByDateView',
       getDefaultProps: function() {
         return {
-          className: 'row event event-by-date',
+          className: 'row-fluid event event-by-date',
           columnClassName: 'col-xs-10 col-sm-10 col-md-11 col-lg-11',
-          rowClassName: 'row',
+          rowClassName: 'row-fluid',
           startsClassName: 'col-xs-12 col-sm-2 col-md-2 col-lg-2 starts',
           contentClassName: 'col-xs-12 col-sm-10 col-md-10 col-lg-10 content',
           headerTitleClassName: 'title',

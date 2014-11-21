@@ -7,9 +7,9 @@ define(['backbone', 'react'],
     var CalendarEventItemByTitleView = React.createClass({displayName: 'CalendarEventItemByTitleView',
       getDefaultProps: function() {
         return {
-          className: 'row event event-by-title',
+          className: 'row-fluid event event-by-title',
           columnClassName: 'col-xs-10 col-sm-10 col-md-11 col-lg-11',
-          rowClassName: 'row',
+          rowClassName: 'row-fluid',
           contentClassName: 'col-xs-12 col-sm-8 col-md-10 col-lg-10 content',
           headerTitleClassName: 'title',
           locationClassName: 'col-xs-12 col-sm-9 col-lg-9 location',

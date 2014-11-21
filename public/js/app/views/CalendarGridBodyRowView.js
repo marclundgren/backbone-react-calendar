@@ -6,7 +6,7 @@ define(['react', 'underscore.guid', 'views/CalendarGridBodyCellView'],
     var CalendarGridBodyRowView = React.createClass({displayName: 'CalendarGridBodyRowView',
       getDefaultProps: function() {
         return {
-          className: 'row'
+          className: 'row-fluid'
         };
       },
 

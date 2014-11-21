@@ -6,7 +6,7 @@ define(['react', 'underscore.guid', 'views/CalendarGridHeaderCellView'],
     var CalendarGridHeaderRowView = React.createClass({displayName: 'CalendarGridHeaderRowView',
       getDefaultProps: function() {
         return {
-          className: 'row',
+          className: 'row-fluid',
           names: []
         };
       },
