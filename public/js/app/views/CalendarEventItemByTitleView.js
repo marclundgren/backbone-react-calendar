@@ -15,7 +15,7 @@ define(['backbone', 'react'],
           locationClassName: 'span10 location',
           startsClassName: 'span2 starts',
           arrowClassName: 'span2 arrow',
-          iconClassName: 'glyphicon glyphicon-chevron-right',
+          iconClassName: 'icon icon-chevron-right',
           calendar: '',
           starts: '',
           title: ''
