@@ -8,7 +8,7 @@ define(['reactbackbone', 'moment', 'views/MultiCalendarTitleView', 'views/Calend
         return {
           calendarGridRefName: 'calendarGrid',
           className: 'container-fluid multi-calendar-view',
-          classNameGridContainer: 'col-xs-12 col-sm-6 col-md-4 col-lg-3 calendar-grid-container',
+          classNameGridContainer: 'span4 calendar-grid-container',
           rowClassName: 'row-fluid'
         };
       },

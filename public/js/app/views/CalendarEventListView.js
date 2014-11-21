@@ -8,7 +8,7 @@ define(['react', 'underscore.guid', 'views/CalendarEventItemView'],
           return {
             calendar: '',
             className: 'calendar-event-list',
-            containerClassName: 'col-xs-12 col-sm-6 col-md-6 col-lg-9 event-list-container',
+            containerClassName: 'span6 event-list-container',
             eventListHeaderClassName: 'event-list-header',
             eventsTitleClassName: 'events-title',
             selectClassName: 'form-control',

@@ -7,7 +7,7 @@ define(['react', 'underscore.guid'],
       getDefaultProps: function() {
         return {
           active: false,
-          className: 'col-md-12 calendar-list',
+          className: 'span12 calendar-list',
           defaultValue: '',
           headerText: 'Filter by',
           optionText: 'All',
