@@ -1,7 +1,8 @@
 // MultiCalendar.js
 // --------
-define(['backbone', 'underscore.guid', 'react', 'moment', 'fastclick', 'routers/CalendarRouter', 'collections/CalendarEvents', 'collections/Sources', 'views/MultiCalendarView', 'views/EventView', 'es5shim', 'es5sham'],
-  function(Backbone, _, React, moment, FastClick, CalendarRouter, CalendarEvents, Sources, MultiCalendarView, EventView) {
+
+define(['backbone', 'underscore.guid', 'react', 'moment', 'routers/CalendarRouter', 'collections/CalendarEvents', 'collections/Sources', 'views/MultiCalendarView', 'views/EventView', 'es5sham'],
+  function(Backbone, _, React, moment, CalendarRouter, CalendarEvents, Sources, MultiCalendarView, EventView) {
 
     var MultiCalendar = Backbone.Model.extend({
       defaults: {
@@ -18,8 +19,6 @@ define(['backbone', 'underscore.guid', 'react', 'moment', 'fastclick', 'routers/
         this._initSources();
         this._initEvents();
         this._bindRoutes();
-
-        FastClick.attach(this.get('mountPoint'));
       },
 
       _initSources: function() {
@@ -42,6 +41,7 @@ define(['backbone', 'underscore.guid', 'react', 'moment', 'fastclick', 'routers/
                 calendarEvent.id = _.guid();
               }
             });
+
             source.set('events', calendarEvents);
           }
         });

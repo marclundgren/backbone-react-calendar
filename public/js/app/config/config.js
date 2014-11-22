@@ -49,6 +49,8 @@ require.config({
   // Sets the configuration for your third party scripts that are not AMD compatible
   shim: {
 
+      "es5sham": ["es5shim"],
+
       // Twitter Bootstrap jQuery plugins
       "bootstrap": ["jquery"],
 

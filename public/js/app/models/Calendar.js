@@ -1,8 +1,8 @@
 // Calendar.js
 // --------
 
-define(['jquery', 'backbone', 'underscore', 'routers/CalendarRouter', 'collections/CalendarEvents', 'collections/Sources'],
-  function($, Backbone, _, CalendarRouter, CalendarEvents, Sources) {
+define(['backbone', 'underscore', 'routers/CalendarRouter', 'collections/CalendarEvents', 'collections/Sources'],
+  function(Backbone, _, CalendarRouter, CalendarEvents, Sources) {
 
     var Calendar = Backbone.Model.extend({
       defaults: {

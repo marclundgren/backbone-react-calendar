@@ -1,4 +1,4 @@
-console.log('es5-shim.js...');
+// console.log('es5-shim.js...');
 
 /*!
  * https://github.com/es-shims/es5-shim

@@ -2,15 +2,14 @@
 // --------------
 
 /* global require */
-
-require(['models/MultiCalendar', 'moment'],
+require(['models/MultiCalendar', 'moment', 'fastclick'],
   function(MultiCalendar, moment) {
 
     var YYYYMMDD = moment().format('YYYY-MM-DD');
 
     var url = 'https://www.googleapis.com/calendar/v3/calendars/uicih7p1rpl0dvrasudspuuj0g%40group.calendar.google.com/events?timeMin=' + YYYYMMDD + 'T00:00:00.000Z&key=AIzaSyBe0rRmqVCVYE4DxykUgoaZK_9ptaYw7ko';
 
-    new MultiCalendar({
+    var multical = new MultiCalendar({
       dangerouslySetInnerHTML: true,
 
       sources: [
@@ -22,5 +21,7 @@ require(['models/MultiCalendar', 'moment'],
 
       mountPoint: document.getElementById('calendar')
     });
+
+    FastClick.attach(multical.get('mountPoint'));
   }
 );
