@@ -28,6 +28,10 @@ require.config({
 
       "underscore": "../libs/lodash",
 
+      "es5shim": "../libs/es5-shim/es5-shim",
+
+      "es5sham": "../libs/es5-shim/es5-sham",
+
       // Plugins
       // -------
       "backbone.validateAll": "../libs/plugins/Backbone.validateAll",

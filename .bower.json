@@ -13,6 +13,7 @@
   ],
   "license": "MIT",
   "dependencies": {
+    "es5-shim": "master",
     "fastclick": "latest",
     "showdown": "latest",
     "moment": "latest",

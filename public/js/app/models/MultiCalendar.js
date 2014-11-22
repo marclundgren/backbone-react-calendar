@@ -1,6 +1,6 @@
 // MultiCalendar.js
 // --------
-define(['backbone', 'underscore.guid', 'react', 'moment', 'fastclick', 'routers/CalendarRouter', 'collections/CalendarEvents', 'collections/Sources', 'views/MultiCalendarView', 'views/EventView'],
+define(['backbone', 'underscore.guid', 'react', 'moment', 'fastclick', 'routers/CalendarRouter', 'collections/CalendarEvents', 'collections/Sources', 'views/MultiCalendarView', 'views/EventView', 'es5shim', 'es5sham'],
   function(Backbone, _, React, moment, FastClick, CalendarRouter, CalendarEvents, Sources, MultiCalendarView, EventView) {
 
     var MultiCalendar = Backbone.Model.extend({
