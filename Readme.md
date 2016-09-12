@@ -1,6 +1,5 @@
 Google Multi Calendar
 ==================================
-> TODO: description. Should we rename the repo?
 
 ## Getting Started
    1. Download and install [Node.js](http://nodejs.org/#download)
