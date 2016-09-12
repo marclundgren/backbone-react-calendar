@@ -1,6 +1,13 @@
 Google Multi Calendar
 ==================================
 
+## Status
+Currently **INACTIVE** as this is was part of a larger, cancelled project for FIDM.
+
+-- @marclundgren, 2016-09-12
+
+
+
 ## Getting Started
    1. Download and install [Node.js](http://nodejs.org/#download)
    2. Clone this repository using [Git](http://git-scm.com/): `git clone https://github.com/marclundgren/backbone-react-calendar.git`
